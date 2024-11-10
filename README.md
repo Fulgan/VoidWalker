@@ -1,3 +1,3 @@
 # Void Walker
 
-Prototype blind-friendly JRPG game (and engine). Built in raw C#.
+Prototype blind-friendly JRPG game (and engine). Built in .NET 8.0.
