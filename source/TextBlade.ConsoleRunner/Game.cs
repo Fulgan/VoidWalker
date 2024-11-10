@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+namespace TextBlade.ConsoleRunner;
+
 public class Game
 {
     public void Run()

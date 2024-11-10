@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoidWalker.Main", "VoidWalk
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.Core", "TextBlade.Core\TextBlade.Core.csproj", "{E6CA0114-BC5C-4B06-A2A9-EE91BB9A7C8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.Player", "TextBlade.Player\TextBlade.Player.csproj", "{48BCD4A6-C4C0-40BF-A0D4-3B8221E2941A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.ConsoleRunner", "TextBlade.ConsoleRunner\TextBlade.ConsoleRunner.csproj", "{48BCD4A6-C4C0-40BF-A0D4-3B8221E2941A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

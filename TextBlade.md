@@ -6,7 +6,7 @@ TextBlade is a game engine I specifically created to help run text-based JRPGs (
 
 - Run `dotnet new console --name <projectName>` to create your new project
 - Clone the lastest `TextBlade` repo, add it as a submodule, or copy the projects under your source directory
-- Add a reference to `TextBlade.Player` in your project
+- Add a reference to `TextBlade.ConsoleRunner` in your project
 - In your `Program.cs`, call `new Game().Run()`
 - Create a `Content` directory with a `game.json` file inside; it should have a `GameName` property set
 - Set `game.json` to copy on build by adding this to your `.csproj` file:

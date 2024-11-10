@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TextBlade.Player\TextBlade.Player.csproj" />
+    <ProjectReference Include="..\TextBlade.ConsoleRunner\TextBlade.ConsoleRunner.csproj" />
   </ItemGroup>
   
 </Project>
