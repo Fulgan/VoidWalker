@@ -29,7 +29,7 @@ $sonarToken = [System.IO.File]::ReadAllText("sonarToken.txt")
 $stopWatch = New-Object -TypeName System.Diagnostics.StopWatch
 $stopWatch.Start()
 
-dotnet sonarscanner begin /k:"$ProjectName" /d:sonar.host.url="http://localhost:9000" /d:sonar.login=$sonarToken /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.test.exclusions=**/*Test*.cs /d:sonar.inclusions=**/SharpForge*/**/*
+dotnet sonarscanner begin /k:"$ProjectName" /d:sonar.host.url="http://localhost:9000" /d:sonar.login=$sonarToken /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.test.exclusions=**/*Test*.cs #/d:sonar.inclusions=**/source*/**/*
 
 dotnet build --no-incremental
 

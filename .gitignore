@@ -3,3 +3,4 @@
 sonarToken.txt
 .vs
 .sonarqube
+coverage.xml
