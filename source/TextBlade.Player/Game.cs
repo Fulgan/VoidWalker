@@ -1,10 +1,8 @@
-﻿namespace LexEngine.Core;
-
-using System;
+﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public class LexGame
+public class Game
 {
     public void Run()
     {
