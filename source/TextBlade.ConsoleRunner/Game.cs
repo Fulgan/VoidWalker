@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.ConsoleRunner;
@@ -45,7 +46,7 @@ public class Game
             throw new InvalidOperationException($"{locationPath} doesn't seem to exist!");
         }
 
-        var startingLocationData = JsonConvert.DeserializeObject<Town>(File.ReadAllText(locationPath));
+        var startingLocationData = Serializer.Deserialize<Region>(File.ReadAllText(locationPath));
         _currentLocation = startingLocationData;
     }
 
