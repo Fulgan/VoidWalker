@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Spectre.Console;
 using TextBlade.Core.IO;
-using TextBlade.Core.Locations;
+using Region = TextBlade.Core.Locations.Region;
 
 namespace TextBlade.ConsoleRunner;
 
@@ -29,7 +30,7 @@ public class Game
         var gameJsonContents = File.ReadAllText(gameJsonPath);
         _gameJson = JsonConvert.DeserializeObject(gameJsonContents) as JObject;
         var gameName = _gameJson["GameName"];
-        Console.WriteLine($"Welcome to {gameName}!");
+        AnsiConsole.MarkupLine($"[#fff]Welcome to[/] [#f00]{gameName}[/]!");
     }
 
     internal void GetStartingLocation()
