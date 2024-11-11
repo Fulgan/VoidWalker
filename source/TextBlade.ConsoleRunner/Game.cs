@@ -35,12 +35,12 @@ public class Game
 
     internal void GetStartingLocation()
     {
-        if (!_gameJson.ContainsKey("StartingLocation"))
+        if (!_gameJson.ContainsKey("StartingLocationId"))
         {
-            throw new InvalidOperationException("Your game.json doesn't have a StartingLocation attribute!");
+            throw new InvalidOperationException("Your game.json doesn't have a StartingLocationId attribute!");
         }
 
-        var startingLocationName = _gameJson["StartingLocation"].ToString();
+        var startingLocationName = _gameJson["StartingLocationId"].ToString().Replace('/', Path.DirectorySeparatorChar);
         var locationPath = Path.Join("Content", "Locations", $"{startingLocationName}.json");
         if (!File.Exists(locationPath))
         {

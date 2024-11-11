@@ -1,5 +1,7 @@
 # TextBlade
 
+Note: this is all ridiculously out of date, as development proceeds at an accelerated clip. Please remind me to come back and update this once things are stable.
+
 TextBlade is a game engine I specifically created to help run text-based JRPGs (primarily to support making them for the Games for Blind Gamers jams).
 
 # Creating a Game

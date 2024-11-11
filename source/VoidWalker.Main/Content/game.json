@@ -1,4 +1,4 @@
 {
     "GameName": "Void Walker",
-    "StartingLocation": "KingsVale"
+    "StartingLocationId": "KingsVale/KingsVale"
 }

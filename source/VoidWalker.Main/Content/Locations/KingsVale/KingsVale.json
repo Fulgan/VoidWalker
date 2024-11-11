@@ -1,4 +1,7 @@
 {
     "Name": "King's Vale",
     "Description": "A small town ruled by King Sulayman, who lives in the castle in the north part of town.",
+    "ReachableRegions": [
+        "KingsVale/Inn", "KingsVale/EquipmentShop", "KingsVale/ItemShop"
+    ]
 }

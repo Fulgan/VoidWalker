@@ -16,5 +16,9 @@
   <ItemGroup>
     <ProjectReference Include="..\TextBlade.ConsoleRunner\TextBlade.ConsoleRunner.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Content\Data\" />
+  </ItemGroup>
   
 </Project>

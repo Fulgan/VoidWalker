@@ -1,13 +1,10 @@
 namespace TextBlade.Core.Locations;
 
-public class Region
+public class Region : BaseRegion
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public IList<string> ReachableRegionIds = new List<string>();
 
-    public Region(string name, string description)
+    public Region(string name, string description) : base(name, description)
     {
-        this.Name = name;
-        this.Description = description;
     }
 }
