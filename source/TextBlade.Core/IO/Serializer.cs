@@ -5,12 +5,6 @@ namespace TextBlade.Core.IO;
 
 public static class Serializer
 {
-    // TODO: delete, unless we don't know the type coming back and need to serialize type info
-    private static readonly JsonSerializerSettings SerializationSettings = new JsonSerializerSettings() 
-    {
-         TypeNameHandling = TypeNameHandling.All
-    };
-
     private static readonly Formatting FormattingSettings = Formatting.Indented;
     
     public static string Serialize(object o)

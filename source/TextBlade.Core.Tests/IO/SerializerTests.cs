@@ -1,4 +1,3 @@
-using System;
 using NUnit.Framework;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
@@ -8,6 +7,20 @@ namespace TextBlade.Core.Tests.IO;
 [TestFixture]
 public class SerializerTests
 {
+    [Test]
+    public void Serialize_DoesNotIncludeTypeInfo()
+    {
+        // Arrange
+        var kingdom = new Region("Bob's Kingdom", "KING BOB!!!!", new List<LocationLink>());
+
+        // Act
+        var actual = Serializer.Serialize(kingdom);
+
+        // Assert
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Does.Not.Contain("\"$type\":"));
+    }
+
     [Test]
     public void Deserialize_CorrectlyDerializesSmallVIllage()
     {
@@ -29,6 +42,5 @@ public class SerializerTests
         Assert.That(actual.ReachableRegions[1].Description, Is.EqualTo("Bronzebeard's Wares"));
         Assert.That(actual.ReachableRegions[2].Id, Is.EqualTo("KingsVale/ItemShop"));
         Assert.That(actual.ReachableRegions[2].Description, Is.EqualTo("Potions R Us"));
-
     }
 }
