@@ -49,6 +49,7 @@ public class Game
 
         var startingLocationData = Serializer.Deserialize<Region>(File.ReadAllText(locationPath));
         _currentLocation = startingLocationData;
+        ;
     }
 
     internal void ShowCurrentLocation()
