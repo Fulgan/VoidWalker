@@ -57,7 +57,6 @@ public class Game
             throw new InvalidOperationException("Current location is null!");
         }
 
-        Console.WriteLine($"You are in {_currentLocation.Name}.");
-        Console.WriteLine(_currentLocation.Description);
+        Console.WriteLine($"You are in {_currentLocation.Name}: {_currentLocation.Description}");
     }
 }

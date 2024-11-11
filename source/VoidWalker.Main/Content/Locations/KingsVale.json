@@ -1,7 +1,6 @@
 {
-    "$type":"TextBlade.Core.Locations.Town, TextBlade.Core",
+    "$type":"TextBlade.Core.Locations.Region, TextBlade.Core",
     "Name": "King's Vale",
-    "Description": "The small town of King's Vale. Ruled by the King Sulayman, who lives in the castle north of town.",
-    "LocationType": "Town",
+    "Description": "A small town ruled by King Sulayman, who lives in the castle in the north part of town.",
     "Shops": []
 }

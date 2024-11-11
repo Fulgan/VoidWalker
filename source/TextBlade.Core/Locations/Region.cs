@@ -1,6 +1,6 @@
 namespace TextBlade.Core.Locations;
 
-public abstract class Region
+public class Region
 {
     public string Name { get; set; }
     public string Description { get; set; }
