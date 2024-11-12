@@ -11,7 +11,7 @@ public class SerializerTests
     public void Serialize_DoesNotIncludeTypeInfo()
     {
         // Arrange
-        var kingdom = new Region("Bob's Kingdom", "KING BOB!!!!", new List<LocationLink>());
+        var kingdom = new Region("Bob's Kingdom", "KING BOB!!!!");
 
         // Act
         var actual = Serializer.Serialize(kingdom);
