@@ -14,8 +14,11 @@ public class Game
     public void Run()
     {
         ShowGameIntro();
-        GetStartingLocation();
-        ShowCurrentLocation();
+        SetStartingLocation();
+
+        while (true) {
+            ShowCurrentLocation();
+        }
     }
 
     internal void ShowGameIntro()
@@ -33,22 +36,27 @@ public class Game
         AnsiConsole.MarkupLine($"[#fff]Welcome to[/] [#f00]{gameName}[/]!");
     }
 
-    internal void GetStartingLocation()
+    internal void SetStartingLocation()
     {
         if (!_gameJson.ContainsKey("StartingLocationId"))
         {
             throw new InvalidOperationException("Your game.json doesn't have a StartingLocationId attribute!");
         }
 
-        var startingLocationName = _gameJson["StartingLocationId"].ToString().Replace('/', Path.DirectorySeparatorChar);
-        var locationPath = Path.Join("Content", "Locations", $"{startingLocationName}.json");
+        SetLocationTo(_gameJson["StartingLocationId"].ToString());
+    }
+
+    internal void SetLocationTo(string locationId)
+    {
+        var locationName = locationId.ToString().Replace('/', Path.DirectorySeparatorChar);
+        var locationPath = Path.Join("Content", "Locations", $"{locationName}.json");
         if (!File.Exists(locationPath))
         {
             throw new InvalidOperationException($"{locationPath} doesn't seem to exist!");
         }
 
-        var startingLocationData = Serializer.Deserialize<Region>(File.ReadAllText(locationPath));
-        _currentLocation = startingLocationData;
+        var locationData = Serializer.Deserialize<Region>(File.ReadAllText(locationPath));
+        _currentLocation = locationData;
     }
 
     internal void ShowCurrentLocation()
@@ -59,5 +67,21 @@ public class Game
         }
 
         Console.WriteLine($"You are in {_currentLocation.Name}: {_currentLocation.Description}");
+        Console.WriteLine($"You can go to {_currentLocation.ReachableRegions.Count} places:");
+        
+        int i = 0;
+        foreach (var region in _currentLocation.ReachableRegions)
+        {
+            i++;
+            Console.WriteLine($"    {i}: {region.Description}");
+        }
+
+        Console.Write("Enter the number of your destination: ");
+        var answer = int.Parse(Console.ReadLine().Trim());
+        // Assume it's valid
+        var destination = _currentLocation.ReachableRegions.ElementAt(answer - 1);
+
+        // Assume it's valid
+        SetLocationTo(destination.Id);
     }
 }
