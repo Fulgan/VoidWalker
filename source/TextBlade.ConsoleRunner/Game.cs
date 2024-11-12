@@ -79,7 +79,7 @@ public class Game
         Console.Write("Enter the number of your destination: ");
         var answer = int.Parse(Console.ReadLine().Trim());
         // Assume it's valid
-        var destination = _currentLocation.ReachableRegions.ElementAt(answer - 1);
+        var destination = _currentLocation.ReachableRegions[answer - 1];
 
         // Assume it's valid
         SetLocationTo(destination.Id);
