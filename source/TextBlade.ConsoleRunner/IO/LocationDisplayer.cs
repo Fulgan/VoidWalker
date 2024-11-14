@@ -35,9 +35,8 @@ public static class LocationDisplayer
     private static void ShowLocationSpecificCommands(Location currentLocation)
     {
         // TODO: polymorphism? A bunch of lil classes like "ShowInnCommand"? idk.
-        if (currentLocation is Inn)
+        if (currentLocation is Inn inn)
         {
-            var inn = currentLocation as Inn;
             var innCost = inn.InnCost;
             AnsiConsole.MarkupLine($"It costs [#0000aa]{innCost} gold[/] to stay at this inn for the night. Type [#f00]S[/] to sleep.");
         }

@@ -15,7 +15,12 @@ public class Inn : Location
 
     public override Command GetCommandFor(string input)
     {
-        return new SleepAtInnCommand(this.InnCost);
+        if (input.ToLower() == "s")
+        {
+            return new SleepAtInnCommand(this.InnCost);
+        }
+
+        return new DoNothingCommand();
     }
 }
 
