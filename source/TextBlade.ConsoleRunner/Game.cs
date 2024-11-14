@@ -1,8 +1,7 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using TextBlade.ConsoleRunner.IO;
+﻿using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
-using TextBlade.Core.IO;
+using TextBlade.Core.Game;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.ConsoleRunner;
@@ -29,6 +28,7 @@ public class Game
         while (_isRunning)
         {
             LocationDisplayer.ShowLocation(_currentLocation);
+            CodeBehindRunner.ExecuteLocationCode(_currentLocation);
             var command = InputProcessor.PromptForAction(_currentLocation);
             // If it returned a new location, fantastico, adopt it.
             _currentLocation = command.Execute(_party) ?? _currentLocation;         

@@ -9,7 +9,7 @@ public class Inn : Location
 {
     public int InnCost { get; set; }
 
-    public Inn(string name, string description) : base(name, description)
+    public Inn(string name, string description, string locationClass) : base(name, description, locationClass)
     {
     }
 

@@ -4,6 +4,9 @@ Note: this is all ridiculously out of date, as development proceeds at an accele
 
 TextBlade is a game engine I specifically created to help run text-based JRPGs (primarily to support making them for the Games for Blind Gamers jams).
 
+Note that you still need to write code to use TextBlade; you can leverage a lot of our base code, yes. Each game will need its own requirements and customization, so go ahead and write your own code for that.
+
+
 # Creating a Game
 
 - Run `dotnet new console --name <projectName>` to create your new project
@@ -31,3 +34,12 @@ Let's add a location to our game: a starting town called King's Vale.
 - In `KingsVale.json`, add a `Name`, `Description`, and `"LocationType": "Town"` attributes.
 
 Run the game again. You should get a print statement indicating you're in King's Vale.
+
+## Adding Code to the Location
+
+- Add the attribute `LocationClass` to your `.json` file, and specify the class name, e.g. `ThroneRoom`
+- Create a matching `ThroneRoom.cs` file anywhere in your project (outside of `Content` of course)
+- Add the `[LocationCode]` attribute to it
+- Add whatever custom code you like to the constructor
+
+Note that TextBlade manages and serializes/deserializes global game-wide switches; access them via the `TextBlade.Core.Game.GameSwitches.Switches` class.

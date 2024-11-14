@@ -9,9 +9,9 @@ public class Location : BaseLocation
 {
     public List<LocationLink> LinkedLocations { get; set; } = new();
 
-    public Location(string name, string description) : base(name, description)
+    public Location(string name, string description, string locationClass) : base(name, description, locationClass)
     {
-    }
+    } 
 
     public virtual Command GetCommandFor(string input)
     {

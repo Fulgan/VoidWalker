@@ -15,8 +15,8 @@ public class ChangeLocationCommand : Command
 
     public override Location? Execute(List<Character> party)
     {
-        var locationName = _destinationId.ToString().Replace('/', Path.DirectorySeparatorChar);
-        var locationPath = Path.Join("Content", "Locations", $"{locationName}.json");
+        var locationFileName = _destinationId.ToString().Replace('/', Path.DirectorySeparatorChar);
+        var locationPath = Path.Join("Content", "Locations", $"{locationFileName}.json");
         if (!File.Exists(locationPath))
         {
             throw new InvalidOperationException($"{locationPath} doesn't seem to exist!");

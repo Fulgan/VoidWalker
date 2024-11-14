@@ -21,9 +21,14 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="Code\\Locations\ThroneRoom.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TextBlade.ConsoleRunner\TextBlade.ConsoleRunner.csproj" />
+    <ProjectReference Include="..\TextBlade.Core\TextBlade.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
