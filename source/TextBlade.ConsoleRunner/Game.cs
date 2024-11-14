@@ -1,56 +1,32 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Spectre.Console;
-using TextBlade.Core.Characters;
+﻿using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
 using Region = TextBlade.Core.Locations.Region;
 
 namespace TextBlade.ConsoleRunner;
 
+/// <summary>
+/// Now this here, this is yer basic game. Keeps track of the current region, party, etc.
+/// Handles some basic parsing: showing output, reading input, and processing it (delegation).
+/// </summary>
 public class Game
 {
-    private JObject _gameJson = null!;
     private Region _currentLocation = null!;
     private bool _isRunning = true;
     private List<Character> _party = new();
 
     public void Run()
     {
-        ShowGameIntro();
-        SetStartingLocation();
+        var runner = new NewGameRunner(this);
+        runner.ShowGameIntro();
+        _party = runner.CreateParty();
+
+        var startLocationId = runner.GetStartingLocationId();
+        SetLocationTo(startLocationId);
 
         while (_isRunning)
         {
             ShowCurrentLocation();
         }
-    }
-
-    internal void ShowGameIntro()
-    {
-        var gameJsonPath = Path.Join("Content", "game.json");
-
-        if (!File.Exists(gameJsonPath))
-        {
-            throw new InvalidOperationException("Content/game.json file is missing!");
-        }
-
-        var gameJsonContents = File.ReadAllText(gameJsonPath);
-        _gameJson = JsonConvert.DeserializeObject(gameJsonContents) as JObject;
-        var gameName = _gameJson["GameName"];
-        AnsiConsole.MarkupLine($"[#fff]Welcome to[/] [#f00]{gameName}[/]!");
-
-        var partyMembers = _gameJson["StartingParty"] as JArray;
-        _party = Serializer.DeserializeParty(partyMembers);
-    }
-
-    internal void SetStartingLocation()
-    {
-        if (!_gameJson.ContainsKey("StartingLocationId"))
-        {
-            throw new InvalidOperationException("Your game.json doesn't have a StartingLocationId attribute!");
-        }
-
-        SetLocationTo(_gameJson["StartingLocationId"].ToString());
     }
 
     internal void SetLocationTo(string locationId)
