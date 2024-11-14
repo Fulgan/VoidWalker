@@ -49,8 +49,8 @@ public class NewGameRunner
             throw new InvalidOperationException("Your game.json doesn't have a StartingLocationId attribute!");
         }
 
-        var regionId = _gameJson["StartingLocationId"].ToString();
-        return regionId;
+        var locationId = _gameJson["StartingLocationId"].ToString();
+        return locationId;
     }
 
 }

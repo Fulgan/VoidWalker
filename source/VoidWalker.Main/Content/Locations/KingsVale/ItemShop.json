@@ -2,7 +2,7 @@
     "Name": "Potions R Us",
     "Description": "A small room that smells like herbs and sounds like bubbles.",
     "BackgroundAudio": "bubbling",
-    "ReachableRegions": [
+    "LInkedLocations": [
         {"Id": "KingsVale/KingsVale", "Description": "Back to King's Vale"}
     ]
 }

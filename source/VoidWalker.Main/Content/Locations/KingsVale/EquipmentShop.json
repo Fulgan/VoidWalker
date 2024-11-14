@@ -2,7 +2,7 @@
     "Name": "Bronzebeard's Wares",
     "Description": "A tiny shopped filled with metal weapons and armour, and the sound of hammering.",
     "BackgroundAudio": "hammering",
-    "ReachableRegions": [
+    "LInkedLocations": [
         {"Id": "KingsVale/KingsVale", "Description": "Back to King's Vale"}
     ],
     "Items": [

@@ -12,7 +12,7 @@ public class SerializerTests
     public void Serialize_IncludesTypeInfo()
     {
         // Arrange
-        var kingdom = new Region("Bob's Kingdom", "KING BOB!!!!");
+        var kingdom = new Location("Bob's Kingdom", "KING BOB!!!!");
 
         // Act
         var actual = Serializer.Serialize(kingdom);
@@ -20,16 +20,16 @@ public class SerializerTests
         // Assert
         Assert.That(actual, Is.Not.Null);
         Assert.That(actual, Does.Contain("\"$type\":"));
-        Assert.That(actual, Does.Contain("TextBlade.Core.Locations.Region, TextBlade.Core"));
+        Assert.That(actual, Does.Contain("TextBlade.Core.Locations.Location, TextBlade.Core"));
     }
 
     [Test]
     public void Deserialize_CorrectlyDerializesSmallVIllage()
     {
         // Arrangement is done in the JSON files
-        var filePath = Path.Join("TestData", "Regions", "VillageWithInnAndShops.json");
+        var filePath = Path.Join("TestData", "Locations", "VillageWithInnAndShops.json");
         var json = File.ReadAllText(filePath);
-        var actual = Serializer.Deserialize<Region>(json);
+        var actual = Serializer.Deserialize<Location>(json);
 
         // Assert
         Assert.That(actual, Is.Not.Null);
@@ -37,13 +37,13 @@ public class SerializerTests
         Assert.That(actual.Name, Is.EqualTo("King's Vale"));
         Assert.That(actual.Description, Does.Contain("small village"));
 
-        Assert.That(actual.ReachableRegions.Count, Is.EqualTo(3));
-        Assert.That(actual.ReachableRegions[0].Id, Is.EqualTo("KingsVale/Inn"));
-        Assert.That(actual.ReachableRegions[0].Description, Is.EqualTo("The King's Inn"));
-        Assert.That(actual.ReachableRegions[1].Id, Is.EqualTo("KingsVale/EquipmentShop"));
-        Assert.That(actual.ReachableRegions[1].Description, Is.EqualTo("Bronzebeard's Wares"));
-        Assert.That(actual.ReachableRegions[2].Id, Is.EqualTo("KingsVale/ItemShop"));
-        Assert.That(actual.ReachableRegions[2].Description, Is.EqualTo("Potions R Us"));
+        Assert.That(actual.LinkedLocations.Count, Is.EqualTo(3));
+        Assert.That(actual.LinkedLocations[0].Id, Is.EqualTo("KingsVale/Inn"));
+        Assert.That(actual.LinkedLocations[0].Description, Is.EqualTo("The King's Inn"));
+        Assert.That(actual.LinkedLocations[1].Id, Is.EqualTo("KingsVale/EquipmentShop"));
+        Assert.That(actual.LinkedLocations[1].Description, Is.EqualTo("Bronzebeard's Wares"));
+        Assert.That(actual.LinkedLocations[2].Id, Is.EqualTo("KingsVale/ItemShop"));
+        Assert.That(actual.LinkedLocations[2].Description, Is.EqualTo("Potions R Us"));
     }
 
     [Test]
@@ -69,12 +69,12 @@ public class SerializerTests
     }
 
     [Test]
-    public void Deserialize_CorrectlyDeserializesTownAsRegion_WhenTypeIsSpecified()
+    public void Deserialize_CorrectlyDeserializesTownAsLocationn_WhenTypeIsSpecified()
     {
          // Arrange is done in the JSON files
-        var filePath = Path.Join("TestData", "Regions", "InnWithType.json");
+        var filePath = Path.Join("TestData", "Locations", "InnWithType.json");
         var json = File.ReadAllText(filePath);
-        var actual = Serializer.Deserialize<Region>(json);
+        var actual = Serializer.Deserialize<Location>(json);
 
         // Assert
         Assert.That(actual, Is.Not.Null);

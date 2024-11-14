@@ -1,14 +1,14 @@
 namespace TextBlade.Core.Locations;
 
 /// <summary>
-/// Base class that includes all common fields across all types of regions.
+/// Base class that includes all common fields across all types of locations.
 /// </summary>
-public abstract class BaseRegion
+public abstract class BaseLocation
 {
     public string Name { get; set; }
     public string Description { get; set; }
 
-    protected BaseRegion(string name, string description)
+    protected BaseLocation(string name, string description)
     {
         this.Name = name;
         this.Description = description;

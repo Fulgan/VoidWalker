@@ -1,7 +1,7 @@
 {
     "Name": "King's Vale",
     "Description": "A small village ruled by King Sulayman, who lives in the castle in the north part of town.",
-    "ReachableRegions": [
+    "LInkedLocations": [
         {"Id": "KingsVale/Inn", "Description": "The King's Inn"},
         {"Id": "KingsVale/EquipmentShop", "Description": "Bronzebeard's Wares"},
         {"Id": "KingsVale/ItemShop", "Description": "Potions R Us"}
