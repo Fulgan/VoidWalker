@@ -1,3 +1,5 @@
+using TextBlade.Core.Commands;
+
 namespace TextBlade.Core.Locations;
 
 /// <summary>
@@ -11,9 +13,10 @@ public class Location : BaseLocation
     {
     }
 
-    public virtual void HandleInput(string input)
+    public virtual Command GetCommandFor(string input)
     {
-        // Leave it up to sub-types, like inn, to handle their own input.
+        // Leave it up to sub-types, like inn, to handle their own input and return a command.
+        return new DoNothingCommand();
     }
 }
 

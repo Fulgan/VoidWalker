@@ -9,13 +9,16 @@ public static class InputProcessor
     {
         Console.Write("Enter the number of your destination: ");
         int destinationOption = -1;
-        if (int.TryParse(Console.ReadLine().Trim(), out destinationOption))
+        var rawResponse = Console.ReadLine().Trim();
+        if (int.TryParse(rawResponse, out destinationOption))
         {
             // Assume it's valid
             var destination = currentLocation.LinkedLocations[destinationOption - 1];
             return new ChangeLocationCommand(destination.Id);
         }
 
-        return null;
+        // Assume it's some special command that the location handles. That doesn't change location.
+        var command = currentLocation.GetCommandFor(rawResponse);
+        return command ?? new DoNothingCommand();
     }
 }

@@ -1,3 +1,4 @@
+using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
@@ -5,16 +6,16 @@ namespace TextBlade.Core.Commands;
 
 public class ChangeLocationCommand : Command
 {
-    public string DestinationId { get; private set; }
+    private readonly string _destinationId;
     
     public ChangeLocationCommand(string destinationId)
     {
-        this.DestinationId = destinationId;
+        _destinationId = destinationId;
     }
 
-    public override Location Execute()
+    public override Location? Execute(List<Character> party)
     {
-        var locationName = DestinationId.ToString().Replace('/', Path.DirectorySeparatorChar);
+        var locationName = _destinationId.ToString().Replace('/', Path.DirectorySeparatorChar);
         var locationPath = Path.Join("Content", "Locations", $"{locationName}.json");
         if (!File.Exists(locationPath))
         {

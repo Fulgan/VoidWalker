@@ -24,14 +24,14 @@ public class Game
         _party = runner.CreateParty();
 
         var startLocationId = runner.GetStartingLocationId();
-        _currentLocation = new ChangeLocationCommand(startLocationId).Execute();
+        _currentLocation = new ChangeLocationCommand(startLocationId).Execute(_party);
 
         while (_isRunning)
         {
             LocationDisplayer.ShowLocation(_currentLocation);
             var command = InputProcessor.PromptForAction(_currentLocation);
             // If it returned a new location, fantastico, adopt it.
-            _currentLocation = command.Execute() ?? _currentLocation;         
+            _currentLocation = command.Execute(_party) ?? _currentLocation;         
         }
     }
 }
