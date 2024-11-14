@@ -10,5 +10,10 @@ public class Location : BaseLocation
     public Location(string name, string description) : base(name, description)
     {
     }
+
+    public virtual void HandleInput(string input)
+    {
+        // Leave it up to sub-types, like inn, to handle their own input.
+    }
 }
 

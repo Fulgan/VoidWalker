@@ -1,15 +1,21 @@
+using TextBlade.Core.Commands;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.ConsoleRunner.IO;
 
 public static class InputProcessor
 {
-    public static string PromptForDestination(Location currentLocation)
+    public static Command PromptForAction(Location currentLocation)
     {
         Console.Write("Enter the number of your destination: ");
-        var answer = int.Parse(Console.ReadLine().Trim());
-        // Assume it's valid
-        var destination = currentLocation.LinkedLocations[answer - 1];
-        return destination.Id;
+        int destinationOption = -1;
+        if (int.TryParse(Console.ReadLine().Trim(), out destinationOption))
+        {
+            // Assume it's valid
+            var destination = currentLocation.LinkedLocations[destinationOption - 1];
+            return new ChangeLocationCommand(destination.Id);
+        }
+
+        return null;
     }
 }

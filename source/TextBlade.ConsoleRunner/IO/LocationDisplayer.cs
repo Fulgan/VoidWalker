@@ -10,6 +10,12 @@ public static class LocationDisplayer
     /// </summary>
     public static void ShowLocation(Location currentLocation)
     {
+        ShowLocationAndLinkedLocations(currentLocation);
+        ShowLocationSpecificCommands(currentLocation);
+    }
+
+    private static void ShowLocationAndLinkedLocations(Location currentLocation)
+    {
         if (currentLocation == null)
         {
             throw new InvalidOperationException("Current location is null!");
@@ -23,6 +29,17 @@ public static class LocationDisplayer
         {
             i++;
             Console.WriteLine($"    {i}: {location.Description}");
+        }
+    }
+
+    private static void ShowLocationSpecificCommands(Location currentLocation)
+    {
+        // TODO: polymorphism? A bunch of lil classes like "ShowInnCommand"? idk.
+        if (currentLocation is Inn)
+        {
+            var inn = currentLocation as Inn;
+            var innCost = inn.InnCost;
+            AnsiConsole.MarkupLine($"It costs [#0000aa]{innCost} gold[/] to stay at this inn for the night. Type [#f00]S[/] to sleep.");
         }
     }
 }

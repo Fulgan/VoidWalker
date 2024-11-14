@@ -1,5 +1,7 @@
-﻿using TextBlade.ConsoleRunner.IO;
+﻿using System.Security.Cryptography.X509Certificates;
+using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
+using TextBlade.Core.Commands;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
@@ -22,29 +24,14 @@ public class Game
         _party = runner.CreateParty();
 
         var startLocationId = runner.GetStartingLocationId();
-        SetLocationTo(startLocationId);
+        _currentLocation = new ChangeLocationCommand(startLocationId).Execute();
 
         while (_isRunning)
         {
             LocationDisplayer.ShowLocation(_currentLocation);
-            var destinationId = InputProcessor.PromptForDestination(_currentLocation);
-            // Assume it's valid
-            SetLocationTo(destinationId);
+            var command = InputProcessor.PromptForAction(_currentLocation);
+            // If it returned a new location, fantastico, adopt it.
+            _currentLocation = command.Execute() ?? _currentLocation;         
         }
     }
-
-    internal void SetLocationTo(string locationId)
-    {
-        var locationName = locationId.ToString().Replace('/', Path.DirectorySeparatorChar);
-        var locationPath = Path.Join("Content", "Locations", $"{locationName}.json");
-        if (!File.Exists(locationPath))
-        {
-            throw new InvalidOperationException($"{locationPath} doesn't seem to exist!");
-        }
-
-        var locationData = Serializer.Deserialize<Location>(File.ReadAllText(locationPath));
-        _currentLocation = locationData;
-    }
-
-    
 }
