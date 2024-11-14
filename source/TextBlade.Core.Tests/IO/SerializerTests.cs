@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
@@ -42,5 +43,28 @@ public class SerializerTests
         Assert.That(actual.ReachableRegions[1].Description, Is.EqualTo("Bronzebeard's Wares"));
         Assert.That(actual.ReachableRegions[2].Id, Is.EqualTo("KingsVale/ItemShop"));
         Assert.That(actual.ReachableRegions[2].Description, Is.EqualTo("Potions R Us"));
+    }
+
+    [Test]
+    public void DeserializeParty_CorrectlyDeserializesPartyMembers()
+    {
+        // Arrange is done in the JSON files
+        var filePath = Path.Join("TestData", "Characters", "TwoMemberParty.json");
+        var json = File.ReadAllText(filePath);
+        var jArray = Serializer.Deserialize<JArray>(json);
+        var actual = Serializer.DeserializeParty(jArray);
+
+        // Assert
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual.Count, Is.EqualTo(2));
+        var ahmed = actual[0];
+        Assert.That(ahmed.Name, Is.EqualTo("Ahmed"));
+        Assert.That(ahmed.TotalHealth, Is.EqualTo(100));
+        Assert.That(ahmed.CurrentHealth, Is.EqualTo(10));
+        var bilal = actual[1];
+        Assert.That(bilal.Name, Is.EqualTo("Bilal"));
+        Assert.That(bilal.TotalHealth, Is.EqualTo(75));
+        Assert.That(bilal.CurrentHealth, Is.EqualTo(66));
+
     }
 }

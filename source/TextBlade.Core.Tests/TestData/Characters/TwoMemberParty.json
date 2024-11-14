@@ -1,0 +1,4 @@
+[
+    { "Name": "Ahmed", "CurrentHealth": 10, "TotalHealth": 100 },
+    { "Name": "Bilal", "CurrentHealth": 66, "TotalHealth": 75 }
+]

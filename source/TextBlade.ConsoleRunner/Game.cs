@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Spectre.Console;
+using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
 using Region = TextBlade.Core.Locations.Region;
 
@@ -10,13 +11,16 @@ public class Game
 {
     private JObject _gameJson = null!;
     private Region _currentLocation = null!;
+    private bool _isRunning = true;
+    private List<Character> _party = new();
 
     public void Run()
     {
         ShowGameIntro();
         SetStartingLocation();
 
-        while (true) {
+        while (_isRunning)
+        {
             ShowCurrentLocation();
         }
     }
@@ -34,6 +38,9 @@ public class Game
         _gameJson = JsonConvert.DeserializeObject(gameJsonContents) as JObject;
         var gameName = _gameJson["GameName"];
         AnsiConsole.MarkupLine($"[#fff]Welcome to[/] [#f00]{gameName}[/]!");
+
+        var partyMembers = _gameJson["StartingParty"] as JArray;
+        _party = Serializer.DeserializeParty(partyMembers);
     }
 
     internal void SetStartingLocation()
