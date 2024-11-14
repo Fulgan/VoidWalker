@@ -1,4 +1,5 @@
 {
+  "$type": "TextBlade.Core.Locations.Inn, TextBlade.Core",
   "Name": "The King's Inn",
   "Description": "A small, dirty shack with an equally dirty innkeeper.",
   "ReachableRegions": [

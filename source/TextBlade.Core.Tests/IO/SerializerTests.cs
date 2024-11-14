@@ -9,7 +9,7 @@ namespace TextBlade.Core.Tests.IO;
 public class SerializerTests
 {
     [Test]
-    public void Serialize_DoesNotIncludeTypeInfo()
+    public void Serialize_IncludesTypeInfo()
     {
         // Arrange
         var kingdom = new Region("Bob's Kingdom", "KING BOB!!!!");
@@ -19,7 +19,8 @@ public class SerializerTests
 
         // Assert
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual, Does.Not.Contain("\"$type\":"));
+        Assert.That(actual, Does.Contain("\"$type\":"));
+        Assert.That(actual, Does.Contain("TextBlade.Core.Locations.Region, TextBlade.Core"));
     }
 
     [Test]
@@ -65,6 +66,20 @@ public class SerializerTests
         Assert.That(bilal.Name, Is.EqualTo("Bilal"));
         Assert.That(bilal.TotalHealth, Is.EqualTo(75));
         Assert.That(bilal.CurrentHealth, Is.EqualTo(66));
+    }
 
+    [Test]
+    public void Deserialize_CorrectlyDeserializesTownAsRegion_WhenTypeIsSpecified()
+    {
+         // Arrange is done in the JSON files
+        var filePath = Path.Join("TestData", "Regions", "InnWithType.json");
+        var json = File.ReadAllText(filePath);
+        var actual = Serializer.Deserialize<Region>(json);
+
+        // Assert
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.TypeOf<Inn>());
+        var inn = actual as Inn;
+        Assert.That(inn.InnCost, Is.EqualTo(100));
     }
 }
