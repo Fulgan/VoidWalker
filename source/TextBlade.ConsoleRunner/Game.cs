@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic;
+﻿using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
@@ -26,9 +26,10 @@ public class Game
 
         while (_isRunning)
         {
-            var destination = LocationDisplayer.ShowLocation(_currentLocation);
+            LocationDisplayer.ShowLocation(_currentLocation);
+            var destinationId = InputProcessor.PromptForDestination(_currentLocation);
             // Assume it's valid
-            SetLocationTo(destination.Id);
+            SetLocationTo(destinationId);
         }
     }
 
