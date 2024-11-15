@@ -23,7 +23,7 @@ public class Game
         _party = runner.CreateParty();
 
         var startLocationId = runner.GetStartingLocationId();
-        _currentLocation = new ChangeLocationCommand(startLocationId).Execute(_party);
+        _currentLocation = new LoadLocationDataCommand(startLocationId).Execute(_party);
 
         while (_isRunning)
         {

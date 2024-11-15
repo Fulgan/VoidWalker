@@ -4,11 +4,11 @@ using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Commands;
 
-public class ChangeLocationCommand : Command
+public class LoadLocationDataCommand : Command
 {
     private readonly string _destinationId;
     
-    public ChangeLocationCommand(string destinationId)
+    public LoadLocationDataCommand(string destinationId)
     {
         _destinationId = destinationId;
     }

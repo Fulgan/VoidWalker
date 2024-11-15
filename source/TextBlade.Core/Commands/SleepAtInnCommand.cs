@@ -5,7 +5,7 @@ namespace TextBlade.Core.Commands;
 
 public class SleepAtInnCommand : Command
 {
-    private int _innCost = 0;
+    private readonly int _innCost = 0;
 
     public SleepAtInnCommand(int innCost)
     {

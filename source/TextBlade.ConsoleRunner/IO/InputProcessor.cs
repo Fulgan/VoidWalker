@@ -14,7 +14,7 @@ public static class InputProcessor
         {
             // Assume it's valid
             var destination = currentLocation.LinkedLocations[destinationOption - 1];
-            return new ChangeLocationCommand(destination.Id);
+            return new LoadLocationDataCommand(destination.Id);
         }
 
         // Assume it's some special command that the location handles. That doesn't change location.
