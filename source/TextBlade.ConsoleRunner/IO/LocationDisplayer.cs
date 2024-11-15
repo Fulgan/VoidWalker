@@ -28,7 +28,7 @@ public static class LocationDisplayer
         foreach (var location in currentLocation.LinkedLocations)
         {
             i++;
-            Console.WriteLine($"    {i}: {location.Description}");
+            Console.WriteLine($"    {i}) {location.Description}");
         }
     }
 
