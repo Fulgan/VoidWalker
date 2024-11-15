@@ -9,7 +9,7 @@ public class Location : BaseLocation
 {
     public List<LocationLink> LinkedLocations { get; set; } = new();
 
-    public Location(string name, string description, string locationClass) : base(name, description, locationClass)
+    public Location(string name, string description, string locationClass = null) : base(name, description, locationClass)
     {
     } 
 

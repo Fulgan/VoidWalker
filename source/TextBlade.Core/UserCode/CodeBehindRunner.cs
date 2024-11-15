@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using TextBlade.Core.Locations;
 using TextBlade.Core.UserCode;
 
@@ -11,8 +10,14 @@ public static class CodeBehindRunner
 
     static CodeBehindRunner()
     {
-        // Cache all class names. Lol.
+        // Cache all class names and types. Maybe a bad idea. How much of the game will the player really see?
         var assembly = Assembly.GetEntryAssembly();
+        RegisterAssemblyClasses(assembly);
+    }
+
+    // Used in cases like unit testing where we can't control the entry assembly
+    public static void RegisterAssemblyClasses(Assembly assembly)
+    {
         var classes = assembly.GetTypes().Where(c => c.GetCustomAttribute<LocationCodeAttribute>() != null);
         foreach (var clazz in classes)
         {
