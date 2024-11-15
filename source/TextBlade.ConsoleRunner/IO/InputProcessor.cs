@@ -10,6 +10,12 @@ public static class InputProcessor
         Console.Write("Enter the number of your destination: ");
         int destinationOption = -1;
         var rawResponse = Console.ReadLine().Trim();
+
+        if (rawResponse.Equals("quit", StringComparison.InvariantCultureIgnoreCase))
+        {
+            return new QuitGameCommand();
+        }
+        
         if (int.TryParse(rawResponse, out destinationOption))
         {
             // Assume it's valid
