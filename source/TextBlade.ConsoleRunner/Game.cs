@@ -27,8 +27,8 @@ public class Game
 
         while (_isRunning)
         {
-            LocationDisplayer.ShowLocation(_currentLocation);
             CodeBehindRunner.ExecuteLocationCode(_currentLocation);
+            LocationDisplayer.ShowLocation(_currentLocation);
             var command = InputProcessor.PromptForAction(_currentLocation);
             // If it returned a new location, fantastico, adopt it.
             _currentLocation = command.Execute(_party) ?? _currentLocation;         

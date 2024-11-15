@@ -50,15 +50,16 @@ public class CodeBehindRunnerTests
         // Assert
         var actual = PhantomForest.LatestInstance;
         Assert.That(actual.ConstructorInvoked, Is.True);
+        Assert.That(actual.AfterAddedLocationsCalled, Is.True);
         Assert.That(actual.MethodInvoked, Is.False);
     }
 
-    [LocationCode]
-    class PhantomForest
+    class PhantomForest : LocationCodeBehind
     {
-        public static PhantomForest LatestInstance { get; private set; }
+        public static PhantomForest LatestInstance { get; private set; } = null!;
         public bool ConstructorInvoked { get; private set; } = false;
         public bool MethodInvoked { get; private set; } = false;
+        public bool AfterAddedLocationsCalled  { get; private set; } = false;
 
         public PhantomForest()
         {
@@ -69,6 +70,11 @@ public class CodeBehindRunnerTests
         public void Method()
         {
             this.MethodInvoked = true;
+        }
+
+        public override void AfterAddedLocations(Location currentLocation)
+        {
+            this.AfterAddedLocationsCalled = true;
         }
     }
 }

@@ -18,13 +18,13 @@ public static class CodeBehindRunner
     // Used in cases like unit testing where we can't control the entry assembly
     public static void RegisterAssemblyClasses(Assembly assembly)
     {
-        var classes = assembly.GetTypes().Where(c => c.GetCustomAttribute<LocationCodeAttribute>() != null);
+        var classes = assembly.GetTypes().Where(c => c.IsSubclassOf(typeof(LocationCodeBehind)));
         foreach (var clazz in classes)
         {
             var className = clazz.Name;
             if (_classNameToType.ContainsKey(className))
             {
-                throw new InvalidOperationException($"There are multiple LocationCode classes defined with the name {className}!");
+                throw new InvalidOperationException($"There are multiple LocationCodeBehind classes defined with the name {className}!");
             }
 
             _classNameToType[className] = clazz;
@@ -56,7 +56,7 @@ public static class CodeBehindRunner
         // So it has to be ... stateless? I forget the word right this minute. 
         // And, it must have a parameterless constructor. That does whatever it needs to.
         var type = _classNameToType[className];
-        // Creating should run the user's code, that's enough for us.
-        Activator.CreateInstance(type);
+        var instance = Activator.CreateInstance(type) as LocationCodeBehind;
+        instance.BeforeShowingLocation(currentLocation);
     }
 }
