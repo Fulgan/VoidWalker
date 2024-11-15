@@ -3,10 +3,10 @@
     "Description": "A small village ruled by King Sulayman, who lives in the castle in the north part of town.",
     "BackgroundAudio": "seagulls",
     "LInkedLocations": [
-        {"Id": "KingsVale/Inn", "Description": "The King's Inn"},
-        {"Id": "KingsVale/EquipmentShop", "Description": "Bronzebeard's Wares"},
-        {"Id": "KingsVale/ItemShop", "Description": "Potions R Us"},
-        {"Id": "KingsVale/ThroneRoom", "Description": "To the Castle"}
+        {"Id": "Locations/KingsVale/Inn", "Description": "The King's Inn"},
+        {"Id": "Locations/KingsVale/EquipmentShop", "Description": "Bronzebeard's Wares"},
+        {"Id": "Locations/KingsVale/ItemShop", "Description": "Potions R Us"},
+        {"Id": "Locations/KingsVale/ThroneRoom", "Description": "To the Castle"}
     ],
     "LocationClass": "KingsVale"
 }

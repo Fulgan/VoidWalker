@@ -1,8 +1,8 @@
 {
     "GameName": "Void Walker",
-    "StartingLocationId": "KingsVale/KingsVale",
+    "StartingLocationId": "Locations/KingsVale/KingsVale",
     "StartingParty": [
-        { "Name": "Ahmed", "CurrentHealth": 1, "TotalHealth": 100 },
-        { "Name": "Bilal", "CurrentHealth": 1, "TotalHealth": 75 }
+        { "Name": "Ahmed", "CurrentHealth": 100, "TotalHealth": 100 },
+        { "Name": "Bilal", "CurrentHealth": 75, "TotalHealth": 75 }
     ]
 }

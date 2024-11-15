@@ -16,7 +16,7 @@ public class LoadLocationDataCommand : Command
     public override Location? Execute(List<Character> party)
     {
         var locationFileName = _destinationId.ToString().Replace('/', Path.DirectorySeparatorChar);
-        var locationPath = Path.Join("Content", "Locations", $"{locationFileName}.json");
+        var locationPath = Path.Join("Content", $"{locationFileName}.json");
         if (!File.Exists(locationPath))
         {
             throw new InvalidOperationException($"{locationPath} doesn't seem to exist!");

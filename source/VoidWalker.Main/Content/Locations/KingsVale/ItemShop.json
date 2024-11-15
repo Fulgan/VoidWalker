@@ -3,6 +3,6 @@
     "Description": "A small room that smells like herbs and sounds like bubbles.",
     "BackgroundAudio": "bubbling",
     "LInkedLocations": [
-        {"Id": "KingsVale/KingsVale", "Description": "Back to King's Vale"}
+        {"Id": "Locations/KingsVale/KingsVale", "Description": "Back to King's Vale"}
     ]
 }

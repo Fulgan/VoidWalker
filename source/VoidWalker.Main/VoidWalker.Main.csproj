@@ -33,7 +33,6 @@
 
   <ItemGroup>
     <Folder Include="Content\Data\" />
-    <Folder Include="Content\Dungeons\" />
   </ItemGroup>
   
 </Project>
