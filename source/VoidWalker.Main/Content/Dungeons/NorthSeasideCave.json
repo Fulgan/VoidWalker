@@ -1,5 +1,10 @@
 {
     "$type": "TextBlade.Core.Locations.Dungeon, TextBlade.Core",
     "Name": "North Seaside Cave",
-    "Description": "You enter a small, dark cave that smells heavily of salt. Waves crash behind you."
+    "Description": "You enter a small, dark cave that smells heavily of salt. Waves crash behind you.",
+    "LinkedLocations": [
+        {"Id": "Locations/KingsVale/KingsVale", "Description": "Back to King's Vale"}
+    ],
+    "NumFloors": 7,
+    "Monsters": ["Goblin", "Spider", "Gargoyle", "Unicorn", "Chtulhu"]
   }

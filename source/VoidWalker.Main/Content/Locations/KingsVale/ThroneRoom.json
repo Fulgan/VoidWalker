@@ -1,7 +1,7 @@
 {
     "Name": "King's Throne Room",
     "Description": "King Sulayman greets you with peace, and implores you to kill the demon in the north seaside cave.",
-    "LInkedLocations": [
+    "LinkedLocations": [
         {"Id": "Locations/KingsVale/KingsVale", "Description": "Back to King's Vale"}
     ],
     "LocationClass": "ThroneRoom"
