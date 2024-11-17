@@ -1,19 +1,22 @@
-using System;
 using TextBlade.Core.Characters;
-using TextBlade.Core.Locations;
+using TextBlade.Core.Game;
 
 namespace TextBlade.Core.Commands;
 
-public class ShowPartyStatusCommand : Command
+public class ShowPartyStatusCommand : ICommand
 {
-    public override Location? Execute(List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
-        Console.WriteLine("Party status:");
+        var strings = new List<string>
+        {
+            "Party status:"
+        };
+
         foreach (var member in party)
         {
-            Console.WriteLine($"    {member.Name}: {member.CurrentHealth}/{member.TotalHealth} health");
+            strings.Add($"    {member.Name}: {member.CurrentHealth}/{member.TotalHealth} health");
         }
 
-        return null;
+        return strings;
     }
 }

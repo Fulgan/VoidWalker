@@ -13,7 +13,7 @@ public class Inn : Location
     {
     }
 
-    public override Command GetCommandFor(string input)
+    public override ICommand GetCommandFor(string input)
     {
         if (input.ToLower() == "s")
         {

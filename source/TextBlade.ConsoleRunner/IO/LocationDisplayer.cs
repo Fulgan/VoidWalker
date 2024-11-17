@@ -1,4 +1,5 @@
 using Spectre.Console;
+using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.ConsoleRunner;
@@ -21,8 +22,8 @@ public static class LocationDisplayer
             throw new InvalidOperationException("Current location is null!");
         }
 
-        AnsiConsole.MarkupLine($"You are in [#00a]{currentLocation.Name}: {currentLocation.Description}[/]");
-        AnsiConsole.MarkupLine($"You can go to [#00a]{currentLocation.LinkedLocations.Count}[/] places:");
+        AnsiConsole.MarkupLine($"You are in [{Colours.Highlight}]{currentLocation.Name}: {currentLocation.Description}[/]");
+        AnsiConsole.MarkupLine($"You can go to [{Colours.Highlight}]{currentLocation.LinkedLocations.Count}[/] places:");
         
         int i = 0;
         foreach (var location in currentLocation.LinkedLocations)
@@ -38,7 +39,7 @@ public static class LocationDisplayer
         if (currentLocation is Inn inn)
         {
             var innCost = inn.InnCost;
-            AnsiConsole.MarkupLine($"It costs [#0000aa]{innCost} gold[/] to stay at this inn for the night. Type [#f00]S[/] to sleep.");
+            AnsiConsole.MarkupLine($"It costs [{Colours.Highlight}]{innCost} gold[/] to stay at this inn for the night. Type [{Colours.Command}]S[/] to sleep.");
         }
     }
 }

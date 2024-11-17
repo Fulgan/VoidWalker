@@ -1,9 +1,9 @@
 using TextBlade.Core.Characters;
-using TextBlade.Core.Locations;
+using TextBlade.Core.Game;
 
 namespace TextBlade.Core.Commands;
 
-public class SleepAtInnCommand : Command
+public class SleepAtInnCommand : ICommand
 {
     private readonly int _innCost = 0;
 
@@ -12,7 +12,7 @@ public class SleepAtInnCommand : Command
         _innCost = innCost;
     }
 
-    public override Location? Execute(List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         // Check if we have enough gold. Subtract if we do!
 
@@ -21,8 +21,6 @@ public class SleepAtInnCommand : Command
             character.CurrentHealth = character.TotalHealth;
         }
 
-        Console.WriteLine("You sleep at the inn. All party members have recovered to full health!");
-
-        return null;
+        return new string[] { "You sleep at the inn. All party members have recovered to full health!"};
     }
 }

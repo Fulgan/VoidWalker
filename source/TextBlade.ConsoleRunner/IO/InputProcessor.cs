@@ -5,7 +5,7 @@ namespace TextBlade.ConsoleRunner.IO;
 
 public static class InputProcessor
 {
-    public static Command PromptForAction(Location currentLocation)
+    public static ICommand PromptForAction(Location currentLocation)
     {
         Console.Write("Enter a command, or the number of your destination: ");
         var rawResponse = Console.ReadLine().Trim().ToLowerInvariant();
@@ -23,7 +23,7 @@ public static class InputProcessor
         {
             // Assume it's valid
             var destination = currentLocation.LinkedLocations[destinationOption - 1];
-            return new LoadLocationDataCommand(destination.Id);
+            return new ChangeLocationCommand(destination.Id);
         }
 
         // Nah, nah, it's just a global command.

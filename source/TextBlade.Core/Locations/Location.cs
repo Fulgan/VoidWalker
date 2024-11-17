@@ -13,7 +13,7 @@ public class Location : BaseLocation
     {
     } 
 
-    public virtual Command GetCommandFor(string input)
+    public virtual ICommand GetCommandFor(string input)
     {
         // Leave it up to sub-types, like inn, to handle their own input and return a command.
         return new DoNothingCommand();

@@ -1,9 +1,10 @@
 using TextBlade.Core.Characters;
-using TextBlade.Core.Locations;
+using TextBlade.Core.Game;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands;
 
-public class ShowHelpCommand : Command
+public class ShowHelpCommand : ICommand
 {
     private readonly Dictionary<string, string> _knownCommands = new()
     {
@@ -11,17 +12,22 @@ public class ShowHelpCommand : Command
         { "quit", "Quits the game" },
     };
 
-    public override Location? Execute(List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
-        // If you update this, update the huge case statement in InputProcessor for commands.
-        Console.WriteLine("Each location lists other locations you can visit; use numbers to indicate where to travel.");
-        Console.WriteLine("Some locations have location-specific keys, like S to sleep at inns, so watch out for those.");
-        Console.WriteLine("The following commands are also available:");
+        var toReturn = new List<string>
+        {
+            // If you update this, update the huge case statement in InputProcessor for commands.
+            $"Each location lists other locations you can visit; use [{Colours.Command}]numbers[/] to indicate where to travel.",
+            "Some locations have location-specific keys, like [{Colours.Command}]S[/] to sleep at inns, so watch out for those.",
+            "The following commands are also available:"
+        };
+
         foreach (var command in _knownCommands.Keys)
         {
             var explanation = _knownCommands[command];
-            Console.WriteLine($"    {command}: {explanation}");
+            toReturn.Add($"    [{Colours.Command}]{command}[/]: {explanation}");
         }
-        return null;
+
+        return toReturn;
     }
 }

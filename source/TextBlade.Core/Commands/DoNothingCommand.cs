@@ -1,12 +1,12 @@
 using TextBlade.Core.Characters;
-using TextBlade.Core.Locations;
+using TextBlade.Core.Game;
 
 namespace TextBlade.Core.Commands;
 
-public class DoNothingCommand : Command
+public class DoNothingCommand : ICommand
 {
-    public override Location? Execute(List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
-        return null;
+        return new string[0];
     }
 }

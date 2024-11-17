@@ -1,11 +1,11 @@
 using TextBlade.Core.Characters;
-using TextBlade.Core.Locations;
+using TextBlade.Core.Game;
 
 namespace TextBlade.Core.Commands;
 
-public class QuitGameCommand : Command
+public class QuitGameCommand : ICommand
 {
-    public override Location? Execute(List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         Console.WriteLine("Quit the game? Are you sure? y/n");
         var input = Console.ReadKey();
