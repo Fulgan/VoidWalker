@@ -7,10 +7,18 @@ public static class InputProcessor
 {
     public static Command PromptForAction(Location currentLocation)
     {
-        Console.Write("Enter the number of your destination: ");
-        int destinationOption = -1;
+        Console.Write("Enter a command, or the number of your destination: ");
         var rawResponse = Console.ReadLine().Trim().ToLowerInvariant();
         
+        // It's some special command that the location handles. That doesn't change location.
+        var command = currentLocation.GetCommandFor(rawResponse);
+        if (!(command is DoNothingCommand))
+        {
+            return command;
+        }
+
+        // No? Maybe it's a destination?
+        int destinationOption;
         if (int.TryParse(rawResponse, out destinationOption))
         {
             // Assume it's valid
@@ -18,10 +26,7 @@ public static class InputProcessor
             return new LoadLocationDataCommand(destination.Id);
         }
 
-        // OK, so it's not a destination. Maybe it's a command, like QUIT.
-        // We could give priority to the current location to process the command. But even if it does,
-        // it may still return null, so we won't know. Hmm. Leave this for now...
-
+        // Nah, nah, it's just a global command.
         // If you update this, update the help listing in ShowHelpCommand.
         switch (rawResponse)
         {
@@ -32,12 +37,8 @@ public static class InputProcessor
             case "h":
             case "?":
                 return new ShowHelpCommand();
-            default:
-                break; // More processing to do below
         }
 
-        // Assume it's some special command that the location handles. That doesn't change location.
-        var command = currentLocation.GetCommandFor(rawResponse);
-        return command ?? new DoNothingCommand();
+        return new DoNothingCommand();
     }
 }
