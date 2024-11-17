@@ -18,5 +18,17 @@ public class Location : BaseLocation
         // Leave it up to sub-types, like inn, to handle their own input and return a command.
         return new DoNothingCommand();
     }
+
+    public virtual string? GetExtraDescription()
+    {
+        // Override for stuff like "You are in 2B, you see three Tiramisu Bettles"
+        return null;
+    }
+
+    public virtual string? GetExtraMenuOption()
+    {
+        // Override for stuff like "type f/fight to fight"
+        return null;
+    }
 }
 

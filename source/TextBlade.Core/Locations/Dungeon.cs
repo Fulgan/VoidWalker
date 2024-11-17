@@ -1,3 +1,6 @@
+using System.Runtime.CompilerServices;
+using TextBlade.Core.Commands;
+
 namespace TextBlade.Core.Locations;
 
 public class Dungeon : Location
@@ -5,9 +8,11 @@ public class Dungeon : Location
     // It's a list, one entry per floor.
     // Each entry is a list of monsters and other stuff on that floor.
     // I'm sure I'll put treasure and stuff in here eventually.
-    private List<List<string>> _floorMonsters = new();
+    private readonly List<List<string>> _floorMonsters = new();
+    private int _currentFloorNumber = 1;
 
-    public Dungeon(string name, string description, int numFloors, List<string> monsters, string boss, string locationClass = null) : base(name, description, locationClass)
+    public Dungeon(string name, string description, int numFloors, List<string> monsters, string boss, string locationClass = null)
+    : base(name, description, locationClass)
     {
         if (numFloors <= 0)
         {
@@ -64,5 +69,20 @@ public class Dungeon : Location
         }
         finalFloor.Add(boss);
         _floorMonsters.Add(finalFloor);
+    }
+
+    override public string? GetExtraDescription()
+    {
+        return $"You are on floor {_currentFloorNumber}. You see: {string.Join(", ", _floorMonsters[_currentFloorNumber])}. Type f/fight to fight.";
+    }
+
+    override public ICommand GetCommandFor(string input)
+    {
+        if (input == "f" || input == "fight")
+        {
+            // FIGHT! FIGHT!
+        }
+
+        return new DoNothingCommand();
     }
 }
