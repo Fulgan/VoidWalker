@@ -7,7 +7,7 @@ public class Dungeon : Location
     // I'm sure I'll put treasure and stuff in here eventually.
     private List<List<string>> _floorMonsters = new();
 
-    public Dungeon(string name, string description, int numFloors, List<string> monsters, string locationClass = null) : base(name, description, locationClass)
+    public Dungeon(string name, string description, int numFloors, List<string> monsters, string boss, string locationClass = null) : base(name, description, locationClass)
     {
         if (numFloors <= 0)
         {
@@ -19,7 +19,8 @@ public class Dungeon : Location
             throw new ArgumentException(nameof(monsters));
         }
 
-        for (int i = 0; i < numFloors; i++)
+        // Iterate up to the second-last floor and generate monsters
+        for (int i = 0; i < numFloors - 1; i++)
         {
             var currentFloorOccupants = new List<string>();
             
@@ -51,5 +52,17 @@ public class Dungeon : Location
 
             _floorMonsters.Add(currentFloorOccupants);
         }
+
+        // Generate a boss on the last floor, with 2-3 of the strongest minion
+        int numMinions = Random.Shared.Next(2, 4);
+        var minion = monsters[monsters.Count - 1];
+        var finalFloor = new List<string>();
+        // TODO: add loot! Mega loot!
+        for (int i = 0; i < numMinions; i++)
+        {
+            finalFloor.Add(minion);
+        }
+        finalFloor.Add(boss);
+        _floorMonsters.Add(finalFloor);
     }
 }

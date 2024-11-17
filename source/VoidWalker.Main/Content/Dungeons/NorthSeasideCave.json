@@ -6,5 +6,6 @@
         {"Id": "Locations/KingsVale/KingsVale", "Description": "Back to King's Vale"}
     ],
     "NumFloors": 7,
-    "Monsters": ["Goblin", "Spider", "Gargoyle", "Unicorn", "Chtulhu"]
+    "Monsters": ["Goblin", "Spider", "Gargoyle", "Unicorn", "Chtulhu"],
+    "Boss": "Langosta Prime"
   }
