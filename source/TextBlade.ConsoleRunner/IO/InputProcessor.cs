@@ -35,6 +35,8 @@ public static class InputProcessor
                 return new QuitGameCommand();
             case "help":
             case "h":
+            case "p":
+                return new ShowPartyStatusCommand();
             case "?":
                 return new ShowHelpCommand();
         }
