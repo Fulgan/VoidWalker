@@ -1,5 +1,6 @@
 using TextBlade.Core.Characters;
 using TextBlade.Core.Game;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands;
 
@@ -21,6 +22,6 @@ public class SleepAtInnCommand : ICommand
             character.CurrentHealth = character.TotalHealth;
         }
 
-        return new string[] { "You sleep at the inn. All party members have recovered to full health!"};
+        return [$"You sleep at the inn. All party members have recovered to [{Colours.Highlight}]full health[/]!"];
     }
 }

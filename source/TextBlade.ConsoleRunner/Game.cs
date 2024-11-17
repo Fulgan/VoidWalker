@@ -38,17 +38,27 @@ public class Game : IGame
         var startLocationId = runner.GetStartingLocationId();
         new ChangeLocationCommand(startLocationId).Execute(this, _party);
 
+        // Don't execute code if we stay in the same location, e.g. press enter or "help" - only execute code
+        // if the location changed. Fixes a bug where spamming enter keeps adding the same location over and over ...
+        Location? previousLocation = null;
+
         while (_isRunning)
         {
-            CodeBehindRunner.ExecuteLocationCode(_currentLocation);
+            if (previousLocation != _currentLocation)
+            {
+                CodeBehindRunner.ExecuteLocationCode(_currentLocation);
+            }
+
             LocationDisplayer.ShowLocation(_currentLocation);
             var command = InputProcessor.PromptForAction(_currentLocation);
+            previousLocation = _currentLocation;
+            
             var result = command.Execute(this, _party);
 
             foreach (var message in result)
             {
                 AnsiConsole.MarkupLine(message);
-            }        
+            }
         }
     }
 }

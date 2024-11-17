@@ -13,7 +13,7 @@ public class QuitGameCommand : ICommand
         if (input.KeyChar != 'y' && input.KeyChar != 'Y')
         {
             Console.WriteLine("Cancelling ...");
-            return null;
+            return new string[0];
         }
 
         Console.WriteLine("Bye!");
