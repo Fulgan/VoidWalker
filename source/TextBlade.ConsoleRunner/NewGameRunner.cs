@@ -36,10 +36,11 @@ public class NewGameRunner
             throw new InvalidOperationException("Content/game.json file is missing!");
         }
 
+        AnsiConsole.Background = Color.Black;
         var gameJsonContents = File.ReadAllText(gameJsonPath);
         _gameJson = JsonConvert.DeserializeObject(gameJsonContents) as JObject;
         var gameName = _gameJson["GameName"];
-        AnsiConsole.MarkupLine($"[#fff]Welcome to[/] [#f00]{gameName}[/]!");
+        AnsiConsole.MarkupLine($"[white]Welcome to[/] [red]{gameName}[/]!");
     }
 
     public string GetStartingLocationId()
