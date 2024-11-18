@@ -30,9 +30,5 @@
     <ProjectReference Include="..\TextBlade.ConsoleRunner\TextBlade.ConsoleRunner.csproj" />
     <ProjectReference Include="..\TextBlade.Core\TextBlade.Core.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Content\Data\" />
-  </ItemGroup>
   
 </Project>

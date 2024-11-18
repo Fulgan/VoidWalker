@@ -80,7 +80,7 @@ public class Dungeon : Location
     {
         if (input == "f" || input == "fight")
         {
-            // FIGHT! FIGHT!
+            return new FightCommand(_floorMonsters[_currentFloorNumber]);
         }
 
         return new DoNothingCommand();

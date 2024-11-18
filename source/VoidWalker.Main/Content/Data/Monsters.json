@@ -1,0 +1,32 @@
+{
+    "Goblin":
+    {
+        "Health": 50,
+        "Strength": 10,
+        "Toughness": 3
+    },
+    "Spider":
+    {
+        "Health": 60,
+        "Strength": 10,
+        "Toughness": 5
+    },
+    "Gargoyle":
+    {
+        "Health": 90,
+        "Strength": 5,
+        "Toughness": 5
+    },
+    "Troll":
+    {
+        "Health": 150,
+        "Strength": 15,
+        "Toughness": 7
+    },
+    "Ogre":
+    {
+        "Health": 200,
+        "Strength": 50,
+        "Toughness": 10
+    }
+}
