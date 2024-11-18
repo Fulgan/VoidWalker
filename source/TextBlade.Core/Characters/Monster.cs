@@ -21,4 +21,17 @@ public class Monster
     {
         CurrentHealth = Math.Max(0, CurrentHealth - amount);
     }
+
+    internal int Attack(Character target)
+    {
+        var attack = this.Strength;
+        var blocked = target.Toughness;
+        if (target.IsDefending)
+        {
+            blocked = (int)(blocked * 1.5);
+        }
+        
+        var damage = Math.Max(0, attack - blocked);
+        return damage;
+    }
 }

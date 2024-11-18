@@ -76,6 +76,8 @@ public class FightCommand : ICommand
                 {
                     continue;
                 }
+
+                new BasicMonsterAi(party).ProcessTurnFor(monster);
             }
 
             party.ForEach(p => p.OnRoundComplete());

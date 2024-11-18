@@ -9,7 +9,7 @@ public class Character
     public int TotalHealth { get; set; }
     public int Strength { get; set; }
     public int Toughness { get; set; }
-    private bool _isDefending;
+    internal bool IsDefending { get; private set; }
 
     public Character(string name, int currentHealth, int totalHealth)
     {
@@ -20,11 +20,16 @@ public class Character
 
     public void OnRoundComplete()
     {
-        _isDefending = false;
+        this.IsDefending = false;
     }
 
     internal void Defend()
     {
-        _isDefending = true;
+        this.IsDefending = true;
+    }
+
+    internal void Damage(int damage)
+    {
+        throw new NotImplementedException();
     }
 }
