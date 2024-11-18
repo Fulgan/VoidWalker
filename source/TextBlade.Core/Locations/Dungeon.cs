@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using TextBlade.Core.Commands;
 
 namespace TextBlade.Core.Locations;
@@ -71,9 +70,20 @@ public class Dungeon : Location
         _floorMonsters.Add(finalFloor);
     }
 
+    public void OnVictory()
+    {
+        // Clear out all monsters
+        _floorMonsters[_currentFloorNumber].Clear();
+    }
+
     override public string? GetExtraDescription()
     {
-        return $"You are on floor {_currentFloorNumber}. You see: {string.Join(", ", _floorMonsters[_currentFloorNumber])}. Type f/fight to fight.";
+        var monstersMessage = $"You see: {string.Join(", ", _floorMonsters[_currentFloorNumber])}. Type f/fight to fight.";
+        if (!_floorMonsters[_currentFloorNumber].Any())
+        {
+            monstersMessage = "There are no monsters left.";
+        }
+        return $"You are on floor {_currentFloorNumber}. {monstersMessage}";
     }
 
     override public ICommand GetCommandFor(string input)

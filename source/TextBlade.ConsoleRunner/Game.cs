@@ -59,6 +59,24 @@ public class Game : IGame
             {
                 AnsiConsole.MarkupLine(message);
             }
+
+            // Kinda a special case for battle commands
+            if (command is IBattleCommand battleCommand)
+            {
+                if (battleCommand.IsVictory)
+                {
+                    // Wipe out the dungeon floor's inhabitants.
+                    var dungeon = _currentLocation as Dungeon;
+                    dungeon.OnVictory();
+                }
+                else
+                {
+                    foreach (var character in _party)
+                    {
+                        character.CurrentHealth = 1;
+                    }
+                }
+            }
         }
     }
 }

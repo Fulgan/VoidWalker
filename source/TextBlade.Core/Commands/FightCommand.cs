@@ -9,10 +9,15 @@ namespace TextBlade.Core.Commands;
 /// <summary>
 /// Unlike most of the other commands, handles all the (fighting) logic and user input/response internally.
 /// </summary>
-public class FightCommand : ICommand
+public class FightCommand : ICommand, IBattleCommand
 {
+    public const string VictoryMessage = "Victory!";
+    public const string DefeatMessage = "Defeat!";
+
     private readonly List<Monster> _monsters = new();
     private static JObject _allMonstersData; // name => stats
+
+    public bool IsVictory { get; private set; }
 
     static FightCommand()
     {
@@ -85,11 +90,13 @@ public class FightCommand : ICommand
 
         if (isPartyWipedOut())
         {
-            return ["Defeated!"];
+            this.IsVictory = false;
+            return [DefeatMessage];
         }
         else if (areMonstersDefeated())
         {
-            return ["Victory!"];
+            this.IsVictory = true;
+            return [VictoryMessage];
         }
         else
         {
