@@ -55,6 +55,11 @@ public class FightCommand : ICommand
 
         while (!isBattleOver())
         {
+            var monstersStatus = string.Join(", ", _monsters.Select(m => $"{m.Name}: {m.CurrentHealth}/{m.TotalHealth} health"));
+            Console.WriteLine($"You face: {monstersStatus}");
+            var partyStatus = string.Join(", ", party.Select(m => $"{m.Name}: {m.CurrentHealth}/{m.TotalHealth} health"));
+            Console.WriteLine($"Your party: {partyStatus}");
+
             foreach (var character in party)
             {
                 if (character.CurrentHealth <= 0)
