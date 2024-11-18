@@ -4,7 +4,7 @@ public class Monster
 {
     public string Name { get; set; }
     public int TotalHealth { get; set; }
-    public int CurrentHealth { get; private set; } 
+    public int CurrentHealth { get; set; } 
     public int Strength { get; private set; } 
     public int Toughness { get; private set; }
     

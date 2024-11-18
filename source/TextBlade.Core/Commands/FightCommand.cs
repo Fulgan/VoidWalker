@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Game;
 
@@ -47,6 +48,45 @@ public class FightCommand : ICommand
     {
         // Problem: we don't have access to AnsiConsole in this layer. Nor can we wait for the Game class
         // to process it, because it's an interactive battle. That ... sucks...
-        return [];
+        var isPartyWipedOut = () => party.All(p => p.CurrentHealth <= 0);
+        var areMonstersDefeated = () => _monsters.All(m => m.CurrentHealth <= 0);
+        var isBattleOver = () => isPartyWipedOut() || areMonstersDefeated();
+        var characterTurnProcessor = new CharacterTurnProcessor(party, _monsters);
+
+        while (!isBattleOver())
+        {
+            foreach (var character in party)
+            {
+                if (character.CurrentHealth <= 0)
+                {
+                    continue;
+                }
+
+                characterTurnProcessor.ProcessTurnFor(character);
+            }
+
+            foreach (var monster in _monsters)
+            {
+                if (monster.CurrentHealth <= 0)
+                {
+                    continue;
+                }
+            }
+
+            party.ForEach(p => p.OnRoundComplete());
+        }
+
+        if (isPartyWipedOut())
+        {
+            return ["Defeated!"];
+        }
+        else if (areMonstersDefeated())
+        {
+            return ["Victory!"];
+        }
+        else
+        {
+            throw new InvalidOperationException("Undeterminable battle status! Probably a bug.");
+        }
     }
 }
