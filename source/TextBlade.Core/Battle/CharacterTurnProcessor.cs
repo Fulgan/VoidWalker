@@ -41,7 +41,7 @@ public class CharacterTurnProcessor
             Console.WriteLine($"    {i+1}: {monster.Name} ({monster.CurrentHealth}/{monster.TotalHealth} health)");
         }
 
-        var target = int.Parse(Console.ReadLine().Trim().ToString());
+        var target = int.Parse(Console.ReadKey().KeyChar.ToString());
         // Assume target number is legit
         var targetMonster = _monsters[target - 1];
         var message = $"{character.Name} attacks {targetMonster.Name}! ";
