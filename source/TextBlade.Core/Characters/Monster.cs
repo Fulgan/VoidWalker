@@ -4,7 +4,7 @@ public class Monster
 {
     public string Name { get; set; }
     public int TotalHealth { get; set; }
-    public int CurrentHealth { get; set; } 
+    public int CurrentHealth { get; private set; } 
     public int Strength { get; private set; } 
     public int Toughness { get; private set; }
     
@@ -15,5 +15,10 @@ public class Monster
         this.TotalHealth = health;
         this.Strength = strength;
         this.Toughness = toughness;
+    }
+
+    public void Damage(int amount)
+    {
+        CurrentHealth = Math.Max(0, CurrentHealth - amount);
     }
 }

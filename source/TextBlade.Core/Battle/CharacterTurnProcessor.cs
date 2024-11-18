@@ -47,13 +47,11 @@ public class CharacterTurnProcessor
         var message = $"{character.Name} attacks {targetMonster.Name}! ";
         
         var damage = character.Strength - targetMonster.Toughness;
-        if (damage > 0)
-        {
-            targetMonster.CurrentHealth -= damage;
-        }
+        targetMonster.Damage(damage);
         
         var damageAmount = damage <= 0 ? "NO" : damage.ToString();
         message += $"{damageAmount} damage!";
-        Console.WriteLine(message);
+        var deathMessage = targetMonster.CurrentHealth <= 0 ? $"{targetMonster.Name} DIES!" : "";
+        Console.WriteLine($"{message} {deathMessage}");
     }
 }
