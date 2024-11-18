@@ -10,7 +10,7 @@ namespace TextBlade.Core.Commands;
 /// </summary>
 public class FightCommand : ICommand
 {
-    private readonly List<Monster> _monsters;
+    private readonly List<Monster> _monsters = new();
     private static JObject _allMonstersData; // name => stats
 
     static FightCommand()
@@ -28,13 +28,19 @@ public class FightCommand : ICommand
         {
             throw new InvalidOperationException($"{jsonPath} doesn't seem to be valid JSON.");
         }
-
-        ;
     }
 
     public FightCommand(List<string> monsterNames)
     {
-        ;
+        foreach (var name in monsterNames)
+        {
+            var data = _allMonstersData[name];
+            var health = int.Parse(data["Health"].ToString());
+            var strength = int.Parse(data["Strength"].ToString());
+            var toughness = int.Parse(data["Toughness"].ToString());
+            var monster = new Monster(name, health, strength, toughness);
+            _monsters.Add(monster);
+        }
     }
 
     public IEnumerable<string> Execute(IGame game, List<Character> party)
