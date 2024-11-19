@@ -31,7 +31,8 @@ public class Dungeon : Location
             // Assumes monsters are in order of difficulty, roughly.
             // Which monsters can we spawn on this floor? Up to (floor_number + 1) inclusive.
             // Always guarantee at least two monster types
-            var firstMonsterIndex = Math.Min(Math.Max(0, i - 1), monsters.Count - 2);
+            var firstMonsterIndex = Math.Min(i - 1, monsters.Count - 2);
+            firstMonsterIndex = Math.Max(firstMonsterIndex, 0);
             var lastMonsterIndex = Math.Min(i + 2, monsters.Count);
 
             List<string> validMonsters = [];
@@ -91,6 +92,22 @@ public class Dungeon : Location
         if (input == "f" || input == "fight")
         {
             return new FightCommand(_floorMonsters[_currentFloorNumber]);
+        }
+        if (input == "d" || input == "down" || input == "descend" || input == ">")
+        {
+            if (_floorMonsters[_currentFloorNumber].Any())
+            {
+                Console.WriteLine("You can't descend while monsters are around!");
+            }
+            else if (_currentFloorNumber == _floorMonsters.Count)
+            {
+                Console.WriteLine("You're already at the bottom of the dungeon!");
+            }
+            else
+            {
+                // Valid descent
+                _currentFloorNumber++;
+            }
         }
 
         return new DoNothingCommand();
