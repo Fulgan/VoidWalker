@@ -82,7 +82,11 @@ public class Dungeon : Location
         var monstersMessage = $"You see: {string.Join(", ", _floorMonsters[_currentFloorNumber])}. Type f/fight to fight.";
         if (!_floorMonsters[_currentFloorNumber].Any())
         {
-            monstersMessage = "There are no monsters left. Type d/down/descend to go to the next floor.";
+            monstersMessage = "There are no monsters left.";
+            if (_currentFloorNumber < _floorMonsters.Count - 1)
+            {
+                monstersMessage += "You see stairs leading down. Type d/down/descend to go to the next floor.";
+            } 
         }
         return $"You are on floor {_currentFloorNumber + 1}. {monstersMessage}";
     }
@@ -99,7 +103,7 @@ public class Dungeon : Location
             {
                 Console.WriteLine("You can't descend while monsters are around!");
             }
-            else if (_currentFloorNumber == _floorMonsters.Count)
+            else if (_currentFloorNumber == _floorMonsters.Count - 1)
             {
                 Console.WriteLine("You're already at the bottom of the dungeon!");
             }
