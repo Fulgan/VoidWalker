@@ -1,3 +1,5 @@
+using System.Text;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TextBlade.Core.Battle;
@@ -11,6 +13,7 @@ namespace TextBlade.Core.Commands;
 /// </summary>
 public class FightCommand : ICommand, IBattleCommand
 {
+    private const string CommentsInJsonRegex = @"(//.*)";
     public const string VictoryMessage = "Victory!";
     public const string DefeatMessage = "Defeat!";
 
@@ -28,7 +31,15 @@ public class FightCommand : ICommand, IBattleCommand
             throw new FileNotFoundException($"{jsonPath} doesn't seem to exist.");
         }
 
-        var jsonContent = File.ReadAllText(jsonPath);
+        // Remove comments...
+        var rawLines = File.ReadAllLines(jsonPath);
+        var commentlessText = new StringBuilder();
+        foreach (var line in rawLines)
+        {
+            commentlessText.Append(Regex.Replace(line, CommentsInJsonRegex, string.Empty));
+        }
+
+        var jsonContent = commentlessText.ToString();
         _allMonstersData = JsonConvert.DeserializeObject(jsonContent) as JObject;
         if (_allMonstersData == null)
         {
