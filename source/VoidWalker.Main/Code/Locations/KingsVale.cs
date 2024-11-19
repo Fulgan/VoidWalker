@@ -1,3 +1,4 @@
+using TextBlade.ConsoleRunner;
 using TextBlade.Core.Game;
 using TextBlade.Core.Locations;
 using TextBlade.Core.UserCode;
@@ -12,7 +13,7 @@ public class KingsVale : LocationCodeBehind
 
     override public void BeforeShowingLocation(Location currentLocation)
     {
-        if (GameSwitches.Switches.HasSwitch(Switches.MetKingSulayman))
+        if (Game.Current.Switches.HasSwitch(Switches.MetKingSulayman))
         {
             currentLocation.LinkedLocations.Add(new LocationLink("Dungeons/NorthSeasideCave", "Explore the North Seaside Cave"));
         }

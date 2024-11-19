@@ -3,6 +3,7 @@ using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Game;
+using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.ConsoleRunner;
@@ -31,6 +32,8 @@ public class Game : IGame
 
     public void Run()
     {
+        var TESTING_IGNORE_ME = SaveGameManager.LoadGame("default");
+
         var runner = new NewGameRunner(this);
         runner.ShowGameIntro();
         _party = runner.CreateParty();
@@ -76,6 +79,8 @@ public class Game : IGame
                         character.CurrentHealth = 1;
                     }
                 }
+
+                SaveGameManager.SaveGame("default", _party);
             }
         }
     }
