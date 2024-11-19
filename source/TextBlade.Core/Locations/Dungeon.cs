@@ -8,7 +8,7 @@ public class Dungeon : Location
     // Each entry is a list of monsters and other stuff on that floor.
     // I'm sure I'll put treasure and stuff in here eventually.
     private readonly List<List<string>> _floorMonsters = new();
-    private int _currentFloorNumber = 1;
+    private int _currentFloorNumber = 0;
 
     public Dungeon(string name, string description, int numFloors, List<string> monsters, string boss, string locationClass = null)
     : base(name, description, locationClass)
@@ -82,9 +82,9 @@ public class Dungeon : Location
         var monstersMessage = $"You see: {string.Join(", ", _floorMonsters[_currentFloorNumber])}. Type f/fight to fight.";
         if (!_floorMonsters[_currentFloorNumber].Any())
         {
-            monstersMessage = "There are no monsters left.";
+            monstersMessage = "There are no monsters left. Type d/down/descend to go to the next floor.";
         }
-        return $"You are on floor {_currentFloorNumber}. {monstersMessage}";
+        return $"You are on floor {_currentFloorNumber + 1}. {monstersMessage}";
     }
 
     override public ICommand GetCommandFor(string input)
