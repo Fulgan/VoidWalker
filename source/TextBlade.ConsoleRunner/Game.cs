@@ -37,14 +37,17 @@ public class Game : IGame
             var data = SaveGameManager.LoadGame("default");
             _party = data.Party;
             GameSwitches.Switches = data.Switches;
-        }   
+            new ChangeLocationCommand(data.CurrentLocationId).Execute(this, _party);
+        }
+        else
+        {
+            var runner = new NewGameRunner(this);
+            runner.ShowGameIntro();
+            _party = runner.CreateParty();
 
-        var runner = new NewGameRunner(this);
-        runner.ShowGameIntro();
-        _party = runner.CreateParty();
-
-        var startLocationId = runner.GetStartingLocationId();
-        new ChangeLocationCommand(startLocationId).Execute(this, _party);
+            var startLocationId = runner.GetStartingLocationId();
+            new ChangeLocationCommand(startLocationId).Execute(this, _party);
+        }
 
         // Don't execute code if we stay in the same location, e.g. press enter or "help" - only execute code
         // if the location changed. Fixes a bug where spamming enter keeps adding the same location over and over ...
@@ -85,7 +88,7 @@ public class Game : IGame
                     }
                 }
 
-                SaveGameManager.SaveGame("default", _party);
+                SaveGameManager.SaveGame("default", _currentLocation.LocationId, _party);
             }
         }
     }

@@ -9,15 +9,17 @@ public static class SaveGameManager
     private const string SaveFolder = "SaveData";
     private const string SaveFileExtension = ".save";
 
-    public static void SaveGame(string saveSlot, List<Character> party)
+    public static void SaveGame(string saveSlot, string currentLocationId, List<Character> party)
     {
         var saveData = new SaveData()
         {
-             Gold = 0,
-             Inventory = new (),
-             Party = party,
-             Switches = GameSwitches.Switches,
-             TotalGameTimeSeconds = 0,
+            Party = party,
+            Switches = GameSwitches.Switches,
+            CurrentLocationId = currentLocationId,
+            
+            Gold = 0,
+            Inventory = new (),
+            TotalGameTimeSeconds = 0,
         };
 
         var serialized = JsonConvert.SerializeObject(saveData);

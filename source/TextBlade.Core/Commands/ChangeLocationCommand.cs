@@ -7,6 +7,8 @@ namespace TextBlade.Core.Commands;
 
 public class ChangeLocationCommand : ICommand
 {
+    // Used for saving only, so we know the ID of our current location
+    private readonly string _locationId;
     private readonly string _locationPath;
 
     public ChangeLocationCommand(string destinationId)
@@ -18,12 +20,14 @@ public class ChangeLocationCommand : ICommand
             throw new InvalidOperationException($"{locationPath} doesn't seem to exist!");
         }
 
+        _locationId = destinationId;
         _locationPath = locationPath;
     }
 
     public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         var locationData = Serializer.Deserialize<Location>(File.ReadAllText(_locationPath));
+        locationData.LocationId = _locationId;
         game.SetLocation(locationData);
         return [];
     }
