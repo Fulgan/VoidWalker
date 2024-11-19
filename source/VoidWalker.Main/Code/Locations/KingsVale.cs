@@ -13,7 +13,7 @@ public class KingsVale : LocationCodeBehind
 
     override public void BeforeShowingLocation(Location currentLocation)
     {
-        if (Game.Current.Switches.HasSwitch(Switches.MetKingSulayman))
+        if (GameSwitches.Switches.HasSwitch(Switches.MetKingSulayman))
         {
             currentLocation.LinkedLocations.Add(new LocationLink("Dungeons/NorthSeasideCave", "Explore the North Seaside Cave"));
         }

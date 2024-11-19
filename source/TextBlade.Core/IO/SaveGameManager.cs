@@ -12,13 +12,13 @@ public static class SaveGameManager
 
     public static void SaveGame(string saveSlot, List<Character> party)
     {
-        var saveData = new Dictionary<string, object>
+        var saveData = new SaveData()
         {
-            { "party", party },
-            { "switches", GameSwitches.Switches },
-            { "gold", 0 },
-            { "inventory", new Dictionary<string, int>() },
-            { "totalGameTimeSeconds", 0 }
+             Gold = 0,
+             Inventory = new (),
+             Party = party,
+             Switches = GameSwitches.Switches,
+             TotalGameTimeSeconds = 0,
         };
 
         var serialized = JsonConvert.SerializeObject(saveData);
@@ -31,7 +31,7 @@ public static class SaveGameManager
         File.WriteAllText(path, serialized);
     }
 
-    public static Dictionary<string, object> LoadGame(string saveSlot)
+    public static SaveData LoadGame(string saveSlot)
     {
         var path = Path.Join(SaveFolder, $"{saveSlot}{SaveFileExtension}");
         if (!File.Exists(path))
@@ -40,7 +40,7 @@ public static class SaveGameManager
         }
 
         var json = File.ReadAllText(path);
-        var deserialized = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+        var deserialized = JsonConvert.DeserializeObject<SaveData>(json);
         return deserialized;
     }
 }

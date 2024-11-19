@@ -5,28 +5,29 @@ namespace TextBlade.Core.Game;
 /// </summary>
 public class GameSwitches
 {
-    // Singleton-ish.
+    // Singleton-ish. The only/current instance.
     public static GameSwitches Switches { get; } = new();
 
-    private Dictionary<string, bool> _switches = new();
+    // The actual data. Public for serialization purposes.
+    public Dictionary<string, bool> Data { get; } = new();
 
     public bool HasSwitch(string switchName)
     {
-        return _switches.ContainsKey(switchName);
+        return Data.ContainsKey(switchName);
     }
 
     public void Set(string switchName, bool value)
     {
-        _switches[switchName] = value;
+        Data[switchName] = value;
     }
 
     public bool Get(string switchName)
     {
-        if (!_switches.ContainsKey(switchName))
+        if (!Data.ContainsKey(switchName))
         {
             throw new ArgumentNullException(switchName);
         }
 
-        return _switches[switchName];
+        return Data[switchName];
     }
 }
