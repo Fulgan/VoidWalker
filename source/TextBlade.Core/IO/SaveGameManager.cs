@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Game;
@@ -49,6 +50,25 @@ public static class SaveGameManager
 
         var json = File.ReadAllText(path);
         var deserialized = JsonConvert.DeserializeObject<SaveData>(json);
+        ValidateSaveData(deserialized);
         return deserialized;
+    }
+
+    private static void ValidateSaveData(SaveData data)
+    {
+        if (string.IsNullOrWhiteSpace(data.CurrentLocationId))
+        {
+            throw new SerializationException($"Your save data looks corrupt: the current location is missing");
+        }
+
+        if (data.Party.Count <= 0)
+        {
+            throw new SerializationException($"Your save data looks corrupt: there are no party members");
+        }
+        
+        if (data.Gold < 0)
+        {
+            throw new SerializationException($"Your save data looks corrupt: gold is {data.Gold}");
+        }
     }
 }
