@@ -6,9 +6,9 @@ namespace TextBlade.Core.Game;
 public class GameSwitches
 {
     // Singleton-ish. The only/current instance.
-    public static GameSwitches Switches { get; } = new();
+    public static GameSwitches Switches { get; set; } = new();
 
-    // The actual data. Public for serialization purposes.
+    // The actual data. Public for serialization purposes... This smells...
     public Dictionary<string, bool> Data { get; } = new();
 
     public bool HasSwitch(string switchName)

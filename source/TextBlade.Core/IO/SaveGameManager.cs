@@ -1,4 +1,3 @@
-using System;
 using Newtonsoft.Json;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Game;
@@ -29,6 +28,13 @@ public static class SaveGameManager
         
         var path = Path.Join(SaveFolder, $"{saveSlot}{SaveFileExtension}");
         File.WriteAllText(path, serialized);
+    }
+
+    public static bool HasSave(string saveSlot)
+    {
+        var path = Path.Join(SaveFolder, $"{saveSlot}{SaveFileExtension}");
+        return File.Exists(path);
+ 
     }
 
     public static SaveData LoadGame(string saveSlot)

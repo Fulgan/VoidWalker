@@ -32,7 +32,12 @@ public class Game : IGame
 
     public void Run()
     {
-        var TESTING_IGNORE_ME = SaveGameManager.LoadGame("default");
+        if (SaveGameManager.HasSave("default"))
+        {
+            var data = SaveGameManager.LoadGame("default");
+            _party = data.Party;
+            GameSwitches.Switches = data.Switches;
+        }   
 
         var runner = new NewGameRunner(this);
         runner.ShowGameIntro();
