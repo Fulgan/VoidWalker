@@ -88,10 +88,22 @@ public class Dungeon : Location
         if (!currentFloorData.Any())
         {
             monstersMessage = "There are no monsters left.";
+            var treasure = new List<string>();
+            if (FloorLoot.TryGetValue($"B{_currentFloorNumber + 1}", out treasure))
+            {
+                monstersMessage += "  Your party spies a treasure chest. You hurry over and open it. Within it, you find: ";
+                foreach (var item in treasure)
+                {
+                    monstersMessage += $"\n    {item}";
+                }
+                monstersMessage += "\n";
+            }
+
+
             if (_currentFloorNumber < _floorMonsters.Count - 1)
             {
-                monstersMessage += "You see stairs leading down. Type d/down/descend to go to the next floor.";
-            } 
+                monstersMessage += "  You see stairs leading down. Type d/down/descend to go to the next floor.";
+            }
         }
 
         var treasureMessage = "";
