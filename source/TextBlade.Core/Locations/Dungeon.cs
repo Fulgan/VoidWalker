@@ -4,6 +4,10 @@ namespace TextBlade.Core.Locations;
 
 public class Dungeon : Location
 {
+    // Simple but complex. Can be "Iron Shield," can be listed twice to give me two, can be "100 Gold," etc.
+    // Floor (e.g. B2) => list of lootz
+    public Dictionary<string, List<string>> FloorLoot = new();
+
     // It's a list, one entry per floor.
     // Each entry is a list of monsters and other stuff on that floor.
     // I'm sure I'll put treasure and stuff in here eventually.

@@ -71,7 +71,7 @@ public class SerializerTests
     [Test]
     public void Deserialize_CorrectlyDeserializesTownAsLocationn_WhenTypeIsSpecified()
     {
-         // Arrange is done in the JSON files
+        // Arrange is done in the JSON files
         var filePath = Path.Join("TestData", "Locations", "InnWithType.json");
         var json = File.ReadAllText(filePath);
         var actual = Serializer.Deserialize<Location>(json);
@@ -81,5 +81,33 @@ public class SerializerTests
         Assert.That(actual, Is.TypeOf<Inn>());
         var inn = actual as Inn;
         Assert.That(inn.InnCost, Is.EqualTo(100));
+    }
+
+    [Test]
+    public void Deserialize_CorrectlyDeserializesDungeonFloorLoot()
+    {
+        // Arrange is done in the JSON files
+        var filePath = Path.Join("TestData", "Locations", "DungeonWithFloorLoot.json");
+        var json = File.ReadAllText(filePath);
+        var actual = Serializer.Deserialize<Location>(json);
+
+        // Assert
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.TypeOf<Dungeon>());
+        var dungeon = actual as Dungeon;
+
+        Assert.That(dungeon.FloorLoot, Is.Not.Null);
+        Assert.That(dungeon.FloorLoot.Count, Is.EqualTo(2));
+
+        var b2Loot = dungeon.FloorLoot["B2"];
+        Assert.That(b2Loot.Contains("Iron Sword"));
+        Assert.That(b2Loot.Contains("Iron Shield"));
+        Assert.That(b2Loot.Count(c => c == "Potion"), Is.EqualTo(2));
+
+        
+        var b5Loot = dungeon.FloorLoot["B5"];
+        Assert.That(b5Loot.Contains("100 Gold"));
+        Assert.That(b5Loot.Contains("Iron Shield"));
+        Assert.That(b5Loot.Count(c => c == "High-Potion"), Is.EqualTo(3));
     }
 }
