@@ -83,8 +83,9 @@ public class Dungeon : Location
 
     override public string? GetExtraDescription()
     {
-        var monstersMessage = $"You see: {string.Join(", ", _floorMonsters[_currentFloorNumber])}. Type f/fight to fight.";
-        if (!_floorMonsters[_currentFloorNumber].Any())
+       var currentFloorData = _floorMonsters[_currentFloorNumber];
+        var monstersMessage = $"You see: {string.Join(", ", currentFloorData)}. Type f/fight to fight.";
+        if (!currentFloorData.Any())
         {
             monstersMessage = "There are no monsters left.";
             if (_currentFloorNumber < _floorMonsters.Count - 1)
@@ -92,18 +93,26 @@ public class Dungeon : Location
                 monstersMessage += "You see stairs leading down. Type d/down/descend to go to the next floor.";
             } 
         }
-        return $"You are on floor {_currentFloorNumber + 1}. {monstersMessage}";
+
+        var treasureMessage = "";
+        if (FloorLoot.ContainsKey($"B{_currentFloorNumber + 1}"))
+        {
+            treasureMessage = "You see something shiny nearby.  ";
+        }
+
+        return $"You are on floor {_currentFloorNumber + 1}. {treasureMessage}{monstersMessage}";
     }
 
     override public ICommand GetCommandFor(string input)
     {
+        var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")
         {
-            return new FightCommand(_floorMonsters[_currentFloorNumber]);
+            return new FightCommand(currentFloorData);
         }
         if (input == "d" || input == "down" || input == "descend" || input == ">")
         {
-            if (_floorMonsters[_currentFloorNumber].Any())
+            if (currentFloorData.Any())
             {
                 Console.WriteLine("You can't descend while monsters are around!");
             }
