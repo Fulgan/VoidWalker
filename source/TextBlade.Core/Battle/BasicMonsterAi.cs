@@ -13,6 +13,12 @@ public class BasicMonsterAi
     
     public void ProcessTurnFor(Monster monster)
     {
+        if (!_party.Any())
+        {
+            // Wiped out, nothing to do
+            return;
+        }
+
         var target = _party[Random.Shared.Next(0, _party.Count)];
 
         var damage = monster.Attack(target);
