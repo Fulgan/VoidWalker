@@ -8,9 +8,9 @@ namespace TextBlade.Core.Locations;
 public class Location : BaseLocation
 {
     public List<LocationLink> LinkedLocations { get; set; } = new();
-    public string LocationId { get; internal set; } // Saved so we know our location
-
-    public Location(string name, string description, string locationClass = null) : base(name, description, locationClass)
+    public string LocationId { get; internal set; } = null!; // Saved so we know our location
+    
+    public Location(string name, string description, string? locationClass = null) : base(name, description, locationClass)
     {
     } 
 

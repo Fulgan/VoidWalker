@@ -11,9 +11,9 @@ public abstract class BaseLocation
     /// <summary>
     /// For custom code, this is the class name of the code-behind class for this location.
     /// </summary>
-    public string LocationClass { get; set; }
+    public string? LocationClass { get; set; }
 
-    protected BaseLocation(string name, string description, string locationClass)
+    protected BaseLocation(string name, string description, string? locationClass)
     {
         this.Name = name;
         this.Description = description;
