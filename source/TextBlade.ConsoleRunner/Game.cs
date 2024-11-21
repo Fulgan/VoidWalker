@@ -17,6 +17,7 @@ public class Game : IGame
     private Location _currentLocation = null!;
     private bool _isRunning = true;
     private List<Character> _party = new();
+    private Inventory _inventory = new();
 
     public static IGame Current { get; private set; }
 
@@ -78,7 +79,7 @@ public class Game : IGame
                 {
                     // Wipe out the dungeon floor's inhabitants.
                     var dungeon = _currentLocation as Dungeon;
-                    dungeon.OnVictory();
+                    dungeon.OnVictory(_inventory);
                 }
                 else
                 {
@@ -88,7 +89,7 @@ public class Game : IGame
                     }
                 }
 
-                SaveGameManager.SaveGame("default", _currentLocation.LocationId, _party);
+                SaveGameManager.SaveGame("default", _currentLocation.LocationId, _party, _inventory);
             }
         }
     }

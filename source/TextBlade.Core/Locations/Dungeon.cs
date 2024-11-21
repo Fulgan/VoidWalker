@@ -1,3 +1,5 @@
+using System.Text;
+using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
 
 namespace TextBlade.Core.Locations;
@@ -66,7 +68,7 @@ public class Dungeon : Location
         int numMinions = Random.Shared.Next(2, 4);
         var minion = monsters[monsters.Count - 1];
         var finalFloor = new List<string>();
-        // TODO: add loot! Mega loot!
+
         for (int i = 0; i < numMinions; i++)
         {
             finalFloor.Add(minion);
@@ -75,44 +77,48 @@ public class Dungeon : Location
         _floorMonsters.Add(finalFloor);
     }
 
-    public void OnVictory()
+    public void OnVictory(Inventory inventory)
     {
         // Clear out all monsters
         _floorMonsters[_currentFloorNumber].Clear();
+
+        // Grant loot if applicable
+        if (!FloorLoot.ContainsKey($"B{_currentFloorNumber + 1}"))
+        {
+            return;
+        }
+        
+        var loot = FloorLoot[$"B{_currentFloorNumber + 1}"];
+
+        Console.WriteLine("Your party spies a treasure chest. You hurry over and open it. Within it, you find: ");
+        foreach (var item in loot)
+        {
+            Console.WriteLine($"    {item}");
+            inventory.Add(item);
+        }
     }
 
     override public string? GetExtraDescription()
     {
        var currentFloorData = _floorMonsters[_currentFloorNumber];
-        var monstersMessage = $"You see: {string.Join(", ", currentFloorData)}. Type f/fight to fight.";
+        var monstersMessage = new StringBuilder();
+        monstersMessage.AppendLine($"You see: {string.Join(", ", currentFloorData)}. Type f/fight to fight.");
         if (!currentFloorData.Any())
         {
-            monstersMessage = "There are no monsters left.";
-            var treasure = new List<string>();
-            if (FloorLoot.TryGetValue($"B{_currentFloorNumber + 1}", out treasure))
-            {
-                monstersMessage += "  Your party spies a treasure chest. You hurry over and open it. Within it, you find: ";
-                foreach (var item in treasure)
-                {
-                    monstersMessage += $"\n    {item}";
-                }
-                monstersMessage += "\n";
-            }
-
-
+            monstersMessage.AppendLine("There are no monsters left.");
             if (_currentFloorNumber < _floorMonsters.Count - 1)
             {
-                monstersMessage += "  You see stairs leading down. Type d/down/descend to go to the next floor.";
+                monstersMessage.AppendLine("You see stairs leading down. Type d/down/descend to go to the next floor.");
             }
         }
 
         var treasureMessage = "";
-        if (FloorLoot.ContainsKey($"B{_currentFloorNumber + 1}"))
+        if (FloorLoot.ContainsKey($"B{_currentFloorNumber + 1}") && _floorMonsters.Any())
         {
             treasureMessage = "You see something shiny nearby.  ";
         }
 
-        return $"You are on floor {_currentFloorNumber + 1}. {treasureMessage}{monstersMessage}";
+        return $"You are on floor {_currentFloorNumber + 1}. {treasureMessage}{monstersMessage.ToString()}";
     }
 
     override public ICommand GetCommandFor(string input)

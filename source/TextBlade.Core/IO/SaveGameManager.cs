@@ -10,7 +10,7 @@ public static class SaveGameManager
     private const string SaveFolder = "SaveData";
     private const string SaveFileExtension = ".save";
 
-    public static void SaveGame(string saveSlot, string currentLocationId, List<Character> party)
+    public static void SaveGame(string saveSlot, string currentLocationId, List<Character> party, Inventory inventory)
     {
         var saveData = new SaveData()
         {
@@ -19,7 +19,7 @@ public static class SaveGameManager
             CurrentLocationId = currentLocationId,
             
             Gold = 0,
-            Inventory = new (),
+            Inventory = inventory,
             TotalGameTimeSeconds = 0,
         };
 
