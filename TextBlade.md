@@ -43,3 +43,7 @@ Run the game again. You should get a print statement indicating you're in King's
 - Add whatever custom code you like to the constructor
 
 Note that TextBlade manages and serializes/deserializes global game-wide switches; access them via the `TextBlade.Core.Game.GameSwitches.Switches` class.
+
+# Credits
+
+TextBlade includes a `credits` command. If you want to show credits, such as citation of audio resources, create a `Credits.txt` file (with a capital C) in your Content directory. Typing credits will read this out.
