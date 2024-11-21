@@ -33,22 +33,7 @@ public class Game : IGame
 
     public void Run()
     {
-        if (SaveGameManager.HasSave("default"))
-        {
-            var data = SaveGameManager.LoadGame("default");
-            _party = data.Party;
-            GameSwitches.Switches = data.Switches;
-            new ChangeLocationCommand(data.CurrentLocationId).Execute(this, _party);
-        }
-        else
-        {
-            var runner = new NewGameRunner(this);
-            runner.ShowGameIntro();
-            _party = runner.CreateParty();
-
-            var startLocationId = runner.GetStartingLocationId();
-            new ChangeLocationCommand(startLocationId).Execute(this, _party);
-        }
+        LoadGameOrStartNewGame();
 
         // Don't execute code if we stay in the same location, e.g. press enter or "help" - only execute code
         // if the location changed. Fixes a bug where spamming enter keeps adding the same location over and over ...
@@ -64,7 +49,7 @@ public class Game : IGame
             LocationDisplayer.ShowLocation(_currentLocation);
             var command = InputProcessor.PromptForAction(_currentLocation);
             previousLocation = _currentLocation;
-            
+
             var result = command.Execute(this, _party);
 
             foreach (var message in result)
@@ -72,25 +57,50 @@ public class Game : IGame
                 AnsiConsole.MarkupLine(message);
             }
 
-            // Kinda a special case for battle commands
-            if (command is IBattleCommand battleCommand)
-            {
-                if (battleCommand.IsVictory)
-                {
-                    // Wipe out the dungeon floor's inhabitants.
-                    var dungeon = _currentLocation as Dungeon;
-                    dungeon.OnVictory(_inventory);
-                }
-                else
-                {
-                    foreach (var character in _party)
-                    {
-                        character.CurrentHealth = 1;
-                    }
-                }
+            ApplyResultsIfBattle(command);
+        }
+    }
 
-                SaveGameManager.SaveGame("default", _currentLocation.LocationId, _party, _inventory);
+    private void ApplyResultsIfBattle(ICommand command)
+    {
+        // Kinda a special case for battle commands
+        if (command is IBattleCommand battleCommand)
+        {
+            if (battleCommand.IsVictory)
+            {
+                // Wipe out the dungeon floor's inhabitants.
+                var dungeon = _currentLocation as Dungeon;
+                dungeon.OnVictory(_inventory);
             }
+            else
+            {
+                foreach (var character in _party)
+                {
+                    character.CurrentHealth = 1;
+                }
+            }
+
+            SaveGameManager.SaveGame("default", _currentLocation.LocationId, _party, _inventory);
+        }
+    }
+
+    private void LoadGameOrStartNewGame()
+    {
+        if (SaveGameManager.HasSave("default"))
+        {
+            var data = SaveGameManager.LoadGame("default");
+            _party = data.Party;
+            GameSwitches.Switches = data.Switches;
+            new ChangeLocationCommand(data.CurrentLocationId).Execute(this, _party);
+        }
+        else
+        {
+            var runner = new NewGameRunner(this);
+            runner.ShowGameIntro();
+            _party = runner.CreateParty();
+
+            var startLocationId = runner.GetStartingLocationId();
+            new ChangeLocationCommand(startLocationId).Execute(this, _party);
         }
     }
 }
