@@ -10,6 +10,7 @@ public class ShowHelpCommand : ICommand
     {
         { "help", "Shows this detailed help text"},
         { "quit", "Quits the game" },
+        { "credits", "Shows the credits" },
     };
 
     public IEnumerable<string> Execute(IGame game, List<Character> party)

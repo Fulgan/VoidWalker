@@ -30,6 +30,8 @@ public static class InputProcessor
         // If you update this, update the help listing in ShowHelpCommand.
         switch (rawResponse)
         {
+            case "credits":
+            return new ShowCreditsCommand();
             case "quit":
             case "q":
                 return new QuitGameCommand();
