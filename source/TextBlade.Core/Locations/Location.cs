@@ -20,16 +20,16 @@ public class Location : BaseLocation
         return new DoNothingCommand();
     }
 
-    public virtual string? GetExtraDescription()
+    public virtual string GetExtraDescription()
     {
         // Override for stuff like "You are in 2B, you see three Tiramisu Bettles"
-        return null;
+        return string.Empty;
     }
 
-    public virtual string? GetExtraMenuOption()
+    public virtual string GetExtraMenuOption()
     {
         // Override for stuff like "type f/fight to fight"
-        return null;
+        return string.Empty;
     }
 }
 
