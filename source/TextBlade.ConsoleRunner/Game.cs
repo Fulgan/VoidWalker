@@ -63,13 +63,14 @@ public class Game : IGame
 
     private void ApplyResultsIfBattle(ICommand command)
     {
+        var dungeon = _currentLocation as Dungeon;
+
         // Kinda a special case for battle commands
         if (command is IBattleCommand battleCommand)
         {
             if (battleCommand.IsVictory)
             {
                 // Wipe out the dungeon floor's inhabitants.
-                var dungeon = _currentLocation as Dungeon;
                 dungeon.OnVictory(_inventory);
             }
             else
@@ -79,8 +80,13 @@ public class Game : IGame
                     character.CurrentHealth = 1;
                 }
             }
-
-            SaveGameManager.SaveGame("default", _currentLocation.LocationId, _party, _inventory);
+            
+            var dungeonSaveData = new Dictionary<string, object>
+            {
+                { "CurrentFloor", dungeon.CurrentFloorNumber },
+                { "IsClear", battleCommand.IsVictory }
+            };
+            SaveGameManager.SaveGame("default", _currentLocation.LocationId, _party, _inventory, dungeonSaveData);
         }
     }
 
@@ -92,6 +98,7 @@ public class Game : IGame
             _party = data.Party;
             GameSwitches.Switches = data.Switches;
             new ChangeLocationCommand(data.CurrentLocationId).Execute(this, _party);
+            UnpackLocationSpecificdata(data);
         }
         else
         {
@@ -101,6 +108,26 @@ public class Game : IGame
 
             var startLocationId = runner.GetStartingLocationId();
             new ChangeLocationCommand(startLocationId).Execute(this, _party);
+        }
+    }
+
+    private void UnpackLocationSpecificdata(SaveData data)
+    {
+        var extraData = data.LocationSpecificData;
+        if (extraData == null || extraData.Count == 0)
+        {
+            return;
+        }
+
+        // Duck typing...
+        var dungeon = _currentLocation as Dungeon;
+
+        if (extraData.ContainsKey("CurrentFloor"))
+        {
+            var floorNumber = Convert.ToInt32(extraData["CurrentFloor"]);
+            var isClear = (bool)extraData["IsClear"];
+
+            dungeon.SetState(floorNumber, isClear);
         }
     }
 }
