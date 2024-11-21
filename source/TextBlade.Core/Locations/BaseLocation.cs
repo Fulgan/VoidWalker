@@ -7,6 +7,7 @@ public abstract class BaseLocation
 {
     public string Name { get; set; }
     public string Description { get; set; }
+    public string BackgroundAudio { get; set; } = string.Empty;
 
     /// <summary>
     /// For custom code, this is the class name of the code-behind class for this location.

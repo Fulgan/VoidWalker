@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using System.Media;
+using Spectre.Console;
 using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
@@ -14,21 +15,34 @@ namespace TextBlade.ConsoleRunner;
 /// </summary>
 public class Game : IGame
 {
+    // Don't kill the messenger. I swear, it's bad enough this only works on Windows.
+    private const string SupportedAudioExtension = "wav";
+
     private Location _currentLocation = null!;
     private bool _isRunning = true;
     private List<Character> _party = new();
     private Inventory _inventory = new();
+
+    // TODO: investigate something cross-platform with minimal OS-specific dependencies.
+    // NAudio, System.Windows.Extensions, etc. are all Windows-only. Sigh.
+    private SoundPlayer _backgroundAudioPlayer = new();
 
     public static IGame Current { get; private set; }
 
     public Game()
     {
         Current = this;
+        _backgroundAudioPlayer.LoadCompleted += (sender, args) => _backgroundAudioPlayer.PlayLooping();
     }
 
+    /// <summary>
+    /// Called whenever a location changes. Sleeping in an inn, descending a dungeon, do NOT trigger this.
+    /// </summary>
+    /// <param name="location"></param>
     public void SetLocation(Location location)
     {
         _currentLocation = location;
+        PlayBackgroundAudio();
     }
 
     public void Run()
@@ -129,5 +143,17 @@ public class Game : IGame
 
             dungeon.SetState(floorNumber, isClear);
         }
+    }
+    
+    private void PlayBackgroundAudio()
+    {
+        _backgroundAudioPlayer.Stop();
+        if (string.IsNullOrWhiteSpace(_currentLocation.BackgroundAudio))
+        {
+            return;
+        }
+
+        _backgroundAudioPlayer.SoundLocation = Path.Join("Content", "Audio", $"{_currentLocation.BackgroundAudio}.{SupportedAudioExtension}");
+        _backgroundAudioPlayer.Load();
     }
 }
