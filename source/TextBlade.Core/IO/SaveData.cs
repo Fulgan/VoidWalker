@@ -12,7 +12,7 @@ public struct SaveData
     public string CurrentLocationId { get; set; }
     public Inventory Inventory { get; set; }
 
-    public Dictionary<string, object> LocationSpecificData { get; set; }
+    public Dictionary<string, object>? LocationSpecificData { get; set; }
 
     // For user code, i.e. ggame-specific things
     public Dictionary<string, object> GameSpecificData { get; set; }

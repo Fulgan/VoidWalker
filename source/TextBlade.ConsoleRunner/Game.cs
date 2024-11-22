@@ -71,7 +71,12 @@ public class Game : IGame
                 AnsiConsole.MarkupLine(message);
             }
 
+            /// This area stinks: type-specific things...
             ApplyResultsIfBattle(command);
+            if (command is ManuallySaveCommand)
+            {
+                SaveGame();
+            }
         }
     }
 
@@ -100,8 +105,15 @@ public class Game : IGame
                 { "CurrentFloor", dungeon.CurrentFloorNumber },
                 { "IsClear", battleCommand.IsVictory }
             };
-            SaveGameManager.SaveGame("default", _currentLocation.LocationId, _party, _inventory, dungeonSaveData);
+
+            SaveGame(dungeonSaveData);
         }
+    }
+
+    private void SaveGame(Dictionary<string, object>? locationSpecificData = null)
+    {
+        SaveGameManager.SaveGame("default", _currentLocation.LocationId, _party, _inventory, locationSpecificData);
+        AnsiConsole.MarkupLine("[green]Game saved.[/]");
     }
 
     private void LoadGameOrStartNewGame()
