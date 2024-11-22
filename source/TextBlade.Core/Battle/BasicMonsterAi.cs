@@ -11,12 +11,12 @@ public class BasicMonsterAi
         _party = party.Where(p => p.CurrentHealth > 0).ToList();
     }
     
-    public void ProcessTurnFor(Monster monster)
+    public string ProcessTurnFor(Monster monster)
     {
-        if (!_party.Any())
+        if (_party.Count == 0)
         {
             // Wiped out, nothing to do
-            return;
+            return string.Empty;
         }
 
         var target = _party[Random.Shared.Next(0, _party.Count)];
@@ -28,5 +28,6 @@ public class BasicMonsterAi
             message += $"{target.Name} DIES! Oh no!";
         }
         Console.WriteLine(message);
+        return message; // for unit testing
     }    
 }
