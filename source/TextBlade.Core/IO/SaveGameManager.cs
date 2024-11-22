@@ -19,9 +19,7 @@ public static class SaveGameManager
             CurrentLocationId = currentLocationId,
             LocationSpecificData = locationSpecificData,
             Inventory = inventory,
-
-            Gold = 0,
-            TotalGameTimeSeconds = 0,
+            Gold = 0, // TODO: NEED. GOLD.
         };
 
         var serialized = JsonConvert.SerializeObject(saveData);
