@@ -134,16 +134,11 @@ public class Dungeon : Location
         if (!currentFloorData.Any())
         {
             monstersMessage.AppendLine("There are no monsters left.");
-            if (CurrentFloorNumber < _floorMonsters.Count - 1)
-            {
-                // TODO: goes in GetExtraMenuOptions
-                monstersMessage.AppendLine("You see stairs leading down. Type d/down/descend to go to the next floor.");
-            }
         }
         else
         {
             // TODO: f/fight goes in GetExtraMenuOptions
-            monstersMessage.AppendLine($"You see: {string.Join(", ", currentFloorData)}. Type f/fight to fight.");
+            monstersMessage.AppendLine($"You see: {string.Join(", ", currentFloorData)}.");
         }
 
         var treasureMessage = "";
@@ -153,6 +148,25 @@ public class Dungeon : Location
         }
 
         return $"You are on floor {CurrentFloorNumber + 1}. {treasureMessage}{monstersMessage}";
+    }
+
+    public override string GetExtraMenuOption()
+    {
+        var message = new StringBuilder();
+        var currentFloorData = _floorMonsters[CurrentFloorNumber];
+        if (!currentFloorData.Any())
+        {
+            if (CurrentFloorNumber < _floorMonsters.Count - 1)
+            {
+                message.AppendLine("You see stairs leading down. Type d/down/descend to go to the next floor.");
+            }
+        }
+        else
+        {
+            message.Append(" Type f/fight to fight. ");
+        }
+
+        return message.ToString();
     }
 
     override public ICommand GetCommandFor(string input)
