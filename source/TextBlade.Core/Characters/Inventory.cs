@@ -2,7 +2,7 @@ namespace TextBlade.Core.Characters;
 
 public class Inventory
 {
-    public Dictionary<string, int> ItemQuantities = new();
+    public Dictionary<string, int> ItemQuantities { get; set; } = new();
 
     public bool Has(string item)
     {
@@ -13,12 +13,12 @@ public class Inventory
     {
         if (string.IsNullOrWhiteSpace(item))
         {
-            throw new ArgumentException(nameof(item));
+            throw new ArgumentException("Please specify a non-empty item", nameof(item));
         }
 
         if (quantity <= 0)
         {
-            throw new ArgumentException(nameof(quantity));
+            throw new ArgumentOutOfRangeException("Please specify a positive quantity,", nameof(quantity));
         }
         
         if (!ItemQuantities.ContainsKey(item))
@@ -33,24 +33,24 @@ public class Inventory
     {
         if (string.IsNullOrWhiteSpace(item))
         {
-            throw new ArgumentException(nameof(item));
+            throw new ArgumentException("Please specify a non-empty item name", nameof(item));
         }
 
         if (quantity <= 0)
         {
-            throw new ArgumentException(nameof(quantity));
+            throw new ArgumentOutOfRangeException("Please specify a positive quantity", nameof(quantity));
         }
 
         if (!ItemQuantities.ContainsKey(item))
         {
-            throw new ArgumentException($"Can't remove {item}, we don't have any.");
+            throw new ArgumentException($"Can't remove {item}, we don't have any.", nameof(item));
         }
         else
         {
             var existingQuantity = ItemQuantities[item];
             if (existingQuantity < quantity)
             {
-                throw new ArgumentException($"Can't remove {quantity} of {item}, we only have {existingQuantity}.");
+                throw new ArgumentOutOfRangeException($"Can't remove {quantity} of {item}, we only have {existingQuantity}.", nameof(quantity));
             }
 
             ItemQuantities[item] -= quantity;
