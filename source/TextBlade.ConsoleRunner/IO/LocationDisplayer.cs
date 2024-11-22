@@ -26,7 +26,7 @@ public static class LocationDisplayer
         var extaDescription = currentLocation.GetExtraDescription();
         if (extaDescription != null)
         {
-            AnsiConsole.MarkupLine(extaDescription);
+            AnsiConsole.MarkupLine($"[#aae]{extaDescription}[/]");
         }
 
         AnsiConsole.MarkupLine($"You can go to [{Colours.Highlight}]{currentLocation.LinkedLocations.Count}[/] places:");
@@ -37,10 +37,11 @@ public static class LocationDisplayer
             i++;
             Console.WriteLine($"    {i}) {location.Description}");
         }
+
         var extraOption = currentLocation.GetExtraMenuOption();
         if (extraOption != null)
         {
-            AnsiConsole.MarkupLine(extraOption);
+            AnsiConsole.MarkupLine($"[{Colours.Command}]{extraOption}[/]");
         }
     }
 
