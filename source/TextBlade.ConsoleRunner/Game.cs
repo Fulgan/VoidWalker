@@ -17,11 +17,13 @@ public class Game : IGame
 {
     // Don't kill the messenger. I swear, it's bad enough this only works on Windows.
     private const string SupportedAudioExtension = "wav";
+    private const int AutoSaveIntervalMinutes = 1;
 
     private Location _currentLocation = null!;
     private bool _isRunning = true;
     private List<Character> _party = new();
     private Inventory _inventory = new();
+    private DateTime _lastSaveOn = DateTime.Now;
 
     // TODO: investigate something cross-platform with minimal OS-specific dependencies.
     // NAudio, System.Windows.Extensions, etc. are all Windows-only. Sigh.
@@ -43,6 +45,7 @@ public class Game : IGame
     {
         _currentLocation = location;
         PlayBackgroundAudio();
+        AutoSaveIfItsBeenAWhile();
     }
 
     public void Run()
@@ -167,5 +170,15 @@ public class Game : IGame
 
         _backgroundAudioPlayer.SoundLocation = Path.Join("Content", "Audio", $"{_currentLocation.BackgroundAudio}.{SupportedAudioExtension}");
         _backgroundAudioPlayer.Load();
+    }
+
+    private void AutoSaveIfItsBeenAWhile()
+    {
+        var elapsed = DateTime.Now - _lastSaveOn;
+        if (elapsed.TotalMinutes >= AutoSaveIntervalMinutes)
+        {
+            _lastSaveOn = DateTime.Now;
+            SaveGame();
+        }
     }
 }
