@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using NUnit.Framework;
 using TextBlade.Core.Characters;
+using TextBlade.Core.Commands;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Tests.Locations;
@@ -271,6 +272,73 @@ public class DungeonTests
 
         // Assert
         Assert.That(actual, Does.Contain("fight"));
+    }
+
+    [Test]
+    [TestCase("f")]
+    [TestCase("fight")]
+    public void GetCommandFor_ReturnsFightCommand(string command)
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+
+        // Act
+        var actual = dungeon.GetCommandFor(command);
+
+        // Assert
+        Assert.That(actual, Is.InstanceOf<FightCommand>());
+    }
+
+    [Test]
+    [TestCase("d")]
+    [TestCase("down")]
+    [TestCase("descend")]
+    public void GetCommandFor_IncrementsFloorNumber_IfYouCanDescend(string command)
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+        dungeon.SetState(0, true);
+
+        // Act
+        dungeon.GetCommandFor(command);
+
+        // Assert
+        Assert.That(dungeon.CurrentFloorNumber, Is.EqualTo(1)); // base 0
+    }
+
+    [Test]
+    [TestCase("d")]
+    [TestCase("down")]
+    [TestCase("descend")]
+    public void GetCommandFor_ReturnsDoNothingCommandForDescend_IfThereAreMonsters(string command)
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+
+        // Act
+        var actual = dungeon.GetCommandFor(command);
+
+        // Assert
+        Assert.That(dungeon.CurrentFloorNumber, Is.EqualTo(0));
+        Assert.That(actual, Is.InstanceOf<DoNothingCommand>());
+    }
+
+    [Test]
+    [TestCase("d")]
+    [TestCase("down")]
+    [TestCase("descend")]
+    public void GetCommandFor_ReturnsDoNothingCommandForDescend_IfItsTheBottomFloor(string command)
+    {
+        // Arrange
+        var dungeon = CreateDungeon(1);
+        dungeon.SetState(0, true);
+
+        // Act
+        var actual = dungeon.GetCommandFor(command);
+
+        // Assert
+        Assert.That(dungeon.CurrentFloorNumber, Is.EqualTo(0));
+        Assert.That(actual, Is.InstanceOf<DoNothingCommand>());
     }
 
 
