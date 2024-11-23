@@ -33,6 +33,12 @@ public class Monster
         
         var damage = Math.Max(0, attack - blocked);
         target.CurrentHealth -= damage;
+        
+        if (target.CurrentHealth < 0)
+        {
+            target.CurrentHealth = 0;
+        }
+
         return damage;
     }
 }
