@@ -38,7 +38,7 @@ public static class LocationDisplayer
             Console.WriteLine($"    {i}) {location.Description}");
         }
 
-        var extraOption = currentLocation.GetExtraMenuOption();
+        var extraOption = currentLocation.GetExtraMenuOptions();
         if (extraOption != null)
         {
             AnsiConsole.MarkupLine($"[{Colours.Command}]{extraOption}[/]");

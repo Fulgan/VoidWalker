@@ -26,7 +26,7 @@ public class Location : BaseLocation
         return string.Empty;
     }
 
-    public virtual string GetExtraMenuOption()
+    public virtual string GetExtraMenuOptions()
     {
         // Override for stuff like "type f/fight to fight"
         return string.Empty;

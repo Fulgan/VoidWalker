@@ -131,13 +131,12 @@ public class Dungeon : Location
     {
        var currentFloorData = _floorMonsters[CurrentFloorNumber];
         var monstersMessage = new StringBuilder();
-        if (!currentFloorData.Any())
+        if (currentFloorData.Count == 0)
         {
             monstersMessage.AppendLine("There are no monsters left.");
         }
         else
         {
-            // TODO: f/fight goes in GetExtraMenuOptions
             monstersMessage.AppendLine($"You see: {string.Join(", ", currentFloorData)}.");
         }
 
@@ -150,11 +149,11 @@ public class Dungeon : Location
         return $"You are on floor {CurrentFloorNumber + 1}. {treasureMessage}{monstersMessage}";
     }
 
-    public override string GetExtraMenuOption()
+    public override string GetExtraMenuOptions()
     {
         var message = new StringBuilder();
         var currentFloorData = _floorMonsters[CurrentFloorNumber];
-        if (!currentFloorData.Any())
+        if (currentFloorData.Count == 0)
         {
             if (CurrentFloorNumber < _floorMonsters.Count - 1)
             {

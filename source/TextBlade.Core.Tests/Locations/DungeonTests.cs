@@ -1,4 +1,6 @@
+using System.Runtime.CompilerServices;
 using NUnit.Framework;
+using TextBlade.Core.Characters;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Tests.Locations;
@@ -30,7 +32,7 @@ public class DungeonTests
     {
         // Arrange/Act
         int numFloors = 5;
-        var dungeon = new DungeonStub("Real Dungeon #1", "It's real I swear", numFloors, ["Blue Slime", "Green Slime", "Red Slime"], "Giant Slime");
+        var dungeon = CreateDungeon(numFloors);
 
         // Assert
         for (int i = 0; i < numFloors; i++)
@@ -46,7 +48,7 @@ public class DungeonTests
     {
         // Arrange/Act
         int numFloors = 5;
-        var dungeon = new DungeonStub("Real Dungeon #1", "It's real I swear", numFloors, ["Blue Slime", "Green Slime", "Red Slime"], "Giant Slime");
+        var dungeon = CreateDungeon(numFloors);
 
         // Assert
         Assert.That(dungeon.GetMonstersOnFloor(0).All(a => a == "Blue Slime" || a == "Green Slime"));
@@ -54,6 +56,60 @@ public class DungeonTests
         // Everyone's a final slime, except for the big boss
         Assert.That(finalFloorMonsters.Count(a => a == "Red Slime"), Is.EqualTo(finalFloorMonsters.Count - 1));
         Assert.That(finalFloorMonsters, Does.Contain("Giant Slime"));
+    }
+
+    [Test]
+    public void OnVictory_ClearsCurrentFloorMonsters()
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+
+        // Act
+        dungeon.OnVictory(new Inventory());
+
+        // Assert
+        Assert.That(dungeon.GetMonstersOnFloor(0).Count, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void OnVictory_GrantsLoot_OnLootFloors()
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+        var expectedLoot = new List<string>
+        {
+            "Iron Sword",
+            "Iron Shield",
+            "Iron Shield"
+        };
+
+        dungeon.FloorLoot["B1"] = expectedLoot;
+        var inventory = new Inventory();
+
+        // Act
+        dungeon.OnVictory(inventory);
+
+        // Assert
+        Assert.That(inventory.ItemQuantities.Keys.Count, Is.EqualTo(2));
+        Assert.That(inventory.Has("Iron Sword"));
+        Assert.That(inventory.Has("Iron Shield"));
+
+        var totalItems = inventory.ItemQuantities.Sum(kvp => kvp.Value);
+        Assert.That(totalItems, Is.EqualTo(3));
+    }
+
+    [Test]
+    public void OnVictory_DoesNotGrantsLoot_OnNonLootFloors()
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+        var inventory = new Inventory();
+
+        // Act
+        dungeon.OnVictory(inventory);
+
+        // Assert
+        Assert.That(inventory.ItemQuantities.Keys.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -116,6 +172,112 @@ public class DungeonTests
         Assert.That(dungeon.GetExtraDescription(), Does.Not.Contain("Mole"));
         // Didn't clear other floors
         Assert.That(dungeon.FloorLoot[$"B{floorNumber + 2}"], Is.Not.Empty);
+    }
+
+    [Test]
+    public void GetExtraDescription_ListsMonsters_IfThereAreAny()
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+        
+        // Act
+        var actual = dungeon.GetExtraDescription();
+
+        // Assert
+        Assert.That(actual, Does.Contain("Blue Slime"));
+    }
+
+    [Test]
+    public void GetExtraDescription_TellsYouThereAreNoMonsters_IfCleared()
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+        dungeon.SetState(0, true);
+        
+        // Act
+        var actual = dungeon.GetExtraDescription();
+
+        // Assert
+        Assert.That(actual, Does.Contain("no monsters"));
+    }
+
+    [Test]
+    public void GetExtraDescription_HintsAtTreasure_IfThereIsAny()
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+        dungeon.FloorLoot["B1"] = new List<string>
+        {
+            "100 gold",
+            "A gilded bone"
+        };
+        
+        // Act
+        var actual = dungeon.GetExtraDescription();
+
+        // Assert
+        Assert.That(actual, Does.Contain("something shiny"));
+    }
+
+    [Test]
+    public void GetExtraDescription_TellsYouTheCurrentFloorNumber()
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+        
+        // Act
+        var actual = dungeon.GetExtraDescription();
+
+        // Assert
+        Assert.That(actual, Does.Contain("You are on floor 1"));
+    }
+
+    [Test]
+    public void GetExtraMenuOptions_TellsYouYouCanDescend_IfTheFloorIsEmpty()
+    {
+        // Arrange
+        var dungeon = CreateDungeon();
+        dungeon.SetState(0, true);
+
+        // Act
+        var actual = dungeon.GetExtraMenuOptions();
+
+        // Assert
+        Assert.That(actual, Does.Contain("go to the next floor"));
+    }
+
+    [Test]
+    public void GetExtraMenuOptions_DoesNotTellYouYouCanDescend_IfTheFloorIsEmptyButItsTheLastFloor()
+    {
+        // Arrange
+        var dungeon = CreateDungeon(1);
+        dungeon.SetState(0, true);
+
+        // Act
+        var actual = dungeon.GetExtraMenuOptions();
+
+        // Assert
+        Assert.That(actual, Does.Not.Contain("go to the next floor"));
+    }
+
+    [Test]
+    public void GetExtraMenuOptions_TellsYouToFight_IfFloorIsNotEmpty()
+    {
+        // Arrange
+        var dungeon = CreateDungeon(1);
+
+        // Act
+        var actual = dungeon.GetExtraMenuOptions();
+
+        // Assert
+        Assert.That(actual, Does.Contain("fight"));
+    }
+
+
+    private DungeonStub CreateDungeon(int numFloors = 5)
+    {
+        var dungeon = new DungeonStub("Real Dungeon #1", "It's real I swear", numFloors, ["Blue Slime", "Green Slime", "Red Slime"], "Giant Slime");
+        return dungeon;
     }
 
     class DungeonStub : Dungeon

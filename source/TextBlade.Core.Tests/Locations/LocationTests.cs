@@ -40,7 +40,7 @@ public class LocationTests
         var location = new Location("A", "B");
 
         // Act
-        var actual = location.GetExtraMenuOption();
+        var actual = location.GetExtraMenuOptions();
 
         // Assert
         Assert.That(actual, Is.Empty);
