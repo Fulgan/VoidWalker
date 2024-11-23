@@ -1,0 +1,8 @@
+{
+    "Goblin":
+    {
+        "Health": 50,
+        "Strength": 20,
+        "Toughness": 3
+    }
+}
