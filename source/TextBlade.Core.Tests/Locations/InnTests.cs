@@ -8,7 +8,6 @@ namespace TextBlade.Core.Tests.Locations;
 public class InnTests
 {
     [Test]
-    [TestCase("S")]
     [TestCase("sS")]
     [TestCase("Ss")]
     [TestCase("ss")]
@@ -32,13 +31,15 @@ public class InnTests
     }
 
     [Test]
-    public void GetCommandFor_ReturnsInnCommand_IfInputIsS()
+    [TestCase("s")]
+    [TestCase("S")]
+    public void GetCommandFor_ReturnsInnCommand_IfInputIsS(string s)
     {
         // Arrange
         var inn = new Inn("The Inn of Fluffy Minnows", "An odd fish-shaped white building", string.Empty);
         
         // Act
-        var actual = inn.GetCommandFor("s");
+        var actual = inn.GetCommandFor(s);
 
         // Assert
         Assert.That(actual, Is.InstanceOf<SleepAtInnCommand>());

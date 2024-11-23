@@ -13,7 +13,7 @@ public class ShowCreditsCommandTests
         var command = new ShowCreditsCommand();
         
         // Act
-        var actual = command.Execute(null, null);
+        var actual = command.Execute(null, null).Single();
 
         // Assert
         Assert.That(actual, Does.Contain("TextBlade"));
