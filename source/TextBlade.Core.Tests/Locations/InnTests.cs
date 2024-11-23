@@ -1,0 +1,46 @@
+using NUnit.Framework;
+using TextBlade.Core.Commands;
+using TextBlade.Core.Locations;
+
+namespace TextBlade.Core.Tests.Locations;
+
+[TestFixture]
+public class InnTests
+{
+    [Test]
+    [TestCase("S")]
+    [TestCase("sS")]
+    [TestCase("Ss")]
+    [TestCase("ss")]
+    [TestCase("SS")]
+    [TestCase("sleep")]
+    [TestCase("meditate")]
+    [TestCase("you tell me")]
+    [TestCase("q")]
+    [TestCase("1")]
+    [TestCase("!")]
+    public void GetCommandFor_ReturnsDoNothingCommand(string input)
+    {
+        // Arrange
+        var inn = new Inn("The Inn of Fluffy Pillows", "An odd pillow-shaped white building", string.Empty);
+        
+        // Act
+        var actual = inn.GetCommandFor(input);
+
+        // Assert
+        Assert.That(actual, Is.InstanceOf<DoNothingCommand>());
+    }
+
+    [Test]
+    public void GetCommandFor_ReturnsInnCommand_IfInputIsS()
+    {
+        // Arrange
+        var inn = new Inn("The Inn of Fluffy Minnows", "An odd fish-shaped white building", string.Empty);
+        
+        // Act
+        var actual = inn.GetCommandFor("s");
+
+        // Assert
+        Assert.That(actual, Is.InstanceOf<SleepAtInnCommand>());
+    }
+}

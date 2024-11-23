@@ -27,9 +27,4 @@ public class Character
     {
         this.IsDefending = true;
     }
-
-    internal void Damage(int damage)
-    {
-        throw new NotImplementedException();
-    }
 }

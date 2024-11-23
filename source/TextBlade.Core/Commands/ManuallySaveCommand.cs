@@ -12,6 +12,6 @@ public class ManuallySaveCommand : ICommand
     public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         // This stinks.
-        return [];
+        return Array.Empty<string>();
     }
 }
