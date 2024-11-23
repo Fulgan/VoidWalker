@@ -8,13 +8,13 @@ public class Dungeon : Location
 {
     // Simple but complex. Can be "Iron Shield," can be listed twice to give me two, can be "100 Gold," etc.
     // Floor (e.g. B2) => list of lootz
-    public Dictionary<string, List<string>> FloorLoot = [];
+    public Dictionary<string, List<string>> FloorLoot { get; set; } = [];
     public int CurrentFloorNumber { get; private set; } = 0; // base 0. Setter = save game loader
 
     // It's a list, one entry per floor.
     // Each entry is a list of monsters and other stuff on that floor.
     // I'm sure I'll put treasure and stuff in here eventually.
-    private readonly List<List<string>> _floorMonsters = [];
+    protected readonly List<List<string>> _floorMonsters = [];
     
     private string _currentFloorLootKey => $"B{CurrentFloorNumber + 1}"; 
 
@@ -23,10 +23,10 @@ public class Dungeon : Location
     {
         if (numFloors <= 0)
         {
-            throw new ArgumentException(nameof(numFloors));
+            throw new ArgumentOutOfRangeException(nameof(numFloors));
         }
 
-        if (!monsters.Any())
+        if (monsters.Count == 0)
         {
             throw new ArgumentException(nameof(monsters));
         }
