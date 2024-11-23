@@ -6,12 +6,17 @@ namespace TextBlade.Core.Game;
 public class GameSwitches
 {
     // Singleton-ish. The only/current instance.
-    public static GameSwitches Switches { get; set; } = new();
+    public static GameSwitches? Switches { get; set; } = null!;
 
     // The actual data. Public for serialization purposes... This smells...
     public Dictionary<string, bool> Data { get; } = new();
 
-    public bool HasSwitch(string switchName)
+    public GameSwitches()
+    {
+        GameSwitches.Switches = this;
+    }
+
+    public bool Has(string switchName)
     {
         return Data.ContainsKey(switchName);
     }
@@ -23,11 +28,12 @@ public class GameSwitches
 
     public bool Get(string switchName)
     {
-        if (!Data.ContainsKey(switchName))
+        bool value;
+        if (!Data.TryGetValue(switchName, out value))
         {
-            throw new ArgumentNullException(switchName);
+            throw new ArgumentException("Switch doesn't exist", nameof(switchName));
         }
 
-        return Data[switchName];
+        return value;
     }
 }
