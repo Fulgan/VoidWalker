@@ -13,11 +13,11 @@ public class QuitGameCommand : ICommand
         if (input.KeyChar != 'y' && input.KeyChar != 'Y')
         {
             Console.WriteLine("Cancelling ...");
-            return new string[0];
+            return Array.Empty<string>();
         }
 
         Console.WriteLine("Bye!");
         Environment.Exit(0);
-        return null; // Makes compiler go brrrr
+        return null; // Unreachable code. Makes compiler go brrrr.
     }
 }

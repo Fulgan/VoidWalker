@@ -7,6 +7,6 @@ public class DoNothingCommand : ICommand
 {
     public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
-        return new string[0];
+        return Array.Empty<string>();
     }
 }
