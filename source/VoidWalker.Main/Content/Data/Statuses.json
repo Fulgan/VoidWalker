@@ -1,0 +1,11 @@
+// I don't like this. But I don't see an easy way around this, either.
+{
+    "Bleed":
+    {
+        "Damage Per Round": 20 // fixed
+    },
+    "Poison":
+    {
+        "Damage Per Round": 0.05 // 5%
+    }
+}
