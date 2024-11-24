@@ -1,4 +1,3 @@
-using TextBlade.ConsoleRunner;
 using TextBlade.Core.Game;
 using TextBlade.Core.Locations;
 using TextBlade.Core.UserCode;

@@ -18,12 +18,12 @@
   
   <ItemGroup>
     <Content Include="Content/**/*">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Include="Code\\Locations\ThroneRoom.cs" />
+    <Compile Include="Code/**/*" />
   </ItemGroup>
 
   <ItemGroup>

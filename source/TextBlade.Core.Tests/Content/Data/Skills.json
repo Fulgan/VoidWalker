@@ -1,0 +1,45 @@
+{
+    "DoubleStrike":
+    {
+        "DamageMultiplier": 2.0,
+        "Cost": 10
+    },
+    "Whirlwind":
+    {
+        "DamageMultiplier": 1.25,
+        "Cost": 20,
+        "Target":"All"
+    },
+    "Rend":
+    {
+        "DamageMultiplier": 0.75,
+        "Cost": 15,
+        "StatusInflicted":"Bleed",
+        "StatusStacks": 5
+    },
+    "Fire α":
+    {
+        "DamageMultiplier": 1.5,
+        "Cost": 7,
+        "DamageType":"Fire"
+    },
+    "Ice α":
+    {
+        "DamageMultiplier": 1.5,
+        "Cost": 7,
+        "DamageType":"Ice"
+    },
+    "Poison":
+    {
+        "DamageMultiplier": 0,
+        "Cost": 10,
+        "StatusInflicted":"Poison",
+        "StatusStacks": 5
+    },
+    "Heal":
+    {
+        "DamageMultiplier":-0.5,
+        "Cost": 5,
+        "Target":"Character"
+    }
+}

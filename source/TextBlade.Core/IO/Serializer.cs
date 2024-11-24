@@ -33,15 +33,20 @@ public static class Serializer
         foreach (var member in partyMembers)
         {
             var character = JsonConvert.DeserializeObject<Character>(member.ToString());
+            toReturn.Add(character);
 
             // Convert an array of skill names, into an array of Skill instances.
+            if (member["SkillNames"] == null)
+            {
+                // You don't want skills...? Your loss, buddy...
+                continue;
+            }
+
             foreach (var jsonToken in member["SkillNames"])
             {
                 var skill = DeserializeSkill(allSkillData, jsonToken);
                 character.Skills.Add(skill);
             }
-            
-            toReturn.Add(character);
         }
         return toReturn;
     }
