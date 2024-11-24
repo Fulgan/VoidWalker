@@ -1,46 +1,45 @@
 {
-    "temp": ["Double Strike", "Whirlwind", "Rend", "Fire", "Ice", "Poison", "Heal"],
-    "Double Strike":
+    "DoubleStrike":
     {
-        "Damage Multiplier": 2.0,
+        "DamageMultiplier": 2.0,
         "Cost": 10
     },
     "Whirlwind":
     {
-        "Damage Multiplier": 1.25,
+        "DamageMultiplier": 1.25,
         "Cost": 20,
-        "Target": "All"
+        "Target":"All"
     },
     "Rend":
     {
-        "Damage Multiplier": 0.75,
+        "DamageMultiplier": 0.75,
         "Cost": 15,
-        "Status": "Bleed",
-        "Status Stacks": 5
+        "StatusInflicted":"Bleed",
+        "StatusStacks": 5
     },
     "Fire α":
     {
-        "Damage Multiplier": 1.5,
+        "DamageMultiplier": 1.5,
         "Cost": 7,
-        "Damage Type": "Fire"
+        "DamageType":"Fire"
     },
     "Ice α":
     {
-        "Damage Multiplier": 1.5,
+        "DamageMultiplier": 1.5,
         "Cost": 7,
-        "Damage Type": "Ice"
+        "DamageType":"Ice"
     },
     "Poison":
     {
-        "Damage Multiplier": 0,
+        "DamageMultiplier": 0,
         "Cost": 10,
-        "Status": "Poison",
-        "Status Stacks": 5
+        "StatusInflicted":"Poison",
+        "StatusStacks": 5
     },
     "Heal":
     {
-        "Damage Multiplier": -0.5,
+        "DamageMultiplier":-0.5,
         "Cost": 5,
-        "Target": "Character"
+        "Target":"Character"
     }
 }

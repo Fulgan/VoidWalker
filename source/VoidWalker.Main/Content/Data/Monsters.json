@@ -1,5 +1,5 @@
 {
-    // North seaside cave
+    "comment1": "North seaside cave",
     "Goblin":
     {
         "Health": 50,
@@ -35,7 +35,8 @@
         "Toughness": 10,
         "Weakness": "Bleed"
     },
-    // Da Boss of North Seaside Cave
+    
+    "comment2": "Da Boss of North Seaside Cave",
     "Langosta Prime":
     {
         "Health": 350,

@@ -1,11 +1,14 @@
-// I don't like this. But I don't see an easy way around this, either.
 {
+    "comment1": "// I don't like this. But I don't see an easy way around this, either.",
+    
     "Bleed":
     {
-        "Damage Per Round": 20 // fixed
+        "Damage Per Round": 20,
+        "comment2": "// fixed damage"
     },
     "Poison":
     {
-        "Damage Per Round": 0.05 // 5%
+        "Damage Per Round": 0.05,
+        "comment3": "// 5% damage"
     }
 }
