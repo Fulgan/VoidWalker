@@ -1,8 +1,0 @@
-{
-    "GameName": "Void Walker",
-    "StartingLocationId": "Locations/KingsVale/KingsVale",
-    "StartingParty": [
-        { "Name": "Aisha", "CurrentHealth": 100, "TotalHealth": 100, "Strength": 25, "Toughness": 10, "Skills": ["Double Strike", "Whirlwind", "Rend"] },
-        { "Name": "Nusaybah", "CurrentHealth": 75, "TotalHealth": 75, "Strength": 35, "Toughness": 8, "Skills": ["Fire", "Ice", "Poison", "Heal"] }
-    ]
-}
