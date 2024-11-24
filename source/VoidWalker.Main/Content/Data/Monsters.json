@@ -4,37 +4,43 @@
     {
         "Health": 50,
         "Strength": 20,
-        "Toughness": 3
+        "Toughness": 3,
+        "Weakness": "Spear"
     },
     "Spider":
     {
         "Health": 60,
         "Strength": 20,
-        "Toughness": 5
+        "Toughness": 5,
+        "Weakness": "Fire"
     },
     "Gargoyle":
     {
         "Health": 90,
         "Strength": 15,
-        "Toughness": 5
+        "Toughness": 5,
+        "Weakness": "Ice"
     },
     "Troll":
     {
         "Health": 150,
         "Strength": 25,
-        "Toughness": 7
+        "Toughness": 7,
+        "Weakness": "Poison"
     },
     "Ogre":
     {
         "Health": 200,
         "Strength": 35,
-        "Toughness": 10
+        "Toughness": 10,
+        "Weakness": "Bleed"
     },
     // Da Boss of North Seaside Cave
     "Langosta Prime":
     {
         "Health": 350,
         "Strength": 45,
-        "Toughness": 15
+        "Toughness": 15,
+        "Weakness": "Fire"
     }
 }
