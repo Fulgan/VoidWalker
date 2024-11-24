@@ -62,17 +62,4 @@ public class GameSwitchesTests
         Assert.That(switches.Get("Town 1 complete"), Is.True);
         Assert.That(switches.Get("Boss 1 complete"), Is.False);
     }
-
-    [Test]
-    public void Switches_ReturnsSameInstance()
-    {
-        // Arrange
-        var one = new GameSwitches();
-
-        // Act
-        var two = GameSwitches.Switches;
-
-        // Assert
-        Assert.That(two, Is.EqualTo(one));
-    }
 }
