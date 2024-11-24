@@ -26,6 +26,8 @@ public class Character
         this.IsDefending = false;
     }
 
+    // Attack/damage logic is centralized in the Monster class
+
     internal void Defend()
     {
         this.IsDefending = true;

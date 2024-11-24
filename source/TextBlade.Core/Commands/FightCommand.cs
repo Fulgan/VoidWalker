@@ -52,10 +52,16 @@ public class FightCommand : ICommand, IBattleCommand
         foreach (var name in monsterNames)
         {
             var data = _allMonstersData[name];
-            var health = int.Parse(data["Health"].ToString());
-            var strength = int.Parse(data["Strength"].ToString());
-            var toughness = int.Parse(data["Toughness"].ToString());
-            var monster = new Monster(name, health, strength, toughness);
+            if (data == null)
+            {
+                throw new ArgumentException($"Can't find monster data for {name}");
+            }
+
+            var health = data.Value<int>("Health");
+            var strength = data.Value<int>("Strength");
+            var toughness = data.Value<int>("Toughness");
+            var weakness = data.Value<string?>("Weakness") ?? string.Empty;
+            var monster = new Monster(name, health, strength, toughness, weakness);
             _monsters.Add(monster);
         }
     }

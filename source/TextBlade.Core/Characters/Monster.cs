@@ -7,14 +7,16 @@ public class Monster
     public int CurrentHealth { get; private set; } 
     public int Strength { get; private set; } 
     public int Toughness { get; private set; }
+    public string Weakness { get; private set; } = string.Empty;
     
-    public Monster(string name, int health, int strength, int toughness)
+    public Monster(string name, int health, int strength, int toughness, string weakness = "")
     {
         this.Name = name;
         this.CurrentHealth = health;
         this.TotalHealth = health;
         this.Strength = strength;
         this.Toughness = toughness;
+        this.Weakness = weakness;
     }
 
     public void Damage(int amount)
