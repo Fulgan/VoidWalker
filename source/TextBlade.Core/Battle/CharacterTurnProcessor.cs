@@ -16,11 +16,13 @@ public class CharacterTurnProcessor
     {
         Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [s]kill, or [d]efend");
         var input = Console.ReadKey();
+        int target; // not going to work for healing skills
+
         switch(input.KeyChar)
         {
             case 'a':
             case 'A':
-                var target = PickTarget();
+                target = PickTarget();
                 Attack(character, target);
                 return;
             case 'd':
@@ -30,6 +32,12 @@ public class CharacterTurnProcessor
                 return;
             case 's':
             case 'S':
+                // Assumes you get back a valid skill: something you have SP for.
+                var skill = PickSkillFor(character);
+                target = PickTarget();
+                // Depending on the skill, the target is an instance of Character or Monster.
+                // For now, assume monster.
+                SkillApplier.Apply(character, skill, _monsters[target - 1]);
                 return;
         }
     }
@@ -45,6 +53,19 @@ public class CharacterTurnProcessor
 
         var target = int.Parse(Console.ReadKey().KeyChar.ToString());
         return target;
+    }
+
+    private static Skill PickSkillFor(Character character)
+    {
+        Console.WriteLine("Pick a skill:");
+        for (int i = 0; i < character.Skills.Count; i++)
+        {
+            Console.WriteLine($"    {i+1}: {character.SkillNames[i]}");
+        }
+
+        var target = int.Parse(Console.ReadKey().KeyChar.ToString());
+        // Assume target is valid
+        return character.Skills[target - 1];
     }
 
     private void Attack(Character character, int target)

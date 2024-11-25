@@ -8,6 +8,7 @@ public class Monster
     public int Strength { get; private set; } 
     public int Toughness { get; private set; }
     public string Weakness { get; private set; } = string.Empty;
+    public Dictionary<string, int> StatusStacks { get; private set; } = new();
     
     public Monster(string name, int health, int strength, int toughness, string weakness = "")
     {
@@ -42,5 +43,15 @@ public class Monster
         }
 
         return damage;
+    }
+
+    internal void InflictStatus(string status, int stacks)
+    {
+        if (!StatusStacks.ContainsKey(status))
+        {
+            StatusStacks[status] = 0;
+        }
+
+        StatusStacks[status] += stacks;
     }
 }
