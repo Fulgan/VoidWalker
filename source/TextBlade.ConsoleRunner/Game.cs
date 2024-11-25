@@ -97,7 +97,7 @@ public class Game : IGame
             {
                 foreach (var character in _party)
                 {
-                    character.CurrentHealth = 1
+                    character.Revive();
                 }
             }
             

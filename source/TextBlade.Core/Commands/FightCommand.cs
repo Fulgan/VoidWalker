@@ -104,6 +104,7 @@ public class FightCommand : ICommand, IBattleCommand
             }
 
             party.ForEach(p => p.OnRoundComplete());
+            _monsters.ForEach(m => m.OnRoundComplete());
         }
 
         if (isPartyWipedOut())

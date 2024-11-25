@@ -19,7 +19,7 @@ public class SleepAtInnCommand : ICommand
 
         foreach (var character in party)
         {
-            character.CurrentHealth = character.TotalHealth;
+            character.FullyHeal();
         }
 
         yield return $"You sleep at the inn. All party members have recovered to [{Colours.Highlight}]full health[/]!";
