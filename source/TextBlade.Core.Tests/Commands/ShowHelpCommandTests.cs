@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using TextBlade.Core.Commands;
-using TextBlade.Core.Tests.TestHelpers;
 
 namespace TextBlade.Core.Tests.Commands;
 
@@ -8,10 +7,10 @@ namespace TextBlade.Core.Tests.Commands;
 public class ShowHelpCommandTests
 {
     [Test]
-    public async Task Execute_ReturnsABunchOfCommands()
+    public void Execute_ReturnsABunchOfCommands()
     {
         // Arrange/Act
-        var actuals = await AsyncToList.ToList(new ShowHelpCommand().Execute(null, null));
+        var actuals = new ShowHelpCommand().Execute(null, null);
 
         // Assert
         // Check a bunch of commands

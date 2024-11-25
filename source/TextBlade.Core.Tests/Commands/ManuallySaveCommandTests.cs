@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using TextBlade.Core.Commands;
-using TextBlade.Core.Tests.TestHelpers;
 
 namespace TextBlade.Core.Tests.Commands;
 
@@ -11,9 +10,9 @@ public class ManuallySaveCommandTests
 
 
     [Test]
-    public async Task Execute_DoesNothing_LiterallyAsync()
+    public void Execute_DoesNothing_LiterallyAsync()
     {
         // Arrange/Act/Assert
-        Assert.That(await AsyncToList.ToList(new ManuallySaveCommand().Execute(null, null)), Is.EqualTo(EmptyStringArray));
+        Assert.That(new ManuallySaveCommand().Execute(null, null), Is.EqualTo(EmptyStringArray));
     }
 }

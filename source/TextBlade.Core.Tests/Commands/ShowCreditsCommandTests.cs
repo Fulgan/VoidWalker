@@ -1,7 +1,5 @@
-using System.Runtime.CompilerServices;
 using NUnit.Framework;
 using TextBlade.Core.Commands;
-using TextBlade.Core.Tests.TestHelpers;
 
 namespace TextBlade.Core.Tests.Commands;
 
@@ -9,13 +7,13 @@ namespace TextBlade.Core.Tests.Commands;
 public class ShowCreditsCommandTests
 {
     [Test]
-    public async Task ShowCreditsCommand_ReturnsTextBladeMessage()
+    public void ShowCreditsCommand_ReturnsTextBladeMessage()
     {
         // Arrange
         var command = new ShowCreditsCommand();
         
         // Act
-        var actuals = await AsyncToList.ToList(command.Execute(null, null));
+        var actuals = command.Execute(null, null);
         var actual = actuals.Single();
 
         // Assert

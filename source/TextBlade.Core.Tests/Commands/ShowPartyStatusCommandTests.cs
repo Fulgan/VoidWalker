@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
-using TextBlade.Core.Tests.TestHelpers;
 
 namespace TextBlade.Core.Tests.Commands;
 
@@ -9,20 +8,19 @@ namespace TextBlade.Core.Tests.Commands;
 public class ShowPartyStatusCommandTests
 {
     [Test]
-    public async Task Execute_ReportsHealthPerCharacter()
+    public void Execute_ReportsHealthPerCharacter()
     {
         // Arrange
         var party = new List<Character>
         {
-            new Character("Bilal", 10, 25, 0),
-            new Character("Aisha", 103, 110, 0)
+            new Character("Bilal", 25, 0, 0) { CurrentHealth = 10 },
+            new Character("Aisha", 110, 0, 0) { CurrentHealth = 103 },
         };
 
         var command = new ShowPartyStatusCommand();
 
         // Act
-        var messages = command.Execute(null, party);
-        var actual = await AsyncToList.ToList(messages);
+        var actual = command.Execute(null, party);
 
         // Assert
         Assert.That(actual.Any(a => a.StartsWith("Party status")));

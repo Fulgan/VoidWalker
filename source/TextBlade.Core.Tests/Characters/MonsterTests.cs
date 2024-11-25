@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using TextBlade.Core.Characters;
-using TextBlade.Core.Tests.TestHelpers;
 
 namespace TextBlade.Core.Tests.Characters;
 
