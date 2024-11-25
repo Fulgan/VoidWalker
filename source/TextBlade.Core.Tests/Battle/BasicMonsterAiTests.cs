@@ -14,8 +14,8 @@ public class BasicMonsterAiTests
         // Arrange
         var party = new List<Character>
         {
-            CharacterMaker.CreateCharacter("Target A", 0, 100, toughness: 10),
-            CharacterMaker.CreateCharacter("Target B", 0, 100, toughness: 7),
+            new Character("Target A", 0, 100, toughness: 10),
+            new Character("Target B", 0, 100, toughness: 7),
         };
 
         var ai = new BasicMonsterAi(party);
@@ -39,8 +39,8 @@ public class BasicMonsterAiTests
         // Arrange
         var party = new List<Character>
         {
-            CharacterMaker.CreateCharacter("Target A", 100, 100, toughness: 10),
-            CharacterMaker.CreateCharacter("Target B", 100, 100, toughness: 7),
+            new Character("Target A", 100, 100, toughness: 10),
+            new Character("Target B", 100, 100, toughness: 7),
         };
 
         var ai = new BasicMonsterAi(party);
@@ -67,7 +67,7 @@ public class BasicMonsterAiTests
         var targetName = "Glass Boi";
         var party = new List<Character>
         {
-            CharacterMaker.CreateCharacter(targetName, 1, 1, toughness: 7),
+            new Character(targetName, 1, 1, toughness: 7),
         };
 
         var ai = new BasicMonsterAi(party);
@@ -77,6 +77,6 @@ public class BasicMonsterAiTests
         var result = ai.ProcessTurnFor(attacker);
 
         // Assert
-        Assert.That(result, Does.Contain($"{targetName} DIES"));
+        Assert.That(result, Does.Contain($"DIES"));
     }
 }

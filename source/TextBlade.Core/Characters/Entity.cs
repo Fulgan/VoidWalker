@@ -58,7 +58,7 @@ public abstract class Entity
                     toReturn.Add(Poisoner.Poison(this));
                     break;
                 case "burn":
-                    toReturn.Add(Pyro.Burn(this));
+                    toReturn.Add(Burner.Burn(this));
                     break;
                 default:
                     throw new InvalidOperationException($"Missing implementation for the status {statusName}");

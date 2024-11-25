@@ -14,14 +14,15 @@ public class ShowPartyStatusCommandTests
         // Arrange
         var party = new List<Character>
         {
-            CharacterMaker.CreateCharacter("Bilal", 10, 25),
-            CharacterMaker.CreateCharacter("Aisha", 103, 110)
+            new Character("Bilal", 10, 25, 0),
+            new Character("Aisha", 103, 110, 0)
         };
 
         var command = new ShowPartyStatusCommand();
 
         // Act
-        var actual = await AsyncToList.ToList(command.Execute(null, party));
+        var messages = command.Execute(null, party);
+        var actual = await AsyncToList.ToList(messages);
 
         // Assert
         Assert.That(actual.Any(a => a.StartsWith("Party status")));

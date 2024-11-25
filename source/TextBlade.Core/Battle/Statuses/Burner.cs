@@ -3,10 +3,10 @@ using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Battle.Statuses;
 
-public static class Pyro
+public static class Burner
 {
-    private const float MinimumPyroDamagePercent = 0.05f;
-    private const float MaximumPyroDamagePercent = 0.20f;
+    private const float MinimumBurnDamagePercent = 0.05f;
+    private const float MaximumBurnDamagePercent = 0.20f;
     private const int MinimumFireDamage = 10;
 
     /// <summary>
@@ -15,7 +15,7 @@ public static class Pyro
     /// </summary>
     public static string Burn(Entity e)
     {
-        var fireSpreadPercent = MaximumPyroDamagePercent - MinimumPyroDamagePercent;
+        var fireSpreadPercent = MaximumBurnDamagePercent - MinimumBurnDamagePercent;
         var firePercentDamage = Random.Shared.NextSingle() * fireSpreadPercent;
         
         var fireDamage = (int)Math.Max(MinimumFireDamage, firePercentDamage * e.CurrentHealth);

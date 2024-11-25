@@ -47,7 +47,7 @@ public class MonsterTests
     {
         // Arrange
         var monster = new Monster("Green Slime", 100, 10, 5);
-        var target = CharacterMaker.CreateCharacter("Asad", 100, 100, toughness: 7);
+        var target = new Character("Asad", 100, 100, toughness: 7);
         var expectedDamage = monster.Strength - target.Toughness;
 
         // Act
@@ -62,7 +62,7 @@ public class MonsterTests
     {
         // Arrange
         var monster = new Monster("Green Slime", 100, 10, 5);
-        var target = CharacterMaker.CreateCharacter("Asad", 100, 100, toughness: 3);
+        var target = new Character("Asad", 100, 100, toughness: 3);
         target.Defend();
 
         var expectedDamage = monster.Strength - target.Toughness;
@@ -83,7 +83,7 @@ public class MonsterTests
     {
         // Arrange
         var monster = new Monster("Orange Slime", 100, strength, 5);
-        var target = CharacterMaker.CreateCharacter("Ahmed", 100, 100, toughness: 9999);
+        var target = new Character("Ahmed", 100, 100, toughness: 9999);
 
         // Act
         monster.Attack(target);
@@ -100,7 +100,7 @@ public class MonsterTests
     {
         // Arrange
         var monster = new Monster("Orange Slime", 1000, strength, 5);
-        var target = CharacterMaker.CreateCharacter("Ahmed", 100, 100);
+        var target = new Character("Ahmed", 100, 100, 0);
 
         // Act
         monster.Attack(target);
