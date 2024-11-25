@@ -71,7 +71,7 @@ public class FightCommand : ICommand, IBattleCommand
         // Problem: we don't have access to AnsiConsole in this layer. Nor can we wait for the Game class
         // to process it, because it's an interactive battle. That ... sucks...
         var isPartyWipedOut = () => party.All(p => p.CurrentHealth <= 0);
-        var areMonstersDefeated = () => _monsters.All(m => m.CurrentHealth <= 0);
+        var areMonstersDefeated = () => _monsters.TrueForAll(m => m.CurrentHealth <= 0);
         var isBattleOver = () => isPartyWipedOut() || areMonstersDefeated();
         var characterTurnProcessor = new CharacterTurnProcessor(party, _monsters);
 

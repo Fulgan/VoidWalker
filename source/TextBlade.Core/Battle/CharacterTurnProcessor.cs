@@ -5,34 +5,36 @@ namespace TextBlade.Core.Battle;
 
 public class CharacterTurnProcessor
 {
-    private readonly List<Character> _party;
     private readonly List<Monster> _monsters;
 
     public CharacterTurnProcessor(List<Character> party, List<Monster> monsters)
     {
-        _party = party;
         _monsters = monsters;
     }
 
     internal void ProcessTurnFor(Character character)
     {
-        Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [d]efend");
+        Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [s]kill, or [d]efend");
         var input = Console.ReadKey();
         switch(input.KeyChar)
         {
             case 'a':
             case 'A':
-                PickTargetAndAttack(character);
+                var target = PickTarget();
+                Attack(character, target);
                 return;
             case 'd':
             case 'D':
                 character.Defend();
                 Console.WriteLine($"{character.Name} defends!");
                 return;
+            case 's':
+            case 'S':
+                return;
         }
     }
 
-    private void PickTargetAndAttack(Character character)
+    private int PickTarget()
     {
         Console.WriteLine("Pick a target:");
         for (int i = 0; i < _monsters.Count; i++)
@@ -42,6 +44,11 @@ public class CharacterTurnProcessor
         }
 
         var target = int.Parse(Console.ReadKey().KeyChar.ToString());
+        return target;
+    }
+
+    private void Attack(Character character, int target)
+    {
         // Assume target number is legit
         var targetMonster = _monsters[target - 1];
         var message = $"{character.Name} attacks {targetMonster.Name}! ";
