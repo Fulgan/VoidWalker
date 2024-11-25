@@ -7,6 +7,9 @@ public static class Poisoner
 {
     private const float PosionPercentDamage = 0.1f;
 
+    /// <summary>
+    /// Damages you for a percent of your max health, e.g. 10%
+    /// </summary>
     public static string Poison(Entity e)
     {
         var poisonDamage = (int)(e.TotalHealth * PosionPercentDamage);

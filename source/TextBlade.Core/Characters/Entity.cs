@@ -52,10 +52,13 @@ public abstract class Entity
         {
             var statusName = kvp.Key;
             // TODO: refactor, this stinks. Maybe post-prototype?
-            switch (statusName)
+            switch (statusName.ToLowerInvariant())
             {
-                case "Poison":
+                case "poison":
                     toReturn.Add(Poisoner.Poison(this));
+                    break;
+                case "burn":
+                    toReturn.Add(Pyro.Burn(this));
                     break;
                 default:
                     throw new InvalidOperationException($"Missing implementation for the status {statusName}");
