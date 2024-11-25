@@ -27,10 +27,10 @@ public class Character : Entity
         this.CurrentHealth = 1;
     }
 
-    new internal void OnRoundComplete()
+    new internal List<string> OnRoundComplete()
     {
         this.IsDefending = false;
-        base.OnRoundComplete();
+        return base.OnRoundComplete();
     }
 
     internal void Defend()

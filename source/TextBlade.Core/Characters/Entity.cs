@@ -1,3 +1,5 @@
+using TextBlade.Core.Battle.Statuses;
+
 namespace TextBlade.Core.Characters;
 
 /// <summary>
@@ -5,10 +7,9 @@ namespace TextBlade.Core.Characters;
 /// </summary>
 public abstract class Entity
 {
-    
     public string Name { get; protected set; }
-    public int TotalHealth { get; protected set; }
-    public int CurrentHealth { get; protected set; } 
+    public int TotalHealth { get; set; }
+    public int CurrentHealth { get; set; } 
     public int Strength { get; protected set; } 
     public int Toughness { get; protected set; }
     public Dictionary<string, int> StatusStacks { get; private set; } = new();
@@ -27,9 +28,9 @@ public abstract class Entity
         CurrentHealth = Math.Max(0, CurrentHealth - amount);
     }
 
-    public void OnRoundComplete()
+    public List<string> OnRoundComplete()
     {
-        // Apply statuses
+        return ApplyStatuses();
     }
 
     internal void InflictStatus(string status, int stacks)
@@ -40,5 +41,41 @@ public abstract class Entity
         }
 
         StatusStacks[status] += stacks;
+    }
+
+    private List<string> ApplyStatuses()
+    {
+        var toReturn = new List<string>();
+        var finishedStatuses = new List<string>();
+
+        foreach (var kvp in StatusStacks)
+        {
+            var statusName = kvp.Key;
+            // TODO: refactor, this stinks. Maybe post-prototype?
+            switch (statusName)
+            {
+                case "Poison":
+                    toReturn.Add(Poisoner.Poison(this));
+                    break;
+                default:
+                    throw new InvalidOperationException($"Missing implementation for the status {statusName}");
+            }
+            
+            var stacksLeft = kvp.Value;
+            stacksLeft--;
+
+            if (stacksLeft <= 0)
+            {
+                finishedStatuses.Add(kvp.Key);
+            }
+        }
+
+        // Remove finished/done statuses
+        foreach (var key in finishedStatuses)
+        {
+            StatusStacks.Remove(key);
+        }
+
+        return toReturn;
     }
 }

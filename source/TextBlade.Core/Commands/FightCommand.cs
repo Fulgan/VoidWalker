@@ -103,8 +103,31 @@ public class FightCommand : ICommand, IBattleCommand
                 yield return new BasicMonsterAi(party).ProcessTurnFor(monster);
             }
 
-            party.ForEach(p => p.OnRoundComplete());
-            _monsters.ForEach(m => m.OnRoundComplete());
+            foreach (var e in _monsters)
+            {
+                if (e.CurrentHealth <= 0)
+                {
+                    continue;
+                }
+                
+                foreach (var message in e.OnRoundComplete())
+                {
+                    yield return message;
+                }
+            }
+
+            foreach (var e in party)
+            {
+                if (e.CurrentHealth <= 0)
+                {
+                    continue;
+                }
+                
+                foreach (var message in e.OnRoundComplete())
+                {
+                    yield return message;
+                }
+            }
         }
 
         if (isPartyWipedOut())
