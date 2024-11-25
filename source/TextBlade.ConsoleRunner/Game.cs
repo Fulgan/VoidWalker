@@ -97,7 +97,7 @@ public class Game : IGame
             {
                 foreach (var character in _party)
                 {
-                    character.CurrentHealth = 1;
+                    character.CurrentHealth = 1
                 }
             }
             
@@ -124,7 +124,10 @@ public class Game : IGame
             var data = SaveGameManager.LoadGame("default");
             _party = data.Party;
             GameSwitches.Switches = data.Switches;
-            new ChangeLocationCommand(data.CurrentLocationId).Execute(this, _party);
+            await foreach (string message in new ChangeLocationCommand(data.CurrentLocationId).Execute(this, _party))
+            {
+                // ... There is no message ...
+            }
             UnpackLocationSpecificdata(data);
         }
         else
