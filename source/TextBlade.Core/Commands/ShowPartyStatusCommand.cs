@@ -5,18 +5,13 @@ namespace TextBlade.Core.Commands;
 
 public class ShowPartyStatusCommand : ICommand
 {
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
     {
-        var strings = new List<string>
-        {
-            "Party status:"
-        };
+        yield return "Party status:";
 
         foreach (var member in party)
         {
-            strings.Add($"    {member.Name}: {member.CurrentHealth}/{member.TotalHealth} health");
+            yield return $"    {member.Name}: {member.CurrentHealth}/{member.TotalHealth} health";
         }
-
-        return strings;
     }
 }

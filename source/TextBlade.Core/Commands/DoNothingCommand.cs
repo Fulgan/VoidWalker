@@ -5,8 +5,8 @@ namespace TextBlade.Core.Commands;
 
 public class DoNothingCommand : ICommand
 {
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
     {
-        return Array.Empty<string>();
+        yield return string.Empty;
     }
 }

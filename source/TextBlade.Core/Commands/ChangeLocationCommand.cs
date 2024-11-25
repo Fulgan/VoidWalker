@@ -24,11 +24,11 @@ public class ChangeLocationCommand : ICommand
         _locationPath = locationPath;
     }
 
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
     {
         var locationData = Serializer.Deserialize<Location>(File.ReadAllText(_locationPath));
         locationData.LocationId = _locationId;
         game.SetLocation(locationData);
-        return [];
+        yield return string.Empty;
     }
 }

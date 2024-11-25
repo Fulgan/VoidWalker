@@ -9,9 +9,9 @@ namespace TextBlade.Core.Commands;
 /// </summary>
 public class ManuallySaveCommand : ICommand
 {
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
     {
         // This stinks.
-        return Array.Empty<string>();
+        yield return string.Empty;
     }
 }

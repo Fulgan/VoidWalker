@@ -48,7 +48,7 @@ public class Game : IGame
         AutoSaveIfItsBeenAWhile();
     }
 
-    public void Run()
+    public async Task Run()
     {
         LoadGameOrStartNewGame();
 
@@ -67,9 +67,7 @@ public class Game : IGame
             var command = InputProcessor.PromptForAction(_currentLocation);
             previousLocation = _currentLocation;
 
-            var result = command.Execute(this, _party);
-
-            foreach (var message in result)
+            await foreach (string message in command.Execute(this, _party))
             {
                 AnsiConsole.MarkupLine(message);
             }
@@ -119,7 +117,7 @@ public class Game : IGame
         AnsiConsole.MarkupLine("[green]Game saved.[/]");
     }
 
-    private void LoadGameOrStartNewGame()
+    private async void LoadGameOrStartNewGame()
     {
         if (SaveGameManager.HasSave("default"))
         {
@@ -136,7 +134,10 @@ public class Game : IGame
             _party = runner.CreateParty();
 
             var startLocationId = runner.GetStartingLocationId();
-            new ChangeLocationCommand(startLocationId).Execute(this, _party);
+            await foreach (string message in new ChangeLocationCommand(startLocationId).Execute(this, _party))
+            {
+                // ... There is no message ...
+            }
         }
     }
 

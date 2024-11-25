@@ -11,6 +11,7 @@ public static class SkillApplier
         message.Append(ApplyDamage(user, skill, target));
         message.Append(InflictStatuses(user, skill, target));
         user.CurrentSkillPoints -= skill.Cost;
+        return message.ToString();
     }
 
     private static string ApplyDamage(Character user, Skill skill, Monster target)

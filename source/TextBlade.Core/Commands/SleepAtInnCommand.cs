@@ -13,7 +13,7 @@ public class SleepAtInnCommand : ICommand
         _innCost = innCost;
     }
 
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
     {
         // Check if we have enough gold. Subtract if we do!
 
@@ -22,6 +22,6 @@ public class SleepAtInnCommand : ICommand
             character.CurrentHealth = character.TotalHealth;
         }
 
-        return [$"You sleep at the inn. All party members have recovered to [{Colours.Highlight}]full health[/]!"];
+        yield return $"You sleep at the inn. All party members have recovered to [{Colours.Highlight}]full health[/]!";
     }
 }

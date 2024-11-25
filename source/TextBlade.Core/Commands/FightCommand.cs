@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Game;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands;
 
@@ -66,7 +67,7 @@ public class FightCommand : ICommand, IBattleCommand
         }
     }
 
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
     {
         // Problem: we don't have access to AnsiConsole in this layer. Nor can we wait for the Game class
         // to process it, because it's an interactive battle. That ... sucks...
@@ -78,9 +79,9 @@ public class FightCommand : ICommand, IBattleCommand
         while (!isBattleOver())
         {
             var monstersStatus = string.Join(", ", _monsters.Select(m => $"{m.Name}: {m.CurrentHealth}/{m.TotalHealth} health"));
-            Console.WriteLine($"You face: {monstersStatus}");
+            yield return $"You face: [{Colours.Highlight}]{monstersStatus}[/]";
             var partyStatus = string.Join(", ", party.Select(m => $"{m.Name}: {m.CurrentHealth}/{m.TotalHealth} health"));
-            Console.WriteLine($"Your party: {partyStatus}");
+            yield return $"Your party: [{Colours.Highlight}]{partyStatus}[/]";
 
             foreach (var character in party)
             {
@@ -108,12 +109,12 @@ public class FightCommand : ICommand, IBattleCommand
         if (isPartyWipedOut())
         {
             this.IsVictory = false;
-            return [DefeatMessage];
+            yield return DefeatMessage;
         }
         else if (areMonstersDefeated())
         {
             this.IsVictory = true;
-            return [VictoryMessage];
+            yield return VictoryMessage;
         }
         else
         {

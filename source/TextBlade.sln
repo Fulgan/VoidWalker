@@ -9,15 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.Core", "TextBlade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.ConsoleRunner", "TextBlade.ConsoleRunner\TextBlade.ConsoleRunner.csproj", "{48BCD4A6-C4C0-40BF-A0D4-3B8221E2941A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.Core.Tests", "TextBlade.Core.Tests\TextBlade.Core.Tests.csproj", "{61A99619-6254-4E0F-84F5-0D961251878D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.Core.Tests", "TextBlade.Core.Tests\TextBlade.Core.Tests.csproj", "{2E37EBCF-ADBF-4744-AC3F-0F27CB37A34B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0BB5051A-8CCC-421C-9C19-EC2BC8D5F466}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -32,9 +29,12 @@ Global
 		{48BCD4A6-C4C0-40BF-A0D4-3B8221E2941A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48BCD4A6-C4C0-40BF-A0D4-3B8221E2941A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48BCD4A6-C4C0-40BF-A0D4-3B8221E2941A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61A99619-6254-4E0F-84F5-0D961251878D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61A99619-6254-4E0F-84F5-0D961251878D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61A99619-6254-4E0F-84F5-0D961251878D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61A99619-6254-4E0F-84F5-0D961251878D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E37EBCF-ADBF-4744-AC3F-0F27CB37A34B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E37EBCF-ADBF-4744-AC3F-0F27CB37A34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E37EBCF-ADBF-4744-AC3F-0F27CB37A34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E37EBCF-ADBF-4744-AC3F-0F27CB37A34B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

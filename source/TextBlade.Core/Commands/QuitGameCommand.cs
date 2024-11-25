@@ -1,23 +1,23 @@
 using TextBlade.Core.Characters;
 using TextBlade.Core.Game;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands;
 
 public class QuitGameCommand : ICommand
 {
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
     {
-        Console.WriteLine("Quit the game? Are you sure? y/n");
+        yield return $"Quit the game? Are you sure? [{Colours.Command}]y[/]/[{Colours.Command}]n[/]";
         var input = Console.ReadKey();
 
         if (input.KeyChar != 'y' && input.KeyChar != 'Y')
         {
-            Console.WriteLine("Cancelling ...");
-            return Array.Empty<string>();
+            yield return "Cancelling ...";
+            yield break;
         }
 
-        Console.WriteLine("Bye!");
+        yield return "Bye!";
         Environment.Exit(0);
-        return null; // Unreachable code. Makes compiler go brrrr.
     }
 }

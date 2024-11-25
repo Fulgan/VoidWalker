@@ -11,7 +11,7 @@ public class CharacterTests
     public void Defend_SetsIsDefendingToTrue()
     {
         // Arrange
-        var c = new Character("Muhammad", 10, 22);
+        var c = new Character();
 
         // Act
         c.Defend();
@@ -24,7 +24,7 @@ public class CharacterTests
     public void OnRoundComplete_SetsIsDefendingToFalse()
     {
         // Arrange
-        var c = new Character("Muhammad", 10, 22);
+        var c = new Character();
         c.Defend();
 
         // Act
