@@ -13,7 +13,7 @@ public class SleepAtInnCommand : ICommand
         _innCost = innCost;
     }
 
-    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         // Check if we have enough gold. Subtract if we do!
 

@@ -6,7 +6,7 @@ namespace TextBlade.Core.Commands;
 
 public class QuitGameCommand : ICommand
 {
-    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         yield return $"Quit the game? Are you sure? [{Colours.Command}]y[/]/[{Colours.Command}]n[/]";
         var input = Console.ReadKey();

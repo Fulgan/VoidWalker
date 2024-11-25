@@ -5,7 +5,7 @@ namespace TextBlade.Core.Commands;
 
 public class ShowCreditsCommand : ICommand
 {
-    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         var creditsFilePath = Path.Join("Content", "Credits.txt");
         if (File.Exists(creditsFilePath))

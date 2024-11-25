@@ -67,7 +67,7 @@ public class FightCommand : ICommand, IBattleCommand
         }
     }
 
-    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         // Problem: we don't have access to AnsiConsole in this layer. Nor can we wait for the Game class
         // to process it, because it's an interactive battle. That ... sucks...

@@ -5,7 +5,7 @@ namespace TextBlade.Core.Commands;
 
 public class ShowPartyStatusCommand : ICommand
 {
-    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         yield return "Party status:";
 

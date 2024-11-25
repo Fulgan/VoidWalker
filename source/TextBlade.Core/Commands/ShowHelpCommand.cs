@@ -13,7 +13,7 @@ public class ShowHelpCommand : ICommand
         { "credits", "Shows the credits" },
     };
 
-    public async IAsyncEnumerable<string> Execute(IGame game, List<Character> party)
+    public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         var toReturn = new List<string>
         {
