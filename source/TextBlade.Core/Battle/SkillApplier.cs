@@ -1,17 +1,19 @@
+using System.Text;
 using TextBlade.Core.Characters;
 
 namespace TextBlade.Core.Battle;
 
 public static class SkillApplier
 {
-    internal static void Apply(Character user, Skill skill, Monster target)
+    internal static string Apply(Character user, Skill skill, Monster target)
     {
-        ApplyDamage(user, skill, target);
-        InflictStatuses(user, skill, target);
+        var message = new StringBuilder();
+        message.Append(ApplyDamage(user, skill, target));
+        message.Append(InflictStatuses(user, skill, target));
         user.CurrentSkillPoints -= skill.Cost;
     }
 
-    private static void ApplyDamage(Character user, Skill skill, Monster target)
+    private static string ApplyDamage(Character user, Skill skill, Monster target)
     {
         float damage = (user.Strength - target.Toughness) * skill.DamageMultiplier;
         if (target.Weakness == skill.DamageType)
@@ -22,20 +24,20 @@ public static class SkillApplier
         var roundedDamage = (int)damage;
         target.Damage(roundedDamage);
 
-        Console.WriteLine($"{user.Name} uses {skill.Name} on {target.Name}! {roundedDamage} damage!");
+        return $"{user.Name} uses {skill.Name} on {target.Name}! {roundedDamage} damage!";
     }
     
-    private static void InflictStatuses(Character user, Skill skill, Monster target)
+    private static string InflictStatuses(Character user, Skill skill, Monster target)
     {
         if (string.IsNullOrWhiteSpace(skill.StatusInflicted))
         {
-            return;
+            return string.Empty;
         }
 
         var status = skill.StatusInflicted;
         var stacks = skill.StatusStacks;
         target.InflictStatus(status, stacks);
 
-        Console.WriteLine($"{user.Name} inflicts {skill.StatusInflicted} x{skill.StatusStacks} on {target.Name}!");
+        return $"{user.Name} inflicts {skill.StatusInflicted} x{skill.StatusStacks} on {target.Name}!";
     }
 }

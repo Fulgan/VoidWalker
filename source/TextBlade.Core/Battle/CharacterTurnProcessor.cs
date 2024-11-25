@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 using TextBlade.Core.Characters;
 
 namespace TextBlade.Core.Battle;
@@ -23,7 +24,7 @@ public class CharacterTurnProcessor
             case 'a':
             case 'A':
                 target = PickTarget();
-                Attack(character, target);
+                Console.WriteLine(Attack(character, target));
                 return;
             case 'd':
             case 'D':
@@ -37,7 +38,7 @@ public class CharacterTurnProcessor
                 target = PickTarget();
                 // Depending on the skill, the target is an instance of Character or Monster.
                 // For now, assume monster.
-                SkillApplier.Apply(character, skill, _monsters[target - 1]);
+                Console.WriteLine(SkillApplier.Apply(character, skill, _monsters[target - 1]));
                 return;
         }
     }
@@ -68,18 +69,23 @@ public class CharacterTurnProcessor
         return character.Skills[target - 1];
     }
 
-    private void Attack(Character character, int target)
+    private string Attack(Character character, int target)
     {
         // Assume target number is legit
         var targetMonster = _monsters[target - 1];
-        var message = $"{character.Name} attacks {targetMonster.Name}! ";
+        var message = new StringBuilder();
+        message.Append($"{character.Name} attacks {targetMonster.Name}! ");
         
         var damage = character.Strength - targetMonster.Toughness;
         targetMonster.Damage(damage);
         
         var damageAmount = damage <= 0 ? "NO" : damage.ToString();
-        message += $"{damageAmount} damage!";
-        var deathMessage = targetMonster.CurrentHealth <= 0 ? $"{targetMonster.Name} DIES!" : "";
-        Console.WriteLine($"{message} {deathMessage}");
+        message.Append($"{damageAmount} damage!");
+        if (targetMonster.CurrentHealth <= 0)
+        {
+            message.Append($"{targetMonster.Name} DIES!");
+        }
+        
+        return message.ToString();
     }
 }
