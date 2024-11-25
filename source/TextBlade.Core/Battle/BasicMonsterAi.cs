@@ -1,4 +1,5 @@
 using TextBlade.Core.Characters;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Battle;
 
@@ -22,12 +23,11 @@ public class BasicMonsterAi
         var target = _party[Random.Shared.Next(0, _party.Count)];
 
         var damage = monster.Attack(target);
-        var message = $"{monster.Name} attacks {target.Name} for {damage} damage! ";
+        var message = $"{monster.Name} attacks {target.Name} for [{Colours.Highlight}]{damage}[/] damage! ";
         if (target.CurrentHealth <= 0)
         {
-            message += $"{target.Name} DIES! Oh no!";
+            message += $"{target.Name} [{Colours.Highlight}]DIES![/] Oh no!";
         }
-        Console.WriteLine(message);
-        return message; // for unit testing
+        return message;
     }    
 }

@@ -90,7 +90,7 @@ public class FightCommand : ICommand, IBattleCommand
                     continue;
                 }
 
-                characterTurnProcessor.ProcessTurnFor(character);
+                yield return characterTurnProcessor.ProcessTurnFor(character);
             }
 
             foreach (var monster in _monsters)
@@ -100,7 +100,7 @@ public class FightCommand : ICommand, IBattleCommand
                     continue;
                 }
 
-                new BasicMonsterAi(party).ProcessTurnFor(monster);
+                yield return new BasicMonsterAi(party).ProcessTurnFor(monster);
             }
 
             party.ForEach(p => p.OnRoundComplete());

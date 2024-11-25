@@ -1,6 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 using TextBlade.Core.Characters;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Battle;
 
@@ -13,7 +13,7 @@ public class CharacterTurnProcessor
         _monsters = monsters;
     }
 
-    internal void ProcessTurnFor(Character character)
+    internal string ProcessTurnFor(Character character)
     {
         Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [s]kill, or [d]efend");
         var input = Console.ReadKey();
@@ -24,13 +24,11 @@ public class CharacterTurnProcessor
             case 'a':
             case 'A':
                 target = PickTarget();
-                Console.WriteLine(Attack(character, target));
-                return;
+                return Attack(character, target);
             case 'd':
             case 'D':
                 character.Defend();
-                Console.WriteLine($"{character.Name} defends!");
-                return;
+                return $"{character.Name} defends!";
             case 's':
             case 'S':
                 // Assumes you get back a valid skill: something you have SP for.
@@ -38,8 +36,9 @@ public class CharacterTurnProcessor
                 target = PickTarget();
                 // Depending on the skill, the target is an instance of Character or Monster.
                 // For now, assume monster.
-                Console.WriteLine(SkillApplier.Apply(character, skill, _monsters[target - 1]));
-                return;
+                return SkillApplier.Apply(character, skill, _monsters[target - 1]);
+            default:
+                return string.Empty;
         }
     }
 
@@ -80,7 +79,7 @@ public class CharacterTurnProcessor
         targetMonster.Damage(damage);
         
         var damageAmount = damage <= 0 ? "NO" : damage.ToString();
-        message.Append($"{damageAmount} damage!");
+        message.Append($"[{Colours.Highlight}]{damageAmount}[/] damage!");
         if (targetMonster.CurrentHealth <= 0)
         {
             message.Append($"{targetMonster.Name} DIES!");
