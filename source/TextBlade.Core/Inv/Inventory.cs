@@ -1,4 +1,4 @@
-namespace TextBlade.Core.Characters;
+namespace TextBlade.Core.Inv;
 
 public class Inventory
 {

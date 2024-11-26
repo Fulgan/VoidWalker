@@ -2,6 +2,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Game;
+using TextBlade.Core.Inv;
 
 namespace TextBlade.Core.IO;
 

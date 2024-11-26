@@ -1,6 +1,7 @@
 using System.Text;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
+using TextBlade.Core.Inv;
 
 namespace TextBlade.Core.Locations;
 

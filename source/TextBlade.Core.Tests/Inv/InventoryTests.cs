@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using TextBlade.Core.Characters;
+using TextBlade.Core.Inv;
 
-namespace TextBlade.Core.Tests.Characters;
+namespace TextBlade.Core.Tests.Inv;
 
 [TestFixture]
 public class InventoryTests

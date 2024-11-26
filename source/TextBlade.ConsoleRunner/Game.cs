@@ -4,6 +4,7 @@ using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Game;
+using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
