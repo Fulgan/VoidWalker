@@ -1,4 +1,5 @@
 using TextBlade.Core.Commands;
+using TextBlade.Core.Commands.Display;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.ConsoleRunner.IO;

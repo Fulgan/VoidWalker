@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using TextBlade.Core.Commands;
+using TextBlade.Core.Commands.Display;
 
-namespace TextBlade.Core.Tests.Commands;
+namespace TextBlade.Core.Tests.Commands.Display;
 
 [TestFixture]
 public class ShowCreditsCommandTests

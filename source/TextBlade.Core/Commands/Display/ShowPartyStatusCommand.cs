@@ -1,7 +1,7 @@
 using TextBlade.Core.Characters;
 using TextBlade.Core.Game;
 
-namespace TextBlade.Core.Commands;
+namespace TextBlade.Core.Commands.Display;
 
 public class ShowPartyStatusCommand : ICommand
 {
