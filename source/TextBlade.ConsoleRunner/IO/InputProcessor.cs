@@ -34,8 +34,10 @@ public static class InputProcessor
             case "quit":
             case "q":
                 return new QuitGameCommand();
-            case "help":
-            case "h":
+            case "i":
+            case "inv":
+            case "inventory":
+                return new ShowInventoryCommand();
             case "p":
                 return new ShowPartyStatusCommand();
             case "credits":
@@ -43,6 +45,8 @@ public static class InputProcessor
             case "s":
             case "save":
                 return new ManuallySaveCommand();
+            case "help":
+            case "h":
             case "?":
                 return new ShowHelpCommand();
         }

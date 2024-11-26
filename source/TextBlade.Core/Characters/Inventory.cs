@@ -3,6 +3,14 @@ namespace TextBlade.Core.Characters;
 public class Inventory
 {
     public Dictionary<string, int> ItemQuantities { get; set; } = new();
+    public IList<string> ItemsInOrder
+    {
+        get { 
+            var toReturn = ItemQuantities.Select(i => i.Key).ToList();
+            toReturn.Sort();
+            return toReturn;
+        }
+    }
 
     public bool Has(string item)
     {

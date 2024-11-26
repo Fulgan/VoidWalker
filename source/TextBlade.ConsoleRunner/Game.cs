@@ -15,6 +15,9 @@ namespace TextBlade.ConsoleRunner;
 /// </summary>
 public class Game : IGame
 {
+    public static IGame Current { get; private set; }
+    public Inventory Inventory => _inventory;
+
     // Don't kill the messenger. I swear, it's bad enough this only works on Windows.
     private const string SupportedAudioExtension = "wav";
     private const int AutoSaveIntervalMinutes = 1;
@@ -28,8 +31,6 @@ public class Game : IGame
     // TODO: investigate something cross-platform with minimal OS-specific dependencies.
     // NAudio, System.Windows.Extensions, etc. are all Windows-only. Sigh.
     private SoundPlayer _backgroundAudioPlayer = new();
-
-    public static IGame Current { get; private set; }
 
     public Game()
     {
@@ -124,11 +125,12 @@ public class Game : IGame
         {
             var data = SaveGameManager.LoadGame("default");
             _party = data.Party;
+            _inventory = data.Inventory;
             GameSwitches.Switches = data.Switches;
             var messages = new ChangeLocationCommand(data.CurrentLocationId).Execute(this, _party);
             foreach (string message in messages)
             {
-                // ... There is no message ...
+                // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
             UnpackLocationSpecificdata(data);
         }
@@ -142,7 +144,7 @@ public class Game : IGame
             var messages = new ChangeLocationCommand(startLocationId).Execute(this, _party);
             foreach (string message in messages)
             {
-                // ... There is no message ...
+                // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
         }
     }
