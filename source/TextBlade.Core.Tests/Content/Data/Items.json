@@ -1,7 +1,4 @@
 {
     "Iron Sword": { "ItemType": "Weapon" },
-    "Iron Armour": { "ItemType": "Armour" },
-    "Iron Helmet": { "ItemType": "Helmet" },
-    "Potion-α": { "ItemType": "Consumable" },
-    "Potion-β": { "ItemType": "Consumable" }
+    "Iron Shield": { "ItemType": "Armour" }
 }
