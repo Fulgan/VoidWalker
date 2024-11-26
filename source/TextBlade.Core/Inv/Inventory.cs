@@ -3,23 +3,25 @@ namespace TextBlade.Core.Inv;
 public class Inventory
 {
     public Dictionary<string, int> ItemQuantities { get; set; } = new();
+    public Dictionary<string, Item> NameToData { get; set; } = new();
+
     public IList<string> ItemsInOrder
     {
         get { 
-            var toReturn = ItemQuantities.Select(i => i.Key).ToList();
+            var toReturn = NameToData.Select(i => i.Key).ToList();
             toReturn.Sort();
             return toReturn;
         }
     }
 
-    public bool Has(string item)
+    public bool Has(string itemName)
     {
-        return ItemQuantities.ContainsKey(item);
+        return NameToData.ContainsKey(itemName);
     }
 
-    public void Add(string item, int quantity = 1)
+    public void Add(Item item, int quantity = 1)
     {
-        if (string.IsNullOrWhiteSpace(item))
+        if (item == null)
         {
             throw new ArgumentException("Please specify a non-empty item", nameof(item));
         }
@@ -29,19 +31,23 @@ public class Inventory
             throw new ArgumentOutOfRangeException("Please specify a positive quantity,", nameof(quantity));
         }
         
-        if (!ItemQuantities.ContainsKey(item))
+        if (!NameToData.ContainsKey(item.Name))
         {
-            ItemQuantities[item] = 0;
+            NameToData[item.Name] = item;
+        }
+        if (!ItemQuantities.ContainsKey(item.Name))
+        {
+            ItemQuantities[item.Name] = 0;
         }
 
-        ItemQuantities[item] += quantity;
+        ItemQuantities[item.Name] += quantity;
     }
 
-    public void Remove(string item, int quantity = 1)
+    public void Remove(string itemName, int quantity = 1)
     {
-        if (string.IsNullOrWhiteSpace(item))
+        if (string.IsNullOrWhiteSpace(itemName))
         {
-            throw new ArgumentException("Please specify a non-empty item name", nameof(item));
+            throw new ArgumentException("Please specify a non-empty item", nameof(itemName));
         }
 
         if (quantity <= 0)
@@ -49,22 +55,23 @@ public class Inventory
             throw new ArgumentOutOfRangeException("Please specify a positive quantity", nameof(quantity));
         }
 
-        if (!ItemQuantities.ContainsKey(item))
+        if (!ItemQuantities.ContainsKey(itemName))
         {
-            throw new ArgumentException($"Can't remove {item}, we don't have any.", nameof(item));
+            throw new ArgumentException($"Can't remove {itemName}, we don't have any.", nameof(itemName));
         }
         else
         {
-            var existingQuantity = ItemQuantities[item];
+            var existingQuantity = ItemQuantities[itemName];
             if (existingQuantity < quantity)
             {
-                throw new ArgumentOutOfRangeException($"Can't remove {quantity} of {item}, we only have {existingQuantity}.", nameof(quantity));
+                throw new ArgumentOutOfRangeException($"Can't remove {quantity} of {itemName}, we only have {existingQuantity}.", nameof(quantity));
             }
 
-            ItemQuantities[item] -= quantity;
-            if (ItemQuantities[item] == 0)
+            ItemQuantities[itemName] -= quantity;
+            if (ItemQuantities[itemName] == 0)
             {
-                ItemQuantities.Remove(item);
+                ItemQuantities.Remove(itemName);
+                NameToData.Remove(itemName);
             }
         }
     }

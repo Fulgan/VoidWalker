@@ -97,7 +97,7 @@ public class Dungeon : Location
         foreach (var item in loot)
         {
             Console.WriteLine($"    {item}");
-            inventory.Add(item);
+            inventory.Add(new Item(item));
         }
     }
 
