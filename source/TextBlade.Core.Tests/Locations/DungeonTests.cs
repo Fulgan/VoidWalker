@@ -1,7 +1,6 @@
-using System.Runtime.CompilerServices;
 using NUnit.Framework;
-using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
+using TextBlade.Core.Inv;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Tests.Locations;

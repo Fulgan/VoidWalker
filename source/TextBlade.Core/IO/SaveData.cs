@@ -1,5 +1,6 @@
-using TextBlade.Core.Characters;
+using TextBlade.Core.Inv;
 using TextBlade.Core.Game;
+using TextBlade.Core.Characters;
 
 namespace TextBlade.Core.IO;
 

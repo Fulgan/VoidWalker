@@ -4,6 +4,7 @@ using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Game;
+using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
@@ -88,29 +89,31 @@ public class Game : IGame
         var dungeon = _currentLocation as Dungeon;
 
         // Kinda a special case for battle commands
-        if (command is IBattleCommand battleCommand)
+        if (!(command is IBattleCommand battleCommand))
         {
-            if (battleCommand.IsVictory)
-            {
-                // Wipe out the dungeon floor's inhabitants.
-                dungeon.OnVictory(_inventory);
-            }
-            else
-            {
-                foreach (var character in _party)
-                {
-                    character.Revive();
-                }
-            }
-            
-            var dungeonSaveData = new Dictionary<string, object>
-            {
-                { "CurrentFloor", dungeon.CurrentFloorNumber },
-                { "IsClear", battleCommand.IsVictory }
-            };
-
-            SaveGame(dungeonSaveData);
+            return;
         }
+
+        if (battleCommand.IsVictory)
+        {
+            // Wipe out the dungeon floor's inhabitants.
+            dungeon.OnVictory(_inventory);
+        }
+        else
+        {
+            foreach (var character in _party)
+            {
+                character.Revive();
+            }
+        }
+        
+        var dungeonSaveData = new Dictionary<string, object>
+        {
+            { "CurrentFloor", dungeon.CurrentFloorNumber },
+            { "IsClear", battleCommand.IsVictory }
+        };
+
+        SaveGame(dungeonSaveData);
     }
 
     private void SaveGame(Dictionary<string, object>? locationSpecificData = null)

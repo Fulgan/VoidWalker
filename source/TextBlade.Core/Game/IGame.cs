@@ -1,4 +1,4 @@
-using TextBlade.Core.Characters;
+using TextBlade.Core.Inv;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Game;

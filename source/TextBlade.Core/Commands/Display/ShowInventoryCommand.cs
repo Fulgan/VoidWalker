@@ -20,31 +20,31 @@ public class ShowInventoryCommand : ICommand
 
         yield return"Use/equip which item?";
         
-        var id = -1;
-        while (id == -1)
+        var index = 0;
+        while (index == 0)
         {        
-            var rawInput = Console.ReadLine().Trim();
-            if (rawInput.ToLowerInvariant() == "b" || rawInput.ToLowerInvariant() == "back")
+            var rawInput = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
+            if (rawInput == "b" || rawInput == "back")
             {
                 yield break;
             }
 
-            if (!int.TryParse(rawInput, out id))
+            if (!int.TryParse(rawInput, out index))
             {
                 continue;
             }
 
-            if (id < 1 || id > inventory.ItemsInOrder.Count())
+            if (index < 1 || index > inventory.ItemsInOrder.Count())
             {
-                yield return"Please enter a valid number!";
-                id = -1;
-            }
+                yield return "Please enter a valid number!";
+                index = 0;
+             }
         }
 
-        var picked = inventory.ItemsInOrder[id];
+        var picked = inventory.ItemsInOrder[index - 1];
         var quantity = inventory.ItemQuantities[picked];
+        var itemData = inventory.NameToData[picked];
 
-        yield return$"You picked: {picked}, of which you have {quantity}";
-        yield break;
+        yield return$"You picked: {picked}, of which you have {quantity}. Data: {itemData}";
     }
 }

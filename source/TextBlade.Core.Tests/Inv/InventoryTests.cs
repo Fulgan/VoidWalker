@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using TextBlade.Core.Characters;
+using TextBlade.Core.Inv;
 
-namespace TextBlade.Core.Tests.Characters;
+namespace TextBlade.Core.Tests.Inv;
 
 [TestFixture]
 public class InventoryTests
@@ -18,7 +18,7 @@ public class InventoryTests
         
         for (var i = 0; i < inventoryQuantity; i++)
         {
-            inventory.Add(item);
+            inventory.Add(new Item(item));
         }
 
         // Act
@@ -38,7 +38,7 @@ public class InventoryTests
         var inventory = new Inventory();
 
         // Act/Assert
-        Assert.Throws<ArgumentException>(() => inventory.Add(itemName, 7));
+        Assert.Throws<ArgumentException>(() => inventory.Add(new Item(itemName), 7));
     }
 
     [Test]
@@ -52,7 +52,7 @@ public class InventoryTests
         var inventory = new Inventory();
 
         // Act/Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => inventory.Add("Super Awesome Item", quantity));
+        Assert.Throws<ArgumentOutOfRangeException>(() => inventory.Add(new Item("Super Awesome Item"), quantity));
     }
 
     [Test]
@@ -62,16 +62,31 @@ public class InventoryTests
         var inventory = new Inventory();
 
         // Act. With and without quantity; new and existing item.
-        inventory.Add("Tomato");
-        inventory.Add("Carrot", 3);
-        inventory.Add("Bell Pepper");
-        inventory.Add("Bell Pepper", 5);
+        inventory.Add(new Item("Tomato"));
+        inventory.Add(new Item("Carrot"), 3);
+        inventory.Add(new Item("Bell Pepper"));
+        inventory.Add(new Item("Bell Pepper"), 5);
 
         // Assert
         var actual = inventory.ItemQuantities;
         Assert.That(actual["Tomato"], Is.EqualTo(1));
         Assert.That(actual["Carrot"], Is.EqualTo(3));
         Assert.That(actual["Bell Pepper"], Is.EqualTo(6));
+    }
+
+    [Test]
+    public void Add_TreatsItemsOfTheSameName_AsTheSameItem()
+    {
+        // Arrange
+        var inventory = new Inventory();
+        
+        // Act
+        inventory.Add(new Item("Starfruit"));
+        inventory.Add(new Item("Starfruit"));
+        inventory.Add(new Item("Starfruit"));
+
+        // Assert
+        Assert.That(inventory.ItemQuantities["Starfruit"], Is.EqualTo(3));
     }
 
     [Test]
@@ -119,7 +134,7 @@ public class InventoryTests
     {
         // Arrange
         var inventory = new Inventory();
-        inventory.Add("Steak", 3);
+        inventory.Add(new Item("Steak"), 3);
 
         // Act/Assert
         Assert.Throws<ArgumentOutOfRangeException>(() => inventory.Remove("Steak", askQuantity));
@@ -131,9 +146,9 @@ public class InventoryTests
         // Arrange
         // Arrange
         var inventory = new Inventory();
-        inventory.Add("Fried Chicken", 3);
-        inventory.Add("French Fries", 3);
-        inventory.Add("Onion Rings", 3);
+        inventory.Add(new Item("Fried Chicken"), 3);
+        inventory.Add(new Item("French Fries"), 3);
+        inventory.Add(new Item("Onion Rings"), 3);
 
         // Act
         inventory.Remove("Fried Chicken");
