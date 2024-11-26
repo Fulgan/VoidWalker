@@ -8,8 +8,8 @@
     "NumFloors": 7,
     "Monsters": ["Goblin", "Spider", "Gargoyle", "Troll", "Ogre"],
     "FloorLoot": {
-        "B2": ["Iron Sword", "Iron Shield", "Potion-α", "Potion-α"],
-        "B5": ["100 Gold", "Potion-β", "Potion-β", "Potion-β", "Iron Shield"]
+        "B2": ["Iron Sword", "Iron Helmet", "Potion-α", "Potion-α"],
+        "B5": ["100 Gold", "Potion-β", "Potion-β", "Potion-β", "Iron Armour"]
     },
     "Boss": "Langosta Prime"
   }

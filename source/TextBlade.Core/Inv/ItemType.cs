@@ -3,6 +3,7 @@ namespace TextBlade.Core.Inv;
 public enum ItemType
 {
     Consumable,
-    EquipmentHead,
-    EquipmentBody,
+    Helmet,
+    Armour,
+    Weapon,
 }

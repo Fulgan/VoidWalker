@@ -1,7 +1,9 @@
 using System.Text;
-using TextBlade.Core.Characters;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Inv;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Locations;
 
@@ -91,13 +93,24 @@ public class Dungeon : Location
             return;
         }
         
+        // TODO: validation etc.
+        var allItemsData = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(Path.Join("Content", "Data", "Items.json")));
+
         var loot = FloorLoot[_currentFloorLootKey];
 
         Console.WriteLine("Your party spies a treasure chest. You hurry over and open it. Within it, you find: ");
-        foreach (var item in loot)
+        foreach (var itemName in loot)
         {
-            Console.WriteLine($"    {item}");
-            inventory.Add(new Item(item));
+            Console.WriteLine($"    {itemName}");
+            var item = Serializer.Deserialize<Item>(allItemsData[itemName].ToString());
+            
+            if (item == null)
+            {
+                throw new InvalidOperationException($"Can't find item data for {itemName} in Items.json");
+            }
+
+            item.Name = itemName;
+            inventory.Add(item);
         }
     }
 

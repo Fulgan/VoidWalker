@@ -43,7 +43,8 @@ public class ShowInventoryCommand : ICommand
 
         var picked = inventory.ItemsInOrder[index - 1];
         var quantity = inventory.ItemQuantities[picked];
+        var itemData = inventory.NameToData[picked];
 
-        yield return$"You picked: {picked}, of which you have {quantity}";
+        yield return$"You picked: {picked}, of which you have {quantity}. Data: {itemData}";
     }
 }
