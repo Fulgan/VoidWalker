@@ -25,6 +25,10 @@ public class Inventory
         {
             throw new ArgumentException("Please specify a non-empty item", nameof(item));
         }
+        else if (string.IsNullOrWhiteSpace(item.Name))
+        {
+            throw new ArgumentException("Please specify a non-empty item name", nameof(item.Name));
+        }
 
         if (quantity <= 0)
         {
