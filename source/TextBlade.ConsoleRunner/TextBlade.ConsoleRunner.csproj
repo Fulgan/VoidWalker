@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TextBlade.Core\TextBlade.Core.csproj" />
+    <ProjectReference Include="..\TextBlade.Plateform.Windows\TextBlade.Plateform.Windows.csproj" />
   </ItemGroup> 
 
 </Project>

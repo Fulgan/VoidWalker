@@ -4,9 +4,11 @@ using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Game;
+using TextBlade.Core.Interfaces;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
+using TextBlade.Plateform.Windows;
 
 namespace TextBlade.ConsoleRunner;
 
@@ -31,7 +33,7 @@ public class Game : IGame
 
     // TODO: investigate something cross-platform with minimal OS-specific dependencies.
     // NAudio, System.Windows.Extensions, etc. are all Windows-only. Sigh.
-    private SoundPlayer _backgroundAudioPlayer = new();
+    private readonly ISoundPlayer _backgroundAudioPlayer = new WindowsSoundPlayer();
 
     public Game()
     {

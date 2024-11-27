@@ -6,13 +6,13 @@ namespace TextBlade.Core.Game;
 
 public static class CodeBehindRunner
 {
-    private static Dictionary<string, Type> _classNameToType = new();
+    private static readonly Dictionary<string, Type> _classNameToType = new();
 
     static CodeBehindRunner()
     {
         // Cache all class names and types. Maybe a bad idea. How much of the game will the player really see?
-        var assembly = Assembly.GetEntryAssembly();
-        RegisterAssemblyClasses(assembly);
+        if (Assembly.GetEntryAssembly() is {} assembly)
+            RegisterAssemblyClasses(assembly);
     }
 
     // Used in cases like unit testing where we can't control the entry assembly
@@ -22,12 +22,10 @@ public static class CodeBehindRunner
         foreach (var clazz in classes)
         {
             var className = clazz.Name;
-            if (_classNameToType.ContainsKey(className))
+            if (!_classNameToType.TryAdd(className, clazz))
             {
                 throw new InvalidOperationException($"There are multiple LocationCodeBehind classes defined with the name {className}!");
             }
-
-            _classNameToType[className] = clazz;
         }
     }
 
@@ -44,10 +42,9 @@ public static class CodeBehindRunner
         {
             throw new ArgumentException($"{currentLocation.Name} has an empty LocationClass attribute!");
         }
-
-        if (!_classNameToType.ContainsKey(className))
+        if (!_classNameToType.TryGetValue(className, out var type))
         {
-            List<string> allLocationClasses = _classNameToType.Keys.ToList();
+            var allLocationClasses = _classNameToType.Keys.ToList();
             allLocationClasses.Sort();
             throw new ArgumentException($"Looks like {currentLocation.Name} has a LocationClass of {className}, but TextBlade can't find the class. Make sure you add the [LocationCode] attribute to your class, and make sure it's outside the `Content` directory. TextBlade knows about these classes: {String.Join(", ", allLocationClasses)}");
         }
@@ -55,8 +52,7 @@ public static class CodeBehindRunner
         // TODO: document this. We create one instance PER VISIT TO THIS CLASS. And this instance DOES NOT PERSIST.
         // So it has to be ... stateless? I forget the word right this minute. 
         // And, it must have a parameterless constructor. That does whatever it needs to.
-        var type = _classNameToType[className];
         var instance = Activator.CreateInstance(type) as LocationCodeBehind;
-        instance.BeforeShowingLocation(currentLocation);
+        instance?.BeforeShowingLocation(currentLocation);
     }
 }
