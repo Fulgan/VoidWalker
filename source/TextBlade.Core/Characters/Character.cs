@@ -9,11 +9,17 @@ public class Character : Entity
     public List<Skill> Skills { get; set; } = new(); // NOT populated by JSON
     public List<string> SkillNames { get; set; } = new(); // populated by JSON
 
+    // Used for skills.
+    public readonly int Special;
+    public readonly int SpecialDefense;
+
     internal bool IsDefending { get; private set; }
 
-    public Character(string name, int health, int strength, int toughness)
+    public Character(string name, int health, int strength, int toughness, int special = 0, int specialDefense = 0)
     : base(name, health, strength, toughness)
     {
+        this.Special = special;
+        this.SpecialDefense = specialDefense;
     }
 
     public void FullyHeal()

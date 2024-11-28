@@ -1,5 +1,7 @@
 using TextBlade.Core.Characters;
+using TextBlade.Core.Characters.PartyManagement;
 using TextBlade.Core.Game;
+using TextBlade.Core.Inv;
 
 namespace TextBlade.Core.Commands.Display;
 
@@ -41,10 +43,16 @@ public class ShowInventoryCommand : ICommand
              }
         }
 
-        var picked = inventory.ItemsInOrder[index - 1];
-        var quantity = inventory.ItemQuantities[picked];
+        var picked = inventory.ItemsInOrder.ElementAt(i - 1);
         var itemData = inventory.NameToData[picked];
 
-        yield return$"You picked: {picked}, of which you have {quantity}. Data: {itemData}";
+        switch (itemData.ItemType)
+        {
+            case Inv.ItemType.Helmet:
+            case Inv.ItemType.Armour:
+            case Inv.ItemType.Weapon:
+                EquipmentEquipper.EquipIfRequested(itemData as Equipment, inventory, party);
+                break;
+        }
     }
 }
