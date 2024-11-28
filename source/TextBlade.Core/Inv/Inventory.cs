@@ -5,12 +5,12 @@ public class Inventory
     public Dictionary<string, int> ItemQuantities { get; set; } = new();
     public Dictionary<string, Item> NameToData { get; set; } = new();
 
-    public IList<string> ItemsInOrder
+    internal IEnumerable<string> ItemsInOrder
     {
-        get { 
-            var toReturn = NameToData.Select(i => i.Key).ToList();
-            toReturn.Sort();
-            return toReturn;
+        get
+        { 
+            // Order by item type, then by name
+            return NameToData.OrderBy(kvp => kvp.Value.ItemType).ThenBy(kvp => kvp.Key).Select(s => s.Key);
         }
     }
 

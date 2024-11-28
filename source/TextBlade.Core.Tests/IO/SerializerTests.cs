@@ -1,5 +1,6 @@
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
@@ -109,5 +110,45 @@ public class SerializerTests
         Assert.That(b5Loot.Contains("100 Gold"));
         Assert.That(b5Loot.Contains("Iron Shield"));
         Assert.That(b5Loot.Count(c => c == "High-Potion"), Is.EqualTo(3));
+    }
+
+    [Test]
+    public void Deserialize_CorrectlyDeserializesEquipment()
+    {
+        // Arrange
+        var expectedHelmet = new Equipment("Plumed Hat", ItemType.Helmet.ToString(), new Dictionary<CharacterStats, int> { { CharacterStats.Toughness, 5  } });
+        var expectedArmour = new Equipment("Kimono", ItemType.Armour.ToString(), new Dictionary<CharacterStats, int> { { CharacterStats.Toughness, 3  } });
+        var expectedWeapon = new Equipment("Dirk", ItemType.Weapon.ToString(), new Dictionary<CharacterStats, int> { { CharacterStats.Strength, 7  } });
+
+        // Act
+        var serialized = new string[]
+        {
+            Serializer.Serialize(expectedHelmet),
+            Serializer.Serialize(expectedArmour),
+            Serializer.Serialize(expectedWeapon)
+        };
+
+        var actual = new Equipment[]
+        {
+            Serializer.Deserialize<Equipment>(serialized[0]),
+            Serializer.Deserialize<Equipment>(serialized[1]),
+            Serializer.Deserialize<Equipment>(serialized[2]),
+        };
+
+        // Assert
+        var actualHelmet = actual[0];
+        Assert.That(actualHelmet.Name, Is.EqualTo(expectedHelmet.Name));
+        Assert.That(actualHelmet.ItemType, Is.EqualTo(ItemType.Helmet));
+        Assert.That(actualHelmet.ToString(), Does.Contain("Toughness +5"));
+
+        var actualArmour = actual[1];
+        Assert.That(actualArmour.Name, Is.EqualTo(expectedArmour.Name));
+        Assert.That(actualArmour.ItemType, Is.EqualTo(ItemType.Armour));
+        Assert.That(actualArmour.ToString(), Does.Contain("Toughness +3"));
+
+        var actualWeapon = actual[2];
+        Assert.That(actualWeapon.Name, Is.EqualTo(expectedWeapon.Name));
+        Assert.That(actualWeapon.ItemType, Is.EqualTo(ItemType.Weapon));
+        Assert.That(actualWeapon.ToString(), Does.Contain("Strength +7"));
     }
 }
