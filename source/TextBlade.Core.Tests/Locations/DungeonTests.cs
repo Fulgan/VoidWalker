@@ -90,8 +90,8 @@ public class DungeonTests
         var expectedLoot = new List<string>
         {
             "Iron Sword",
-            "Iron Shield",
-            "Iron Shield"
+            "Iron Helmet",
+            "Iron Helmet"
         };
 
         dungeon.FloorLoot["B1"] = expectedLoot;
@@ -103,7 +103,7 @@ public class DungeonTests
         // Assert
         Assert.That(inventory.ItemQuantities.Keys.Count, Is.EqualTo(2));
         Assert.That(inventory.Has("Iron Sword"));
-        Assert.That(inventory.Has("Iron Shield"));
+        Assert.That(inventory.Has("Iron Helmet"));
 
         var totalItems = inventory.ItemQuantities.Sum(kvp => kvp.Value);
         Assert.That(totalItems, Is.EqualTo(3));
