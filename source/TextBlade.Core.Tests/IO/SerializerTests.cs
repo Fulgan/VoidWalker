@@ -153,7 +153,7 @@ public class SerializerTests
     }
 
     [Test]
-    public void Serialize_PreservesEquipmentType_ForInventoryItems()
+    public void Deserialize_PreservesEquipmentType_ForInventoryItems()
     {
         // Arrange
         var inventory = new Inventory();
@@ -173,5 +173,22 @@ public class SerializerTests
         var actualHelmet = actual.NameToData["Bandanna"];
         Assert.That(actualHelmet, Is.TypeOf<Equipment>());
         Assert.That(actualHelmet.ToString(), Does.Contain("Toughness +11"));
+    }
+
+    [Test]
+    public void Deserialize_DeserializesEquipmentAsCorrectType_WhenTypeIsInJson()
+    {
+        // Arrange is done in the JSON files
+        var filePath = Path.Join("TestData", "Saves", "SaveDataWithEquipment.json");
+        var json = File.ReadAllText(filePath);
+        var actual = Serializer.Deserialize<SaveData>(json);
+
+        // Assert
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual.Inventory, Is.Not.Null);
+        var actualInventory = actual.Inventory;
+        Assert.That(actualInventory.NameToData["Iron Sword"], Is.InstanceOf<Equipment>());
+        Assert.That(actualInventory.NameToData["Iron Helmet"], Is.InstanceOf<Equipment>());
+        Assert.That(actualInventory.NameToData["Iron Armour"], Is.InstanceOf<Equipment>());
     }
 }

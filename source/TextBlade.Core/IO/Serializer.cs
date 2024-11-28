@@ -15,7 +15,7 @@ public static class Serializer
         return JsonConvert.SerializeObject(o, FormattingSettings, TypeSerializationSettings);
     }
 
-    public static T Deserialize<T>(string serializedJson) where T : class
+    public static T Deserialize<T>(string serializedJson)
     {
         return JsonConvert.DeserializeObject<T>(serializedJson, TypeSerializationSettings);
     }

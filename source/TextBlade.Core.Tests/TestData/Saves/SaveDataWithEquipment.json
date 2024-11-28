@@ -1,0 +1,188 @@
+{
+    "$type": "TextBlade.Core.IO.SaveData, TextBlade.Core",
+    "Party": {
+      "$type": "System.Collections.Generic.List`1[[TextBlade.Core.Characters.Character, TextBlade.Core]], System.Private.CoreLib",
+      "$values": [
+        {
+          "$type": "TextBlade.Core.Characters.Character, TextBlade.Core",
+          "Special": 0,
+          "SpecialDefense": 0,
+          "TotalSkillPoints": 50,
+          "CurrentSkillPoints": 50,
+          "Skills": {
+            "$type": "System.Collections.Generic.List`1[[TextBlade.Core.Battle.Skill, TextBlade.Core]], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "TextBlade.Core.Battle.Skill, TextBlade.Core",
+                "Name": "DoubleStrike",
+                "DamageMultiplier": 2.0,
+                "Cost": 10,
+                "Target": "Enemy",
+                "StatusInflicted": "",
+                "StatusStacks": 0,
+                "DamageType": "Normal"
+              },
+              {
+                "$type": "TextBlade.Core.Battle.Skill, TextBlade.Core",
+                "Name": "Whirlwind",
+                "DamageMultiplier": 1.25,
+                "Cost": 20,
+                "Target": "All",
+                "StatusInflicted": "",
+                "StatusStacks": 0,
+                "DamageType": "Normal"
+              }
+            ]
+          },
+          "SkillNames": {
+            "$type": "System.Collections.Generic.List`1[[System.String, System.Private.CoreLib]], System.Private.CoreLib",
+            "$values": [
+              "DoubleStrike",
+              "Whirlwind"
+            ]
+          },
+          "Name": "Aisha",
+          "TotalHealth": 120,
+          "CurrentHealth": 100,
+          "Strength": 25,
+          "Toughness": 10,
+          "StatusStacks": {
+            "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib"
+          }
+        },
+        {
+          "$type": "TextBlade.Core.Characters.Character, TextBlade.Core",
+          "Special": 0,
+          "SpecialDefense": 0,
+          "TotalSkillPoints": 150,
+          "CurrentSkillPoints": 150,
+          "Skills": {
+            "$type": "System.Collections.Generic.List`1[[TextBlade.Core.Battle.Skill, TextBlade.Core]], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "TextBlade.Core.Battle.Skill, TextBlade.Core",
+                "Name": "Fire α",
+                "DamageMultiplier": 1.1,
+                "Cost": 7,
+                "Target": "Enemy",
+                "StatusInflicted": "Burn",
+                "StatusStacks": 5,
+                "DamageType": "Fire"
+              },
+              {
+                "$type": "TextBlade.Core.Battle.Skill, TextBlade.Core",
+                "Name": "Ice α",
+                "DamageMultiplier": 1.5,
+                "Cost": 7,
+                "Target": "Enemy",
+                "StatusInflicted": "",
+                "StatusStacks": 0,
+                "DamageType": "Ice"
+              },
+              {
+                "$type": "TextBlade.Core.Battle.Skill, TextBlade.Core",
+                "Name": "Poison",
+                "DamageMultiplier": 0.0,
+                "Cost": 10,
+                "Target": "Enemy",
+                "StatusInflicted": "Poison",
+                "StatusStacks": 5,
+                "DamageType": "Normal"
+              },
+              {
+                "$type": "TextBlade.Core.Battle.Skill, TextBlade.Core",
+                "Name": "Heal",
+                "DamageMultiplier": -0.5,
+                "Cost": 5,
+                "Target": "Character",
+                "StatusInflicted": "",
+                "StatusStacks": 0,
+                "DamageType": "Normal"
+              }
+            ]
+          },
+          "SkillNames": {
+            "$type": "System.Collections.Generic.List`1[[System.String, System.Private.CoreLib]], System.Private.CoreLib",
+            "$values": [
+              "Fire α",
+              "Ice α",
+              "Poison",
+              "Heal"
+            ]
+          },
+          "Name": "Nusaybah",
+          "TotalHealth": 75,
+          "CurrentHealth": 63,
+          "Strength": 35,
+          "Toughness": 8,
+          "StatusStacks": {
+            "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib"
+          }
+        }
+      ]
+    },
+    "Switches": {
+      "$type": "TextBlade.Core.Game.GameSwitches, TextBlade.Core",
+      "Data": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Boolean, System.Private.CoreLib]], System.Private.CoreLib",
+        "MetKingSulayman": true
+      }
+    },
+    "Gold": 0,
+    "CurrentLocationId": "Dungeons/NorthSeasideCave",
+    "Inventory": {
+      "$type": "TextBlade.Core.Inv.Inventory, TextBlade.Core",
+      "ItemQuantities": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+        "Iron Sword": 1,
+        "Iron Helmet": 1,
+        "Iron Armour": 1,
+        "Potion-α": 1
+      },
+      "NameToData": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[TextBlade.Core.Inv.Item, TextBlade.Core]], System.Private.CoreLib",
+        "Iron Sword": {
+          "$type": "TextBlade.Core.Inv.Equipment, TextBlade.Core",
+          "Description": "",
+          "ItemType": "Weapon",
+          "StatsModifiers": {
+            "$type": "System.Collections.Generic.Dictionary`2[[TextBlade.Core.Inv.CharacterStats, TextBlade.Core],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+            "Strength": 7
+          },
+          "Name": "Iron Sword"
+        },
+        "Iron Helmet": {
+          "$type": "TextBlade.Core.Inv.Equipment, TextBlade.Core",
+          "Description": "",
+          "ItemType": "Helmet",
+          "StatsModifiers": {
+            "$type": "System.Collections.Generic.Dictionary`2[[TextBlade.Core.Inv.CharacterStats, TextBlade.Core],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+            "Toughness": 3
+          },
+          "Name": "Iron Helmet"
+        },
+        "Iron Armour": {
+          "$type": "TextBlade.Core.Inv.Equipment, TextBlade.Core",
+          "Description": "",
+          "ItemType": "Armour",
+          "StatsModifiers": {
+            "$type": "System.Collections.Generic.Dictionary`2[[TextBlade.Core.Inv.CharacterStats, TextBlade.Core],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+            "Toughness": 5
+          },
+          "Name": "Iron Armour"
+        },
+        "Potion-α": {
+          "$type": "TextBlade.Core.Inv.Item, TextBlade.Core",
+          "Description": null,
+          "ItemType": "Consumable",
+          "Name": "Potion-α"
+        }
+      }
+    },
+    "LocationSpecificData": {
+      "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+      "CurrentFloor": 0,
+      "IsClear": true
+    },
+    "GameSpecificData": null
+  }

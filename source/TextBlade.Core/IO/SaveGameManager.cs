@@ -23,7 +23,7 @@ public static class SaveGameManager
             Gold = 0, // TODO: NEED. GOLD.
         };
 
-        var serialized = JsonConvert.SerializeObject(saveData);
+        var serialized = Serializer.Serialize(saveData);
         if (!Directory.Exists(SaveFolder))
         {
             Directory.CreateDirectory(SaveFolder);
@@ -49,7 +49,7 @@ public static class SaveGameManager
         }
 
         var json = File.ReadAllText(path);
-        var deserialized = JsonConvert.DeserializeObject<SaveData>(json);
+        var deserialized = Serializer.Deserialize<SaveData>(json);
         ValidateSaveData(deserialized);
         return deserialized;
     }
