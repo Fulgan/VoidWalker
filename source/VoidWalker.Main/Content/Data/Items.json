@@ -1,7 +1,22 @@
 {
-    "Iron Sword": { "ItemType": "Weapon" },
-    "Iron Armour": { "ItemType": "Armour" },
-    "Iron Helmet": { "ItemType": "Helmet" },
+    "Iron Sword":
+    {
+        "$type": "TextBlade.Core.Inv.Equipment, TextBlade.Core",
+        "ItemType": "Weapon",
+        "StatsModifiers": { "Strength": 7 }
+    },
+    "Iron Helmet":
+    {
+        "$type": "TextBlade.Core.Inv.Equipment, TextBlade.Core",
+        "ItemType": "Helmet",
+        "StatsModifiers": { "Toughness": 3 }
+    },
+    "Iron Armour":
+    {
+        "$type": "TextBlade.Core.Inv.Equipment, TextBlade.Core",
+        "ItemType": "Armour",
+        "StatsModifiers": { "Toughness": 5 }
+    },
     "Potion-α": { "ItemType": "Consumable" },
     "Potion-β": { "ItemType": "Consumable" }
 }

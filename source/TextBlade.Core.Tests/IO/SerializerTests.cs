@@ -151,4 +151,27 @@ public class SerializerTests
         Assert.That(actualWeapon.ItemType, Is.EqualTo(ItemType.Weapon));
         Assert.That(actualWeapon.ToString(), Does.Contain("Strength +7"));
     }
+
+    [Test]
+    public void Serialize_PreservesEquipmentType_ForInventoryItems()
+    {
+        // Arrange
+        var inventory = new Inventory();
+        inventory.Add(new Equipment(
+            "Bandanna",
+            ItemType.Helmet.ToString(),
+            new Dictionary<CharacterStats, int>
+            {
+                { CharacterStats.Toughness, 11 },
+            }));
+
+        // Act
+        var serialized = Serializer.Serialize(inventory);
+        var actual = Serializer.Deserialize<Inventory>(serialized);
+
+        // Assert
+        var actualHelmet = actual.NameToData["Bandanna"];
+        Assert.That(actualHelmet, Is.TypeOf<Equipment>());
+        Assert.That(actualHelmet.ToString(), Does.Contain("Toughness +11"));
+    }
 }

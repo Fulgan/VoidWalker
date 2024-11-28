@@ -5,7 +5,7 @@ namespace TextBlade.Core.Characters.PartyManagement;
 
 public static class EquipmentEquipper
 {
-    internal static void EquipIfRequested(Equipment itemData, Inventory inventory, List<Character> party)
+    internal static void EquipIfRequested(Item itemData, Inventory inventory, List<Character> party)
     {
         if (itemData == null)
         {
@@ -27,7 +27,13 @@ public static class EquipmentEquipper
             throw new ArgumentException("Party is missing", nameof(party));
         }
 
-        DisplayEquipmentStats(itemData);
+        var equipment = itemData as Equipment;
+        if (equipment == null)
+        {
+            throw new InvalidOperationException($"Item data for {itemData.Name} doesn't seem to be Equipment. Is the $type field specified correctly in Items.json?");
+        }
+
+        DisplayEquipmentStats(equipment);
     }
 
     private static void DisplayEquipmentStats(Equipment itemData)

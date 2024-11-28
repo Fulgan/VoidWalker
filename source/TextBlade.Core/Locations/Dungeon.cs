@@ -9,6 +9,8 @@ namespace TextBlade.Core.Locations;
 
 public class Dungeon : Location
 {
+    private static JObject ItemJson;
+
     // Simple but complex. Can be "Iron Shield," can be listed twice to give me two, can be "100 Gold," etc.
     // Floor (e.g. B2) => list of lootz
     public Dictionary<string, List<string>> FloorLoot { get; set; } = [];
@@ -20,6 +22,32 @@ public class Dungeon : Location
     protected readonly List<List<string>> _floorMonsters = [];
     
     private string _currentFloorLootKey => $"B{CurrentFloorNumber + 1}"; 
+
+    static Dungeon()
+    {
+        // TODO: validation etc. of the file path. And maybe the JSON.
+        var jsonContents = File.ReadAllText(Path.Join("Content", "Data", "Items.json"));
+        var itemJson = JsonConvert.DeserializeObject<JObject>(jsonContents);
+
+        if (itemJson == null)
+        {
+            throw new InvalidOperationException("Content/Data/Items.json doesn't seem to be valid JSON");
+        }
+
+        Dungeon.ItemJson = itemJson;
+    }
+
+    internal static Item GetItemFromJson(string itemName)
+    {
+        var jsonBlob = Dungeon.ItemJson[itemName];
+        if (jsonBlob == null)
+        {
+            throw new InvalidOperationException($"Items.json doesn't seem to have data for {itemName}");
+        }
+
+        // Code smells... Not sure how to fix it...
+        return Serializer.Deserialize<Item>(jsonBlob.ToString());
+    }
 
     public Dungeon(string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null)
     : base(name, description, locationClass)
@@ -92,9 +120,6 @@ public class Dungeon : Location
         {
             return;
         }
-        
-        // TODO: validation etc.
-        var allItemsData = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(Path.Join("Content", "Data", "Items.json")));
 
         var loot = FloorLoot[_currentFloorLootKey];
 
@@ -102,8 +127,8 @@ public class Dungeon : Location
         foreach (var itemName in loot)
         {
             Console.WriteLine($"    {itemName}");
-            var item = Serializer.Deserialize<Item>(allItemsData[itemName].ToString());
-            
+            var item = Dungeon.GetItemFromJson(itemName);
+
             if (item == null)
             {
                 throw new InvalidOperationException($"Can't find item data for {itemName} in Items.json");

@@ -136,6 +136,7 @@ public class Game : IGame
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
             UnpackLocationSpecificdata(data);
+            AnsiConsole.WriteLine("Save game loaded.");
         }
         else
         {
@@ -149,6 +150,7 @@ public class Game : IGame
             {
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
+            AnsiConsole.WriteLine("New game started.");
         }
     }
 

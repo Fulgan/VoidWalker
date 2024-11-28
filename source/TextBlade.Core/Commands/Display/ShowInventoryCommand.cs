@@ -43,7 +43,7 @@ public class ShowInventoryCommand : ICommand
              }
         }
 
-        var picked = inventory.ItemsInOrder.ElementAt(i - 1);
+        var picked = inventory.ItemsInOrder.ElementAt(index - 1);
         var itemData = inventory.NameToData[picked];
 
         switch (itemData.ItemType)
@@ -51,7 +51,7 @@ public class ShowInventoryCommand : ICommand
             case Inv.ItemType.Helmet:
             case Inv.ItemType.Armour:
             case Inv.ItemType.Weapon:
-                EquipmentEquipper.EquipIfRequested(itemData as Equipment, inventory, party);
+                EquipmentEquipper.EquipIfRequested(itemData, inventory, party);
                 break;
         }
     }

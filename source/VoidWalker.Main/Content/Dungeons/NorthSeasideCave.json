@@ -8,6 +8,7 @@
     "NumFloors": 7,
     "Monsters": ["Goblin", "Spider", "Gargoyle", "Troll", "Ogre"],
     "FloorLoot": {
+        "B1": ["Iron Sword", "Iron Helmet", "Iron Armour", "Potion-α"],
         "B2": ["Iron Sword", "Iron Helmet", "Potion-α", "Potion-α"],
         "B5": ["100 Gold", "Potion-β", "Potion-β", "Potion-β", "Iron Armour"]
     },
