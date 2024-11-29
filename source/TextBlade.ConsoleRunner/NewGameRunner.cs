@@ -9,19 +9,20 @@ namespace TextBlade.ConsoleRunner;
 /// <summary>
 /// Terribly named; the thing that does all your new-game stuff.
 /// </summary>
-public class NewGameRunner
+public class NewGameRunner(Game game)
 {
-    private JObject _gameJson = null!;
-    private Game _game = null!;
-
-    public NewGameRunner(Game game)
+    private JObject? _gameJson;
+    private JObject GameJson
     {
-        _game = game;
+        get => _gameJson ?? throw new Exception("No game loaded");
+        set => _gameJson = value;
     }
+
+    private Game _game = game;
 
     public List<Character> CreateParty()
     {
-        var partyData = _gameJson["StartingParty"] as JArray;
+        var partyData = GameJson["StartingParty"] as JArray ?? throw new Exception("");
         var party = Serializer.DeserializeParty(partyData);
         return party;
     }
@@ -38,20 +39,21 @@ public class NewGameRunner
 
         AnsiConsole.Background = Color.Black;
         var gameJsonContents = File.ReadAllText(gameJsonPath);
-        _gameJson = JsonConvert.DeserializeObject(gameJsonContents) as JObject;
-        var gameName = _gameJson["GameName"];
+        if (JsonConvert.DeserializeObject(gameJsonContents) is not JObject jObject)
+            throw new Exception("game.json is not a valid JSON object!");
+        GameJson = jObject;
+        var gameName = GameJson["GameName"];
         AnsiConsole.MarkupLine($"[white]Welcome to[/] [red]{gameName}[/]!");
     }
 
     public string GetStartingLocationId()
     {
-        if (!_gameJson.ContainsKey("StartingLocationId"))
+        if (!GameJson.TryGetValue("StartingLocationId", out var locationIdToken))
         {
             throw new InvalidOperationException("Your game.json doesn't have a StartingLocationId attribute!");
         }
 
-        var locationId = _gameJson["StartingLocationId"].ToString();
-        return locationId;
+        return locationIdToken.ToString();
     }
 
 }
