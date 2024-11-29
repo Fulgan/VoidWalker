@@ -1,4 +1,5 @@
 ﻿using System.Media;
+using System.Runtime.CompilerServices;
 using Spectre.Console;
 using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
@@ -19,7 +20,7 @@ namespace TextBlade.ConsoleRunner;
 /// </summary>
 public class Game : IGame
 {
-    public static IGame Current { get; private set; }
+    public static IGame Current { get; private set; } = null!;
     public Inventory Inventory => _inventory;
 
     // Don't kill the messenger. I swear, it's bad enough this only works on Windows.
@@ -88,10 +89,10 @@ public class Game : IGame
 
     private void ApplyResultsIfBattle(ICommand command)
     {
-        var dungeon = _currentLocation as Dungeon;
+        var dungeon = _currentLocation as Dungeon ?? throw new Exception("Not a dungeon");
 
         // Kinda a special case for battle commands
-        if (!(command is IBattleCommand battleCommand))
+        if (command is not IBattleCommand battleCommand)
         {
             return;
         }
@@ -160,20 +161,17 @@ public class Game : IGame
     {
         var extraData = data.LocationSpecificData;
         if (extraData == null || extraData.Count == 0)
-        {
             return;
-        }
 
         // Duck typing...
         var dungeon = _currentLocation as Dungeon;
 
-        if (extraData.ContainsKey("CurrentFloor"))
-        {
-            var floorNumber = Convert.ToInt32(extraData["CurrentFloor"]);
-            var isClear = (bool)extraData["IsClear"];
+        if (!extraData.TryGetValue("CurrentFloor", out var value)) 
+            return;
+        var floorNumber = Convert.ToInt32(value);
+        var isClear = (bool)extraData["IsClear"];
 
-            dungeon.SetState(floorNumber, isClear);
-        }
+        dungeon?.SetState(floorNumber, isClear);
     }
     
     private void PlayBackgroundAudio()
