@@ -1,12 +1,29 @@
-using System.Text;
 using TextBlade.Core.Inv;
 
 namespace TextBlade.Core.Characters.PartyManagement;
 
 public static class EquipmentDiffer
 {
-    public static Dictionary<CharacterStats, int> GetDiff(Equipment current, Equipment newThing)
+    public static Dictionary<CharacterStats, int> GetDiff(Equipment? current, Equipment? newThing)
     {
+        // Easy peasy lemon squeezy cases
+        // 1) Equip when we have nothing: new stats take precedence
+        if (current == null && newThing != null)
+        {
+            return newThing.StatsModifiers;
+        }
+
+        // 2) Unequip: negate current stats
+        if (current != null && newThing == null)
+        {
+            var toReturn = new Dictionary<CharacterStats, int>();
+            foreach (var key in current.StatsModifiers.Keys)
+            {
+                toReturn.Add(key, -current.StatsModifiers[key]);
+            }
+            return toReturn;
+        }
+
         // Three cases:
         // 1) Present in new, not in current
         // 2) Present in current, not in new
