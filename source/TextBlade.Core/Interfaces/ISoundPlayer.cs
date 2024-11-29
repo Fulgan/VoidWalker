@@ -1,6 +1,5 @@
 ﻿namespace TextBlade.Core.Interfaces;
 
-public interface ISoundPlayer
+public interface ISoundPlayer: IDisposable
 {
-    
 }

@@ -2,34 +2,22 @@
 using System.Diagnostics;
 using System.Media;
 using System.Runtime.Serialization;
+using System.Runtime.Versioning;
 using TextBlade.Core.Interfaces;
 
 namespace TextBlade.Plateform.Windows;
 
-public class WindowsSoundPlayer : ISoundPlayer, IDisposable
+[SupportedOSPlatform(platformName: "windows")]
+
+public class WindowsSoundPlayer : ISoundPlayer
 {
     private readonly SoundPlayer _soundPlayer = new();
 
-    [Obsolete("Obsolete")]
-    public void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        ((ISerializable)_soundPlayer).GetObjectData(info, context);
-    }
+    public void Load() => _soundPlayer.Load();
 
-    public void Load()
-    {
-        _soundPlayer.Load();
-    }
+    public void LoadAsync() => _soundPlayer.LoadAsync();
 
-    public void LoadAsync()
-    {
-        _soundPlayer.LoadAsync();
-    }
-
-    public void Play()
-    {
-        _soundPlayer.Play();
-    }
+    public void Play() => _soundPlayer.Play();
 
     public void PlayLooping()
     {
@@ -90,8 +78,17 @@ public class WindowsSoundPlayer : ISoundPlayer, IDisposable
         remove => _soundPlayer.StreamChanged -= value;
     }
 
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _soundPlayer.Dispose();
+        }
+    }
+
     public void Dispose()
     {
-        _soundPlayer.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }
