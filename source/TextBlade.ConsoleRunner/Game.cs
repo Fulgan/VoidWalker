@@ -4,13 +4,14 @@ using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Game;
-using TextBlade.Core.Interfaces;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
+using TextBlade.Core.Services;
 using TextBlade.Plateform.Windows;
 
 namespace TextBlade.ConsoleRunner;
+
 
 /// <summary>
 /// Now this here, this is yer basic game. Keeps track of the current location, party, etc.
@@ -26,17 +27,16 @@ public class Game : IGame
     private const int AutoSaveIntervalMinutes = 1;
 
     private Location _currentLocation = null!;
-    private bool _isRunning = true;
+    private readonly bool _isRunning = true;
     private List<Character> _party = new();
     private Inventory _inventory = new();
     private DateTime _lastSaveOn = DateTime.Now;
 
-    // TODO: investigate something cross-platform with minimal OS-specific dependencies.
-    // NAudio, System.Windows.Extensions, etc. are all Windows-only. Sigh.
-    private readonly ISoundPlayer _backgroundAudioPlayer = new WindowsSoundPlayer();
+    private readonly ISoundPlayer _backgroundAudioPlayer; 
 
-    public Game()
+    public Game(ISoundPlayer soundPlayer)
     {
+        _backgroundAudioPlayer = soundPlayer;
         Current = this;
         _backgroundAudioPlayer.LoadCompleted += (sender, args) => _backgroundAudioPlayer.PlayLooping();
     }

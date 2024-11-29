@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.Media;
 using System.Runtime.Serialization;
 using System.Runtime.Versioning;
-using TextBlade.Core.Interfaces;
+using TextBlade.Core.Services;
 
 namespace TextBlade.Plateform.Windows;
 
-[SupportedOSPlatform(platformName: "windows")]
+[SupportedOSPlatform("windows")]
 
 public class WindowsSoundPlayer : ISoundPlayer
 {
@@ -15,7 +15,41 @@ public class WindowsSoundPlayer : ISoundPlayer
 
     public void Load() => _soundPlayer.Load();
 
-    public void LoadAsync() => _soundPlayer.LoadAsync();
+    // Wrap the method into a real async call
+    public async Task LoadAsync(CancellationToken cancellationToken=default)
+    {
+        var tcs = new TaskCompletionSource<bool>(); // Used to signal the end of the loading operation
+
+        AsyncCompletedEventHandler loadCompletedHandler = null!;
+        loadCompletedHandler = (_, args) =>
+        {
+            if (args.Error != null)
+            {
+                tcs.TrySetException(args.Error); // Handle errors
+            }
+            else if (args.Cancelled)
+            {
+                tcs.TrySetCanceled(); // Handle cancellation
+            }
+            else
+            {
+                tcs.TrySetResult(true); // Signal completion
+            }
+
+            _soundPlayer.LoadCompleted -= loadCompletedHandler; // Unsubscribe
+        };
+
+        _soundPlayer.LoadCompleted += loadCompletedHandler;
+
+        // Start the synchronous load operation
+        _soundPlayer.LoadAsync();
+
+        // Await until the completion source is set
+        await using (cancellationToken.Register(() => tcs.TrySetCanceled(), useSynchronizationContext: false))
+        {
+            await tcs.Task; // Await the completion of the load operation
+        }
+    }
 
     public void Play() => _soundPlayer.Play();
 

@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
 
-namespace TextBlade.Core.Interfaces;
+namespace TextBlade.Core.Services;
 
-public interface ISoundPlayer: IDisposable
+public interface ISoundPlayer : IDisposable
 {
     public event AsyncCompletedEventHandler? LoadCompleted;
     bool IsLoadCompleted { get; }
     string SoundLocation { get; set; }
     void Load();
-    void LoadAsync();
+    Task LoadAsync(CancellationToken cancellationToken = default);
     void Play();
     void PlayLooping();
     void PlaySync();
