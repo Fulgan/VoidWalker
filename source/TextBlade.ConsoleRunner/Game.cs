@@ -89,7 +89,7 @@ public class Game : IGame
 
     private void ApplyResultsIfBattle(ICommand command)
     {
-        var dungeon = _currentLocation as Dungeon ?? throw new Exception("Not a dungeon");
+        var dungeon = _currentLocation as Dungeon;
 
         // Kinda a special case for battle commands
         if (command is not IBattleCommand battleCommand)
@@ -100,7 +100,7 @@ public class Game : IGame
         if (battleCommand.IsVictory)
         {
             // Wipe out the dungeon floor's inhabitants.
-            dungeon.OnVictory(_inventory);
+            dungeon?.OnVictory(_inventory);
         }
         else
         {
@@ -112,7 +112,7 @@ public class Game : IGame
         
         var dungeonSaveData = new Dictionary<string, object>
         {
-            { "CurrentFloor", dungeon.CurrentFloorNumber },
+            { "CurrentFloor", dungeon?.CurrentFloorNumber??0 },
             { "IsClear", battleCommand.IsVictory }
         };
 
@@ -134,11 +134,11 @@ public class Game : IGame
             _inventory = data.Inventory;
             GameSwitches.Switches = data.Switches;
             var messages = new ChangeLocationCommand(data.CurrentLocationId).Execute(this, _party);
-            foreach (string message in messages)
+            foreach (var message in messages)
             {
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
-            UnpackLocationSpecificdata(data);
+            UnpackLocationSpecificData(data);
             AnsiConsole.WriteLine("Save game loaded.");
         }
         else
@@ -149,7 +149,7 @@ public class Game : IGame
 
             var startLocationId = runner.GetStartingLocationId();
             var messages = new ChangeLocationCommand(startLocationId).Execute(this, _party);
-            foreach (string message in messages)
+            foreach (var message in messages)
             {
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
@@ -157,7 +157,7 @@ public class Game : IGame
         }
     }
 
-    private void UnpackLocationSpecificdata(SaveData data)
+    private void UnpackLocationSpecificData(SaveData data)
     {
         var extraData = data.LocationSpecificData;
         if (extraData == null || extraData.Count == 0)
@@ -189,10 +189,9 @@ public class Game : IGame
     private void AutoSaveIfItsBeenAWhile()
     {
         var elapsed = DateTime.Now - _lastSaveOn;
-        if (elapsed.TotalMinutes >= AutoSaveIntervalMinutes)
-        {
-            _lastSaveOn = DateTime.Now;
-            SaveGame();
-        }
+        if (elapsed.TotalMinutes < AutoSaveIntervalMinutes)
+            return;
+        _lastSaveOn = DateTime.Now;
+        SaveGame();
     }
 }
