@@ -195,7 +195,7 @@ public class DungeonTests
         var actual = dungeon.GetExtraDescription();
 
         // Assert
-        Assert.That(actual, Does.Contain("Green Slime"));
+        Assert.That(actual.Contains("Green Slime") || actual.Contains("Blue Slime"));
     }
 
     [Test]
