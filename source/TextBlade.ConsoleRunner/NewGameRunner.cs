@@ -14,7 +14,7 @@ public class NewGameRunner(Game game)
     private JObject? _gameJson;
     private JObject GameJson
     {
-        get => _gameJson ?? throw new Exception("No game loaded");
+        get => _gameJson ?? throw new Exception("No game loaded because ShowGameIntro() hasn't been called");
         set => _gameJson = value;
     }
 

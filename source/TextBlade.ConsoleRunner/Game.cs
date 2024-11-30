@@ -9,7 +9,7 @@ using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 using TextBlade.Core.Services;
-using TextBlade.Plateform.Windows;
+using TextBlade.Platform.Windows;
 
 namespace TextBlade.ConsoleRunner;
 
@@ -29,7 +29,7 @@ public class Game : IGame
 
     private Location _currentLocation = null!;
     private readonly bool _isRunning = true;
-    private List<Character> _party = new();
+    private List<Character> _party = [];
     private Inventory _inventory = new();
     private DateTime _lastSaveOn = DateTime.Now;
 

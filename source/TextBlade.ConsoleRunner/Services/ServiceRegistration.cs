@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TextBlade.Core.Game;
 using TextBlade.Core.Services;
-using TextBlade.Plateform.Windows;
+using TextBlade.Platform.Windows;
 #nullable enable
 namespace TextBlade.ConsoleRunner
 {

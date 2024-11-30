@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace TextBlade.Core.Services
 {
-    public class NullSoundPlayer : ISoundPlayer
+    public sealed class NullSoundPlayer : ISoundPlayer
     {
         public void Dispose()
         {
-            
         }
 
         public event AsyncCompletedEventHandler? LoadCompleted;
@@ -46,7 +45,7 @@ namespace TextBlade.Core.Services
         {
         }
 
-        protected virtual void OnLoadCompleted(AsyncCompletedEventArgs e)
+        private void OnLoadCompleted(AsyncCompletedEventArgs e)
         {
             LoadCompleted?.Invoke(this, e);
         }

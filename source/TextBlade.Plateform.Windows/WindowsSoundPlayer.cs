@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Versioning;
 using TextBlade.Core.Services;
 
-namespace TextBlade.Plateform.Windows;
+namespace TextBlade.Platform.Windows;
 
 [SupportedOSPlatform("windows")]
 
