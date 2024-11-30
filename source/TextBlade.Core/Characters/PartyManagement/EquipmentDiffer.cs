@@ -1,3 +1,4 @@
+using System.Text;
 using TextBlade.Core.Inv;
 
 namespace TextBlade.Core.Characters.PartyManagement;
@@ -54,5 +55,16 @@ public static class EquipmentDiffer
         }
 
         return diff;
+    }
+
+    public static string DiffToString(Dictionary<CharacterStats, int> diff)
+    {
+        var toReturn = new StringBuilder();
+        foreach (var kvp in diff)
+        {
+            var value = kvp.Value <= 0 ? kvp.Value.ToString() : $"+{kvp.Value}"; 
+            toReturn.AppendLine($"{kvp.Key} {value}");
+        }
+        return toReturn.ToString();
     }
 }

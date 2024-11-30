@@ -1,4 +1,5 @@
 using TextBlade.Core.Battle;
+using TextBlade.Core.Inv;
 
 namespace TextBlade.Core.Characters;
 
@@ -8,6 +9,7 @@ public class Character : Entity
     public int CurrentSkillPoints { get; set; }
     public List<Skill> Skills { get; set; } = new(); // NOT populated by JSON
     public List<string> SkillNames { get; set; } = new(); // populated by JSON
+    public Dictionary<ItemType, Equipment> Equipment { get; set; } = new(); // Needs to be public for serialization
 
     // Used for skills.
     public readonly int Special;
@@ -31,6 +33,17 @@ public class Character : Entity
     public void Revive()
     {
         this.CurrentHealth = 1;
+    }
+
+    internal Equipment? EquippedOn(ItemType slot)
+    {
+        Equipment? currentlyEquipped;
+        if (Equipment.TryGetValue(slot, out currentlyEquipped))
+        {
+            return currentlyEquipped;
+        }
+        
+        return null; // nothing equipped
     }
 
     new internal List<string> OnRoundComplete()
