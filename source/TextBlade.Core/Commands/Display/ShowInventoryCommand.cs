@@ -51,7 +51,10 @@ public class ShowInventoryCommand : ICommand
             case Inv.ItemType.Helmet:
             case Inv.ItemType.Armour:
             case Inv.ItemType.Weapon:
-                EquipmentEquipper.EquipIfRequested(itemData, inventory, party);
+                foreach (var message in EquipmentEquipper.EquipIfRequested(itemData, inventory, party))
+                {
+                    yield return message;
+                }
                 break;
         }
     }
