@@ -29,11 +29,14 @@ $sonarToken = [System.IO.File]::ReadAllText("sonarToken.txt")
 $stopWatch = New-Object -TypeName System.Diagnostics.StopWatch
 $stopWatch.Start()
 
+cd source
+
 dotnet sonarscanner begin /k:"$ProjectName" /d:sonar.host.url="http://localhost:9000" /d:sonar.login=$sonarToken /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.test.exclusions=**/*Test*.cs #/d:sonar.inclusions=**/source*/**/*
 
 dotnet build --no-incremental
 
 if ($LastExitCode -ne 0) {
+    cd ..
     Write-Error("Building code failed.")
 }
 
@@ -41,6 +44,7 @@ if ($LastExitCode -ne 0) {
 dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
 
 if ($LastExitCode -ne 0) {
+    cd ..
     Write-Error("Running tests failed.")
 }
 
@@ -50,3 +54,5 @@ $stopWatch.Stop()
 $minutes = $stopWatch.Elapsed.minutes
 $seconds = $stopWatch.Elapsed.seconds
 Write-Host "Done in $minutes minutes, $seconds seconds!"
+
+cd ..

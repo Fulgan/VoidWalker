@@ -90,6 +90,10 @@ public class Game : IGame
     private void ApplyResultsIfBattle(ICommand command)
     {
         var dungeon = _currentLocation as Dungeon;
+        if (dungeon == null)
+        {
+            throw new InvalidOperationException("Battles outside of dungeons aren't supported right now.");
+        }
 
         // Kinda a special case for battle commands
         if (command is not IBattleCommand battleCommand)
@@ -100,7 +104,7 @@ public class Game : IGame
         if (battleCommand.IsVictory)
         {
             // Wipe out the dungeon floor's inhabitants.
-            dungeon?.OnVictory(_inventory);
+            dungeon.OnVictory(_inventory);
         }
         else
         {
@@ -112,7 +116,7 @@ public class Game : IGame
         
         var dungeonSaveData = new Dictionary<string, object>
         {
-            { "CurrentFloor", dungeon?.CurrentFloorNumber??0 },
+            { "CurrentFloor", dungeon.CurrentFloorNumber },
             { "IsClear", battleCommand.IsVictory }
         };
 

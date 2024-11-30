@@ -3,6 +3,8 @@ using TextBlade.ConsoleRunner;
 using TextBlade.Core.Game;
 
 
+namespace VoidWalker;
+
 internal class Program
 {
     public static void Main(string[] args)

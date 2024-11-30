@@ -7,6 +7,11 @@ public static class EquipmentDiffer
 {
     public static Dictionary<CharacterStats, int> GetDiff(Equipment? current, Equipment? newThing)
     {
+        if (current == null && newThing == null)
+        {
+            return new Dictionary<CharacterStats, int>();
+        }
+        
         // Easy peasy lemon squeezy cases
         // 1) Equip when we have nothing: new stats take precedence
         if (current == null && newThing != null)
