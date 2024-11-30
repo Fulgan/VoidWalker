@@ -16,13 +16,15 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Spectre.Console" Version="0.49.1" />
-    <PackageReference Include="System.Windows.Extensions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Spectre.Console" />
+    <PackageReference Include="System.Windows.Extensions" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TextBlade.Core\TextBlade.Core.csproj" />
+    <ProjectReference Include="..\TextBlade.Plateform.Windows\TextBlade.Platform.Windows.csproj" />
   </ItemGroup> 
 
 </Project>

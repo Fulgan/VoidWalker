@@ -5,3 +5,6 @@ sonarToken.txt
 .sonarqube
 coverage.xml
 *.save
+**/.idea/
+*.DotSettings.user
+**/Properties/*

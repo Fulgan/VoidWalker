@@ -1,4 +1,5 @@
 ﻿using System.Media;
+using System.Runtime.CompilerServices;
 using Spectre.Console;
 using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Characters;
@@ -7,8 +8,11 @@ using TextBlade.Core.Game;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
+using TextBlade.Core.Services;
+using TextBlade.Platform.Windows;
 
 namespace TextBlade.ConsoleRunner;
+
 
 /// <summary>
 /// Now this here, this is yer basic game. Keeps track of the current location, party, etc.
@@ -16,7 +20,7 @@ namespace TextBlade.ConsoleRunner;
 /// </summary>
 public class Game : IGame
 {
-    public static IGame Current { get; private set; }
+    public static IGame Current { get; private set; } = null!;
     public Inventory Inventory => _inventory;
 
     // Don't kill the messenger. I swear, it's bad enough this only works on Windows.
@@ -24,17 +28,16 @@ public class Game : IGame
     private const int AutoSaveIntervalMinutes = 1;
 
     private Location _currentLocation = null!;
-    private bool _isRunning = true;
-    private List<Character> _party = new();
+    private readonly bool _isRunning = true;
+    private List<Character> _party = [];
     private Inventory _inventory = new();
     private DateTime _lastSaveOn = DateTime.Now;
 
-    // TODO: investigate something cross-platform with minimal OS-specific dependencies.
-    // NAudio, System.Windows.Extensions, etc. are all Windows-only. Sigh.
-    private SoundPlayer _backgroundAudioPlayer = new();
+    private readonly ISoundPlayer _backgroundAudioPlayer; 
 
-    public Game()
+    public Game(ISoundPlayer soundPlayer)
     {
+        _backgroundAudioPlayer = soundPlayer;
         Current = this;
         _backgroundAudioPlayer.LoadCompleted += (sender, args) => _backgroundAudioPlayer.PlayLooping();
     }
@@ -89,7 +92,7 @@ public class Game : IGame
         var dungeon = _currentLocation as Dungeon;
 
         // Kinda a special case for battle commands
-        if (!(command is IBattleCommand battleCommand))
+        if (command is not IBattleCommand battleCommand)
         {
             return;
         }
@@ -97,7 +100,7 @@ public class Game : IGame
         if (battleCommand.IsVictory)
         {
             // Wipe out the dungeon floor's inhabitants.
-            dungeon.OnVictory(_inventory);
+            dungeon?.OnVictory(_inventory);
         }
         else
         {
@@ -109,7 +112,7 @@ public class Game : IGame
         
         var dungeonSaveData = new Dictionary<string, object>
         {
-            { "CurrentFloor", dungeon.CurrentFloorNumber },
+            { "CurrentFloor", dungeon?.CurrentFloorNumber??0 },
             { "IsClear", battleCommand.IsVictory }
         };
 
@@ -131,11 +134,11 @@ public class Game : IGame
             _inventory = data.Inventory;
             GameSwitches.Switches = data.Switches;
             var messages = new ChangeLocationCommand(data.CurrentLocationId).Execute(this, _party);
-            foreach (string message in messages)
+            foreach (var message in messages)
             {
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
-            UnpackLocationSpecificdata(data);
+            UnpackLocationSpecificData(data);
             AnsiConsole.WriteLine("Save game loaded.");
         }
         else
@@ -146,7 +149,7 @@ public class Game : IGame
 
             var startLocationId = runner.GetStartingLocationId();
             var messages = new ChangeLocationCommand(startLocationId).Execute(this, _party);
-            foreach (string message in messages)
+            foreach (var message in messages)
             {
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
@@ -154,24 +157,21 @@ public class Game : IGame
         }
     }
 
-    private void UnpackLocationSpecificdata(SaveData data)
+    private void UnpackLocationSpecificData(SaveData data)
     {
         var extraData = data.LocationSpecificData;
         if (extraData == null || extraData.Count == 0)
-        {
             return;
-        }
 
         // Duck typing...
         var dungeon = _currentLocation as Dungeon;
 
-        if (extraData.ContainsKey("CurrentFloor"))
-        {
-            var floorNumber = Convert.ToInt32(extraData["CurrentFloor"]);
-            var isClear = (bool)extraData["IsClear"];
+        if (!extraData.TryGetValue("CurrentFloor", out var value)) 
+            return;
+        var floorNumber = Convert.ToInt32(value);
+        var isClear = (bool)extraData["IsClear"];
 
-            dungeon.SetState(floorNumber, isClear);
-        }
+        dungeon?.SetState(floorNumber, isClear);
     }
     
     private void PlayBackgroundAudio()
@@ -189,10 +189,9 @@ public class Game : IGame
     private void AutoSaveIfItsBeenAWhile()
     {
         var elapsed = DateTime.Now - _lastSaveOn;
-        if (elapsed.TotalMinutes >= AutoSaveIntervalMinutes)
-        {
-            _lastSaveOn = DateTime.Now;
-            SaveGame();
-        }
+        if (elapsed.TotalMinutes < AutoSaveIntervalMinutes)
+            return;
+        _lastSaveOn = DateTime.Now;
+        SaveGame();
     }
 }
