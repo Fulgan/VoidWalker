@@ -7,4 +7,5 @@ public interface IGame
 {
     public void SetLocation(Location location);
     public Inventory Inventory { get; }
+    public void Run();
 }
