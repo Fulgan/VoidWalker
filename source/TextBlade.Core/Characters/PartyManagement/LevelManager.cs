@@ -6,24 +6,28 @@ public static class LevelManager
     private const int StatPointsIncreaseOnLevelUp = 3;
     private const float HealthAndSkillPointsIncreaseOnLevelUpPercent = 0.1f;
 
-    public static void LevelUp(Character character)
+    public static IEnumerable<string> LevelUp(Character character)
     {
         while (CanLevelUp(character))
         {
             character.Level++;
+            yield return $"{character.Name} is now on level {character.Level}!";
 
             var healthDiff = (int)Math.Ceiling(character.TotalHealth * HealthAndSkillPointsIncreaseOnLevelUpPercent);
             character.TotalHealth += healthDiff;
             character.CurrentHealth += healthDiff;
+            yield return $"Gained {healthDiff} health!";
 
             var skillPointsDiff = (int)Math.Ceiling(character.TotalSkillPoints * HealthAndSkillPointsIncreaseOnLevelUpPercent);
             character.CurrentSkillPoints += skillPointsDiff;
             character.TotalSkillPoints += skillPointsDiff;
+            yield return $"Gained {skillPointsDiff} skill points!";
 
             character.Strength += StatPointsIncreaseOnLevelUp;
             character.Toughness += StatPointsIncreaseOnLevelUp;
             character.Special += StatPointsIncreaseOnLevelUp;
             character.SpecialDefense += StatPointsIncreaseOnLevelUp;
+            yield return $"Gained {StatPointsIncreaseOnLevelUp} strength, toughness, special, and special defense!";
         }
     }
 

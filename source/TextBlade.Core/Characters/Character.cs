@@ -38,17 +38,20 @@ public class Character : Entity
         this.CurrentHealth = 1;
     }
 
-    internal void GetExperiencePoints(int experiencePoints)
+    internal IEnumerable<string> GetExperiencePoints(int experiencePoints)
     {
         if (this.CurrentHealth <= 0)
         {
-            return;
+            yield break;
         }
 
         this.ExperiencePoints += experiencePoints;
         if (LevelManager.CanLevelUp(this))
         {
-            LevelManager.LevelUp(this);
+            foreach (var message in LevelManager.LevelUp(this))
+            {
+                yield return message;
+            }
         }
     }
 

@@ -20,7 +20,11 @@ public static class BattleResultsApplier
         {
             foreach (var character in saveData.Party.Where(c => c.CurrentHealth > 0))
             {
-                character.GetExperiencePoints(battleCommand.TotalExperiencePoints);
+                foreach (var message in character.GetExperiencePoints(battleCommand.TotalExperiencePoints))
+                {
+                    // TODO: return higher-up so we can apply styling/colour to it...
+                    Console.WriteLine(message);
+                }
             }
         }
         else
