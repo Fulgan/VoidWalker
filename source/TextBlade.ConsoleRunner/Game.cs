@@ -1,15 +1,11 @@
-﻿using System.Media;
-using System.Runtime.CompilerServices;
-using Spectre.Console;
+﻿using Spectre.Console;
 using TextBlade.ConsoleRunner.IO;
-using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Game;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 using TextBlade.Core.Services;
-using TextBlade.Platform.Windows;
 
 namespace TextBlade.ConsoleRunner;
 
@@ -21,16 +17,15 @@ namespace TextBlade.ConsoleRunner;
 public class Game : IGame
 {
     public static IGame Current { get; private set; } = null!;
-    public Inventory Inventory => _inventory;
-
+    public Inventory Inventory => _saveData.Inventory;
+    
     // Don't kill the messenger. I swear, it's bad enough this only works on Windows.
     private const string SupportedAudioExtension = "wav";
     private const int AutoSaveIntervalMinutes = 1;
+    private SaveData _saveData;
 
     private Location _currentLocation = null!;
     private readonly bool _isRunning = true;
-    private List<Character> _party = [];
-    private Inventory _inventory = new();
     private DateTime _lastSaveOn = DateTime.Now;
 
     private readonly ISoundPlayer _backgroundAudioPlayer; 
@@ -72,7 +67,7 @@ public class Game : IGame
             var command = InputProcessor.PromptForAction(_currentLocation);
             previousLocation = _currentLocation;
 
-            var messages = command.Execute(this, _party);
+            var messages = command.Execute(this, _saveData.Party);
             foreach (string message in messages)
             {
                 AnsiConsole.MarkupLine(message);
@@ -92,7 +87,7 @@ public class Game : IGame
         var dungeon = _currentLocation as Dungeon;
         if (dungeon == null)
         {
-            throw new InvalidOperationException("Battles outside of dungeons aren't supported right now.");
+            return;
         }
 
         // Kinda a special case for battle commands
@@ -104,11 +99,11 @@ public class Game : IGame
         if (battleCommand.IsVictory)
         {
             // Wipe out the dungeon floor's inhabitants.
-            dungeon.OnVictory(_inventory);
+            dungeon.OnVictory(_saveData.Inventory);
         }
         else
         {
-            foreach (var character in _party)
+            foreach (var character in _saveData.Party)
             {
                 character.Revive();
             }
@@ -125,7 +120,7 @@ public class Game : IGame
 
     private void SaveGame(Dictionary<string, object>? locationSpecificData = null)
     {
-        SaveGameManager.SaveGame("default", _currentLocation.LocationId, _party, _inventory, locationSpecificData);
+        SaveGameManager.SaveGame("default", _currentLocation.LocationId, _saveData.Party, _saveData.Inventory, locationSpecificData);
         AnsiConsole.MarkupLine("[green]Game saved.[/]");
     }
 
@@ -133,26 +128,25 @@ public class Game : IGame
     {
         if (SaveGameManager.HasSave("default"))
         {
-            var data = SaveGameManager.LoadGame("default");
-            _party = data.Party;
-            _inventory = data.Inventory;
-            GameSwitches.Switches = data.Switches;
-            var messages = new ChangeLocationCommand(data.CurrentLocationId).Execute(this, _party);
+            _saveData = SaveGameManager.LoadGame("default");
+            GameSwitches.Switches = _saveData.Switches;
+            var messages = new ChangeLocationCommand(_saveData.CurrentLocationId).Execute(this, _saveData.Party);
             foreach (var message in messages)
             {
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
-            UnpackLocationSpecificData(data);
+            UnpackLocationSpecificData();
             AnsiConsole.WriteLine("Save game loaded.");
         }
         else
         {
             var runner = new NewGameRunner(this);
             runner.ShowGameIntro();
-            _party = runner.CreateParty();
+            _saveData = new();
+            _saveData.Party = runner.CreateParty();
 
             var startLocationId = runner.GetStartingLocationId();
-            var messages = new ChangeLocationCommand(startLocationId).Execute(this, _party);
+            var messages = new ChangeLocationCommand(startLocationId).Execute(this, _saveData.Party);
             foreach (var message in messages)
             {
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
@@ -161,21 +155,26 @@ public class Game : IGame
         }
     }
 
-    private void UnpackLocationSpecificData(SaveData data)
+    private void UnpackLocationSpecificData()
     {
-        var extraData = data.LocationSpecificData;
+        var extraData = _saveData.LocationSpecificData;
         if (extraData == null || extraData.Count == 0)
+        {
             return;
+        }
 
         // Duck typing...
         var dungeon = _currentLocation as Dungeon;
 
-        if (!extraData.TryGetValue("CurrentFloor", out var value)) 
+        // These are all dungeon-specific
+        if (dungeon == null)
+        {
             return;
-        var floorNumber = Convert.ToInt32(value);
-        var isClear = (bool)extraData["IsClear"];
+        }
 
-        dungeon?.SetState(floorNumber, isClear);
+        var floorNumber = Convert.ToInt32(extraData["CurrentFloor"]);
+        var isClear = (bool)extraData["IsClear"];
+        dungeon.SetState(floorNumber, isClear);
     }
     
     private void PlayBackgroundAudio()
