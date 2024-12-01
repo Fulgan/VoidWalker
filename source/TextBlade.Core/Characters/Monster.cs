@@ -5,7 +5,7 @@ public class Monster : Entity
     public readonly string Weakness;
     public readonly int Gold;
     
-    public Monster(string name, int health, int strength, int toughness, int gold, string weakness = "")
+    public Monster(string name, int health, int strength, int toughness, int gold = 0, string weakness = "")
     : base(name, health, strength, toughness)
     {
         this.Weakness = weakness;
