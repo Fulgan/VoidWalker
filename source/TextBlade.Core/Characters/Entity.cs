@@ -8,10 +8,10 @@ namespace TextBlade.Core.Characters;
 public abstract class Entity
 {
     public string Name { get; protected set; }
-    public int TotalHealth { get; set; }
-    public int CurrentHealth { get; set; } 
-    public int Strength { get; protected set; } 
-    public int Toughness { get; protected set; }
+    public int TotalHealth { get; internal set; }
+    public int CurrentHealth { get; internal set; } 
+    public int Strength { get; internal set; } 
+    public int Toughness { get; internal set; }
     public Dictionary<string, int> StatusStacks { get; private set; } = new();
 
     protected Entity(string name, int health, int strength, int toughness)
