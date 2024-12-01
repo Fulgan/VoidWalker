@@ -5,35 +5,40 @@
         "Health": 50,
         "Strength": 20,
         "Toughness": 3,
-        "Weakness": "Spear"
+        "Weakness": "Spear",
+        "Gold": 5
     },
     "Spider":
     {
         "Health": 60,
         "Strength": 20,
         "Toughness": 5,
-        "Weakness": "Fire"
+        "Weakness": "Fire",
+        "Gold": 10
     },
     "Gargoyle":
     {
         "Health": 90,
         "Strength": 15,
         "Toughness": 5,
-        "Weakness": "Ice"
+        "Weakness": "Ice",
+        "Gold": 25
     },
     "Troll":
     {
         "Health": 150,
         "Strength": 25,
         "Toughness": 7,
-        "Weakness": "Poison"
+        "Weakness": "Poison",
+        "Gold": 40
     },
     "Ogre":
     {
         "Health": 200,
         "Strength": 35,
         "Toughness": 10,
-        "Weakness": "Bleed"
+        "Weakness": "Bleed",
+        "Gold": 75
     },
     
     "comment2": "Da Boss of North Seaside Cave",
@@ -42,6 +47,7 @@
         "Health": 350,
         "Strength": 45,
         "Toughness": 15,
-        "Weakness": "Fire"
+        "Weakness": "Fire",
+        "Gold": 250
     }
 }

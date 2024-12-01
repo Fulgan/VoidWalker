@@ -1,5 +1,3 @@
-using System;
-
 namespace TextBlade.Core.Commands;
 
 /// <summary>
@@ -8,4 +6,5 @@ namespace TextBlade.Core.Commands;
 public interface IBattleCommand
 {
     public bool IsVictory { get; }
+    public int TotalGold { get; }
 }

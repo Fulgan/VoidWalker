@@ -2,12 +2,14 @@ namespace TextBlade.Core.Characters;
 
 public class Monster : Entity
 {
-    public string Weakness { get; private set; } = string.Empty;
+    public readonly string Weakness;
+    public readonly int Gold;
     
-    public Monster(string name, int health, int strength, int toughness, string weakness = "")
+    public Monster(string name, int health, int strength, int toughness, int gold, string weakness = "")
     : base(name, health, strength, toughness)
     {
         this.Weakness = weakness;
+        this.Gold = gold;
     }
 
     internal int Attack(Character target)

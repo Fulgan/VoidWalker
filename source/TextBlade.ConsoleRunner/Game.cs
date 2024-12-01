@@ -115,12 +115,13 @@ public class Game : IGame
             { "IsClear", battleCommand.IsVictory }
         };
 
+        _saveData.Gold += battleCommand.TotalGold;
         SaveGame(dungeonSaveData);
     }
 
     private void SaveGame(Dictionary<string, object>? locationSpecificData = null)
     {
-        SaveGameManager.SaveGame("default", _currentLocation.LocationId, _saveData.Party, _saveData.Inventory, locationSpecificData);
+        SaveGameManager.SaveGame("default", _currentLocation.LocationId, _saveData.Party, _saveData.Inventory, _saveData.Gold, locationSpecificData);
         AnsiConsole.MarkupLine("[green]Game saved.[/]");
     }
 
@@ -144,6 +145,7 @@ public class Game : IGame
             runner.ShowGameIntro();
             _saveData = new();
             _saveData.Party = runner.CreateParty();
+            _saveData.Inventory = new();
 
             var startLocationId = runner.GetStartingLocationId();
             var messages = new ChangeLocationCommand(startLocationId).Execute(this, _saveData.Party);
@@ -191,10 +193,13 @@ public class Game : IGame
 
     private void AutoSaveIfItsBeenAWhile()
     {
-        var elapsed = DateTime.Now - _lastSaveOn;
+        var elapsed = DateTime.UtcNow - _lastSaveOn;
         if (elapsed.TotalMinutes < AutoSaveIntervalMinutes)
+        {
             return;
-        _lastSaveOn = DateTime.Now;
+        }
+        
+        _lastSaveOn = DateTime.UtcNow;
         SaveGame();
     }
 }

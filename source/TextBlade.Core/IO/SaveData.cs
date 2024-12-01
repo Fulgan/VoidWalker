@@ -15,5 +15,5 @@ public struct SaveData
     public Dictionary<string, object>? LocationSpecificData { get; set; }
 
     // For user code, i.e. ggame-specific things
-    public Dictionary<string, object> GameSpecificData { get; set; }
+    public Dictionary<string, object>? GameSpecificData { get; set; }
 }
