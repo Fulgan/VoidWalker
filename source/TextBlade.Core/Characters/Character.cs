@@ -19,12 +19,11 @@ public class Character : Entity
 
     internal bool IsDefending { get; private set; }
 
-    public Character(string name, int health, int strength, int toughness, int special = 0, int specialDefense = 0, int level = 1, int experiencePoints = 0)
+    public Character(string name, int health, int strength, int toughness, int special = 0, int specialDefense = 0, int experiencePoints = 0)
     : base(name, health, strength, toughness)
     {
         this.Special = special;
         this.SpecialDefense = specialDefense;
-        this.Level = level;
         this.ExperiencePoints = experiencePoints;
     }
 

@@ -15,9 +15,10 @@ namespace TextBlade.Core.Commands;
 public class FightCommand : ICommand, IBattleCommand
 {
     private const string CommentsInJsonRegex = @"(//.*)";
-    public const string VictoryMessage = "Victory! You gained {0} gold!";
+    public const string VictoryMessage = "Victory! You gained {0} gold and {1} experience points!";
     public const string DefeatMessage = "Defeat!";
     public int TotalGold => _monsters.Sum(m => m.Gold);
+    public int TotalExperiencePoints => _monsters.Sum(m => m.ExperiencePoints);
 
     private readonly List<Monster> _monsters = new();
     private static JObject _allMonstersData; // name => stats
@@ -64,7 +65,8 @@ public class FightCommand : ICommand, IBattleCommand
             var toughness = data.Value<int>("Toughness");
             var weakness = data.Value<string?>("Weakness") ?? string.Empty;
             var gold = data.Value<int>("Gold");
-            var monster = new Monster(name, health, strength, toughness, gold, weakness);
+            var experiencePoints = data.Value<int?>("ExperiencePoints") ?? 0; // 0 = auto calculate
+            var monster = new Monster(name, health, strength, toughness, gold, experiencePoints, weakness);
             _monsters.Add(monster);
         }
     }
@@ -140,7 +142,7 @@ public class FightCommand : ICommand, IBattleCommand
         else if (areMonstersDefeated())
         {
             this.IsVictory = true;
-            yield return string.Format(VictoryMessage, TotalGold);
+            yield return string.Format(VictoryMessage, TotalGold, TotalExperiencePoints);
         }
         else
         {

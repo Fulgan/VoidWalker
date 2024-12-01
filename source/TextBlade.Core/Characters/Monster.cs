@@ -4,12 +4,20 @@ public class Monster : Entity
 {
     public readonly string Weakness;
     public readonly int Gold;
+    public readonly int ExperiencePoints;
     
-    public Monster(string name, int health, int strength, int toughness, int gold = 0, string weakness = "")
+    public Monster(string name, int health, int strength, int toughness, int gold = 0, int experiencePoints = 0, string weakness = "")
     : base(name, health, strength, toughness)
     {
         this.Weakness = weakness;
         this.Gold = gold;
+
+        this.ExperiencePoints = experiencePoints;
+        if (this.ExperiencePoints == 0)
+        {
+            // No legitimate case for this right now; determine it automagically.
+            this.ExperiencePoints = (int)Math.Ceiling((health / 10.0f) + strength + toughness + (gold / 10));
+        }
     }
 
     internal int Attack(Character target)

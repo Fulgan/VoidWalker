@@ -16,7 +16,14 @@ public static class BattleResultsApplier
 
         saveData.Gold += battleCommand.TotalGold;
 
-        if (!battleCommand.IsVictory)
+        if (battleCommand.IsVictory)
+        {
+            foreach (var character in saveData.Party.Where(c => c.CurrentHealth > 0))
+            {
+                character.GetExperiencePoints(battleCommand.TotalExperiencePoints);
+            }
+        }
+        else
         {
             foreach (var character in saveData.Party)
             {

@@ -7,4 +7,5 @@ public interface IBattleCommand
 {
     public bool IsVictory { get; }
     public int TotalGold { get; }
+    public int TotalExperiencePoints { get; }
 }

@@ -37,5 +37,4 @@ public static class LevelManager
     {
         return (int)Math.Pow(character.Level, 2) * 100;
     }
-
 }
