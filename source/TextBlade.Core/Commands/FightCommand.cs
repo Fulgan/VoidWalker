@@ -38,7 +38,7 @@ public class FightCommand : ICommand, IBattleCommand
         var commentlessText = new StringBuilder();
         foreach (var line in rawLines)
         {
-            commentlessText.Append(Regex.Replace(line, CommentsInJsonRegex, string.Empty));
+            commentlessText.Append(Regex.Replace(line, CommentsInJsonRegex, string.Empty, RegexOptions.None, TimeSpan.FromSeconds(1)));
         }
 
         var jsonContent = commentlessText.ToString();
