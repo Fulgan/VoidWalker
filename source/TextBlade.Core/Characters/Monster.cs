@@ -16,7 +16,7 @@ public class Monster : Entity
         if (this.ExperiencePoints == 0)
         {
             // No legitimate case for this right now; determine it automagically.
-            this.ExperiencePoints = (int)Math.Ceiling((health / 10.0f) + strength + toughness + (gold / 10));
+            this.ExperiencePoints = strength + toughness;
         }
     }
 
