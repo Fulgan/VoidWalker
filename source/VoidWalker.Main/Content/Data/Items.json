@@ -3,20 +3,24 @@
     {
         "$type": "TextBlade.Core.Inv.Equipment, TextBlade.Core",
         "ItemType": "Weapon",
-        "StatsModifiers": { "Strength": 7 }
+        "StatsModifiers": { "Strength": 7 },
+        "Value": 200
     },
     "Iron Helmet":
     {
         "$type": "TextBlade.Core.Inv.Equipment, TextBlade.Core",
         "ItemType": "Helmet",
-        "StatsModifiers": { "Toughness": 3 }
+        "StatsModifiers": { "Toughness": 3 },
+        "Value": 100
     },
     "Iron Armour":
     {
         "$type": "TextBlade.Core.Inv.Equipment, TextBlade.Core",
         "ItemType": "Armour",
-        "StatsModifiers": { "Toughness": 5 }
+        "StatsModifiers": { "Toughness": 5 },
+        "Value": 150
     },
-    "Potion-α": { "ItemType": "Consumable" },
-    "Potion-β": { "ItemType": "Consumable" }
+
+    "Potion-α": { "ItemType": "Consumable", "Value": 25 },
+    "Potion-β": { "ItemType": "Consumable", "Value": 75 }
 }
