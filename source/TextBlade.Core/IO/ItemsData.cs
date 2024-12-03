@@ -34,6 +34,8 @@ public static class ItemsData
         }
 
         // Code smells... Not sure how to fix it...
-        return Serializer.Deserialize<Item>(jsonBlob.ToString());
+        var toReturn = Serializer.Deserialize<Item>(jsonBlob.ToString());
+        toReturn.Name = itemName;
+        return toReturn;
     }
 }
