@@ -2,6 +2,7 @@
 using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Commands;
+using TextBlade.Core.Commands.Display;
 using TextBlade.Core.Game;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
@@ -18,6 +19,7 @@ namespace TextBlade.ConsoleRunner;
 public class Game : IGame
 {
     public static IGame Current { get; private set; } = null!;
+
     public Inventory Inventory => _saveData.Inventory;
     
     // Don't kill the messenger. I swear, it's bad enough this only works on Windows.
@@ -63,9 +65,9 @@ public class Game : IGame
             if (previousLocation != _currentLocation)
             {
                 CodeBehindRunner.ExecuteLocationCode(_currentLocation);
+                LocationDisplayer.ShowLocation(_currentLocation);
             }
 
-            LocationDisplayer.ShowLocation(_currentLocation);
             var command = InputProcessor.PromptForAction(_currentLocation);
             previousLocation = _currentLocation;
 
@@ -77,11 +79,15 @@ public class Game : IGame
 
             /// This area stinks: type-specific things...
             var dungeonSaveData = BattleResultsApplier.ApplyResultsIfBattle(command, _currentLocation, _saveData);
-            SaveGame(dungeonSaveData);
+            AutoSaveIfItsBeenAWhile(dungeonSaveData);
 
             if (command is ManuallySaveCommand)
             {
                 SaveGame();
+            }
+            else if (command is LookCommand)
+            {
+                LocationDisplayer.ShowLocation(_currentLocation);
             }
         }
     }
@@ -158,7 +164,7 @@ public class Game : IGame
         _backgroundAudioPlayer.Load();
     }
 
-    private void AutoSaveIfItsBeenAWhile()
+    private void AutoSaveIfItsBeenAWhile(Dictionary<string, object>? locationSpecificData = null)
     {
         var elapsed = DateTime.UtcNow - _lastSaveOn;
         if (elapsed.TotalMinutes < AutoSaveIntervalMinutes)
@@ -167,6 +173,6 @@ public class Game : IGame
         }
         
         _lastSaveOn = DateTime.UtcNow;
-        SaveGame();
+        SaveGame(locationSpecificData);
     }
 }

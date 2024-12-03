@@ -45,6 +45,9 @@ public static class InputProcessor
             case "s":
             case "save":
                 return new ManuallySaveCommand();
+            case "l":
+            case "look":
+                return new LookCommand();
             case "help":
             case "h":
             case "?":
