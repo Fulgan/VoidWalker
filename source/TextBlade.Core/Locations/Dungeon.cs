@@ -138,7 +138,7 @@ public class Dungeon : Location
         FloorLoot[_currentFloorLootKey].Clear();
     }
 
-    override public string GetExtraDescription()
+    public override string GetExtraDescription()
     {
        var currentFloorData = _floorMonsters[CurrentFloorNumber];
         var monstersMessage = new StringBuilder();
