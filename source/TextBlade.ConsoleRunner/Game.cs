@@ -45,6 +45,7 @@ public class Game : IGame
     public void SetLocation(Location location)
     {
         _currentLocation = location;
+        _currentLocation.CurrentSaveData = _saveData;
         PlayBackgroundAudio();
         AutoSaveIfItsBeenAWhile();
     }

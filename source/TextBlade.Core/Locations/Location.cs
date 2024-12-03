@@ -1,4 +1,5 @@
 using TextBlade.Core.Commands;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Locations;
 
@@ -7,6 +8,12 @@ namespace TextBlade.Core.Locations;
 /// </summary>
 public class Location : BaseLocation
 {
+    /// <summary>
+    /// Used by Game to pass along the current save data.
+    /// Could be DI constructor injected, too.
+    /// </summary>
+    public SaveData CurrentSaveData { set; protected get; }
+
     public List<LocationLink> LinkedLocations { get; set; } = new();
     public string LocationId { get; internal set; } = null!; // Saved so we know our location
     
