@@ -1,7 +1,6 @@
 using TextBlade.Core.Characters;
 using TextBlade.Core.Characters.PartyManagement;
 using TextBlade.Core.Game;
-using TextBlade.Core.Inv;
 
 namespace TextBlade.Core.Commands.Display;
 
@@ -20,13 +19,13 @@ public class ShowInventoryCommand : ICommand
             i++;
         }
 
-        yield return"Use/equip which item?";
+        yield return"Use/equip which item? Type 0 or b or back to go back.";
         
         var index = 0;
         while (index == 0)
         {        
             var rawInput = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
-            if (rawInput == "b" || rawInput == "back")
+            if (rawInput == "0" || rawInput == "b" || rawInput == "back")
             {
                 yield break;
             }
