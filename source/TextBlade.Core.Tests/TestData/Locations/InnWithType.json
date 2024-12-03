@@ -2,8 +2,8 @@
     "$type": "TextBlade.Core.Locations.Inn, TextBlade.Core",
     "Name": "The King's Inn",
     "Description": "A small, dirty shack with an equally dirty innkeeper.",
-    "LInkedLocations": [
+    "LinkedLocations": [
         {"Id": "KingsVale/KingsVale", "Description": "Back to King's Vale"}
     ],
-    "InnCost": 100
+    "InnCost": 10
   }
