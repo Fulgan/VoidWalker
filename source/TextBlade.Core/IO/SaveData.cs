@@ -4,7 +4,7 @@ using TextBlade.Core.Characters;
 
 namespace TextBlade.Core.IO;
 
-public struct SaveData
+public class SaveData
 {
     public List<Character> Party { get; set; }
     public GameSwitches Switches { get; set; }
