@@ -7,7 +7,7 @@ public class Item
     public readonly ItemType ItemType;
     public readonly int Value; // Value, aka cost.
 
-    public Item(string name, string description, string itemType, int value)
+    public Item(string name, string description, string itemType, int value = 1)
     {
         // Name is null because we don't duplicate it in our JSON.
         Name = name;

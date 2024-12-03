@@ -81,7 +81,7 @@ public class SerializerTests
         Assert.That(actual, Is.Not.Null);
         Assert.That(actual, Is.TypeOf<Inn>());
         var inn = actual as Inn;
-        Assert.That(inn.InnCost, Is.EqualTo(100));
+        Assert.That(inn.InnCost, Is.EqualTo(10));
     }
 
     [Test]

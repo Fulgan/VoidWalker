@@ -8,7 +8,7 @@ public class Equipment : Item
     public Dictionary<CharacterStats, int> StatsModifiers { get; private set; } = new();
 
     // This is obvious, but maybe not? Best to enshrine it in code.
-    public Equipment(string name, string itemType, Dictionary<CharacterStats, int> statsModifiers, int value) : base(name, string.Empty, itemType, value)
+    public Equipment(string name, string itemType, Dictionary<CharacterStats, int> statsModifiers, int value = 1) : base(name, string.Empty, itemType, value)
     {
         if (this.ItemType == ItemType.Consumable)
         {

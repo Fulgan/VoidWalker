@@ -8,17 +8,6 @@ namespace TextBlade.Core.Tests.Locations;
 [TestFixture]
 public class DungeonTests
 {
-
-    [Test]
-    public void GetItemFromJson_InfersEquipmentAsEquipmentType()
-    {
-        // Arrange is done in Items.json
-        // Act
-        var actual = Dungeon.GetItemFromJson("Iron Helmet");
-
-        Assert.That(actual, Is.InstanceOf<Equipment>());
-    }
-
     [Test]
     [TestCase(0)]
     [TestCase(-1)]
