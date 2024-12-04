@@ -2,6 +2,8 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TextBlade.Core.Commands;
+using TextBlade.Core.Commands.Display;
+using TextBlade.Core.Game;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 
@@ -19,9 +21,10 @@ public class Dungeon : Location
     // I'm sure I'll put treasure and stuff in here eventually.
     protected readonly List<List<string>> _floorMonsters = [];
     
-    private string _currentFloorLootKey => $"B{CurrentFloorNumber + 1}"; 
+    private string _currentFloorLootKey => $"B{CurrentFloorNumber + 1}";
+    private IGame _game;
 
-    public Dungeon(string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null)
+    public Dungeon(IGame game, string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null)
     : base(name, description, locationClass)
     {
         if (numFloors <= 0)
@@ -33,6 +36,8 @@ public class Dungeon : Location
         {
             throw new ArgumentException(nameof(monsters));
         }
+
+        _game = game;
 
         // Iterate up to the second-last floor and generate monsters
         for (int i = 0; i < numFloors - 1; i++)
@@ -184,7 +189,7 @@ public class Dungeon : Location
         var currentFloorData = _floorMonsters[CurrentFloorNumber];
         if (input == "f" || input == "fight")
         {
-            return new FightCommand(currentFloorData);
+            return new FightCommand(_game, currentFloorData);
         }
         if (input == "d" || input == "down" || input == "descend" || input == ">")
         {
@@ -200,6 +205,7 @@ public class Dungeon : Location
             {
                 // Valid descent
                 CurrentFloorNumber++;
+                return new LookCommand();
             }
         }
 

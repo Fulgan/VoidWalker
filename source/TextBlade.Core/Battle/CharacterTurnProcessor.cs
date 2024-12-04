@@ -1,5 +1,7 @@
 using System.Text;
 using TextBlade.Core.Characters;
+using TextBlade.Core.Commands.Display;
+using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Battle;
@@ -7,15 +9,19 @@ namespace TextBlade.Core.Battle;
 public class CharacterTurnProcessor
 {
     private readonly List<Monster> _monsters;
+    private readonly IGame _game;
+    private readonly List<Character> _party;
 
-    public CharacterTurnProcessor(List<Character> party, List<Monster> monsters)
+    public CharacterTurnProcessor(IGame game, List<Character> party, List<Monster> monsters)
     {
+        _game = game;
+        _party = party;
         _monsters = monsters;
     }
 
     internal string ProcessTurnFor(Character character)
     {
-        Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [s]kill, or [d]efend");
+        Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [i]tem, [s]kill, or [d]efend");
         var input = Console.ReadKey();
         int target; // not going to work for healing skills
 
@@ -37,6 +43,14 @@ public class CharacterTurnProcessor
                 // Depending on the skill, the target is an instance of Character or Monster.
                 // For now, assume monster.
                 return SkillApplier.Apply(character, skill, _monsters[target - 1]);
+            case 'i':
+            case 'I':
+                foreach (var message in new ShowInventoryCommand(true).Execute(_game, _party))
+                {
+                    // Special case: show immediately because it requires input from the player.
+                    Console.WriteLine(message);
+                }
+                return string.Empty;
             default:
                 return string.Empty;
         }

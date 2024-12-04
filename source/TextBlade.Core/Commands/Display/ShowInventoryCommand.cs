@@ -7,20 +7,33 @@ namespace TextBlade.Core.Commands.Display;
 
 public class ShowInventoryCommand : ICommand
 {
+    private bool _isInBattle = false;
+
+    public ShowInventoryCommand(bool isInBattle = false)
+    {
+        _isInBattle = isInBattle;
+    }
+
     public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         yield return "Inventory:";
 
         var inventory = game.Inventory;
+        var items = inventory.ItemsInOrder;
+        if (_isInBattle)
+        {
+            items = items.Where(i => i.ItemType == Inv.ItemType.Consumable);
+        }
+        
         var i = 1;
 
-        foreach (var item in inventory.ItemsInOrder)
+        foreach (var item in items)
         {
-            yield return$"  {i}: {item} x{inventory.ItemQuantities[item]}";
+            yield return $"  {i}: {item.Name} x{inventory.ItemQuantities[item.Name]}";
             i++;
         }
 
-        yield return"Use/equip which item? Type 0 or b or back to go back.";
+        yield return $"Use{(_isInBattle ? "" : "/equip")} which item? Type 0 or b or back to go back.";
         
         var index = 0;
         while (index == 0)
@@ -36,15 +49,14 @@ public class ShowInventoryCommand : ICommand
                 continue;
             }
 
-            if (index < 1 || index > inventory.ItemsInOrder.Count())
+            if (index < 1 || index > items.Count())
             {
                 yield return "Please enter a valid number!";
                 index = 0;
              }
         }
 
-        var picked = inventory.ItemsInOrder.ElementAt(index - 1);
-        var itemData = inventory.NameToData[picked];
+        var itemData = items.ElementAt(index - 1);
 
         switch (itemData.ItemType)
         {

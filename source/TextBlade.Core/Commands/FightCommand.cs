@@ -14,16 +14,17 @@ namespace TextBlade.Core.Commands;
 /// </summary>
 public class FightCommand : ICommand, IBattleCommand
 {
-    private const string CommentsInJsonRegex = @"(//.*)";
     public const string VictoryMessage = "Victory! You gained {0} gold and {1} experience points!";
     public const string DefeatMessage = "Defeat!";
+    private const string CommentsInJsonRegex = @"(//.*)";
+    private static JObject s_allMonstersData; // name => stats
+
     public int TotalGold => _monsters.Sum(m => m.Gold);
     public int TotalExperiencePoints => _monsters.Sum(m => m.ExperiencePoints);
+    public bool IsVictory { get; private set; }
 
     private readonly List<Monster> _monsters = new();
-    private static JObject _allMonstersData; // name => stats
-
-    public bool IsVictory { get; private set; }
+    private readonly IGame _game;
 
     static FightCommand()
     {
@@ -43,18 +44,20 @@ public class FightCommand : ICommand, IBattleCommand
         }
 
         var jsonContent = commentlessText.ToString();
-        _allMonstersData = JsonConvert.DeserializeObject(jsonContent) as JObject;
-        if (_allMonstersData == null)
+        s_allMonstersData = JsonConvert.DeserializeObject(jsonContent) as JObject;
+        if (s_allMonstersData == null)
         {
             throw new InvalidOperationException($"{jsonPath} doesn't seem to be valid JSON.");
         }
     }
 
-    public FightCommand(List<string> monsterNames)
+    public FightCommand(IGame game, List<string> monsterNames)
     {
+        _game = game;
+
         foreach (var name in monsterNames)
         {
-            var data = _allMonstersData[name];
+            var data = s_allMonstersData[name];
             if (data == null)
             {
                 throw new ArgumentException($"Can't find monster data for {name}");
@@ -78,7 +81,7 @@ public class FightCommand : ICommand, IBattleCommand
         var isPartyWipedOut = () => party.TrueForAll(p => p.CurrentHealth <= 0);
         var areMonstersDefeated = () => _monsters.TrueForAll(m => m.CurrentHealth <= 0);
         var isBattleOver = () => isPartyWipedOut() || areMonstersDefeated();
-        var characterTurnProcessor = new CharacterTurnProcessor(party, _monsters);
+        var characterTurnProcessor = new CharacterTurnProcessor(game, party, _monsters);
 
         while (!isBattleOver())
         {
