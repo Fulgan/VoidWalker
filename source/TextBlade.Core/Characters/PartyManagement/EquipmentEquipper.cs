@@ -26,6 +26,7 @@ public static class EquipmentEquipper
         if (input <= 0 || input > party.Count)
         {
             yield return "Invalid number, cancelling.";
+            yield break;
         }
 
         var partyMember = party[input - 1];
