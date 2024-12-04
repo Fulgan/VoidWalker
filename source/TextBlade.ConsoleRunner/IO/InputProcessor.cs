@@ -22,12 +22,18 @@ public static class InputProcessor
         int destinationOption;
         if (int.TryParse(rawResponse, out destinationOption))
         {
-            // Assume it's valid
+            // Check if it's valid
+            if (destinationOption <= 0 || destinationOption > currentLocation.LinkedLocations.Count)
+            {
+                Console.WriteLine("That's not a valid destination!");
+                return new DoNothingCommand();
+            }
+
             var destination = currentLocation.LinkedLocations[destinationOption - 1];
             return new ChangeLocationCommand(destination.Id);
         }
 
-        // Nah, nah, it's just a global command.
+        // Nah, nah, it's not a destination, just a global command.
         // If you update this, update the help listing in ShowHelpCommand.
         switch (rawResponse)
         {
