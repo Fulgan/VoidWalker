@@ -45,6 +45,8 @@ public static class InputProcessor
             case "inventory":
                 return new ShowInventoryCommand();
             case "p":
+            case "party":
+            case "status":
                 return new ShowPartyStatusCommand();
             case "credits":
                 return new ShowCreditsCommand();

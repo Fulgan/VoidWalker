@@ -9,6 +9,10 @@ public class ShowHelpCommand : ICommand
     private readonly Dictionary<string, string> _knownCommands = new()
     {
         { "help", "Shows this detailed help text"},
+        { "look", "Check where you are"},
+        { "inv", "Open your inventory to equip or use items"},
+        { "party/status", "See your party's status"},
+        { "save", "Save the game"},
         { "quit", "Quits the game" },
         { "credits", "Shows the credits" },
     };
