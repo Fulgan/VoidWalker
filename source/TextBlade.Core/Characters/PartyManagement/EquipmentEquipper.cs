@@ -81,16 +81,21 @@ public static class EquipmentEquipper
             $"{itemData.Name}. Stats: {itemData}"
         };
 
+        var i = 0;
         foreach (var member in party)
         {
+            i++;
+
             Equipment? currentlyEquipped = member.EquippedOn(itemData.ItemType);
             var diff = EquipmentDiffer.GetDiff(currentlyEquipped, itemData);
+            
             var wearingMessage = "";
             if (currentlyEquipped != null)
             {
                 wearingMessage = $", wearing {currentlyEquipped.Name}";
             }
-            messages.Add($"For {member.Name}{wearingMessage}: {EquipmentDiffer.DiffToString(diff)}");
+            
+            messages.Add($"    {i}: For {member.Name}{wearingMessage}: {EquipmentDiffer.DiffToString(diff)}");
         }
 
         return messages;
