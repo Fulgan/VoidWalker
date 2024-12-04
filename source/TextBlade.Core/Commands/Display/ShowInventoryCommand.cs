@@ -1,3 +1,4 @@
+using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Characters.PartyManagement;
 using TextBlade.Core.Game;
@@ -51,6 +52,12 @@ public class ShowInventoryCommand : ICommand
             case Inv.ItemType.Armour:
             case Inv.ItemType.Weapon:
                 foreach (var message in EquipmentEquipper.EquipIfRequested(itemData, inventory, party))
+                {
+                    yield return message;
+                }
+                break;
+            case Inv.ItemType.Consumable:
+                foreach (var message in ItemUser.UseIfRequested(itemData, inventory, party))
                 {
                     yield return message;
                 }

@@ -21,6 +21,19 @@
         "Value": 150
     },
 
-    "Potion-α": { "ItemType": "Consumable", "Value": 25 },
-    "Potion-β": { "ItemType": "Consumable", "Value": 75 }
+    "Potion-α":
+    {
+        "$type": "TextBlade.Core.Inv.Consumable, TextBlade.Core",
+        "ItemType": "Consumable",
+        "Value": 25,
+        "RestoreHealth": 50
+    },
+    "Potion-β":
+    {
+        "$type": "TextBlade.Core.Inv.Consumable, TextBlade.Core",
+        "ItemType": "Consumable",
+        "Value": 75,
+        "RestoreHealth": 100,
+        "RestoreSkillPoints": 25
+    }
 }

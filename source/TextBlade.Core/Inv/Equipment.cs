@@ -4,6 +4,7 @@ namespace TextBlade.Core.Inv;
 
 public class Equipment : Item
 {
+    // TODO: store JSON so we can see custom attributes
     // Supposed to be readonly. We need to serialize it though.
     public Dictionary<CharacterStats, int> StatsModifiers { get; private set; } = new();
 
