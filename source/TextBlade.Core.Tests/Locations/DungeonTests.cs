@@ -15,7 +15,7 @@ public class DungeonTests
     public void Constructor_Throws_IfNumFloorsIsNotPositive(int numFloors)
     {
         // Arrange/Act/Assert
-        var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new Dungeon("Lava Dungeon", "Mmm, ice-cream", numFloors, ["A", "B"], "Bossman 37"));
+        var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new Dungeon(null, "Lava Dungeon", "Mmm, ice-cream", numFloors, ["A", "B"], "Bossman 37"));
         Assert.That(ex.Message, Does.Contain(nameof(numFloors)));
     }
 
@@ -23,7 +23,7 @@ public class DungeonTests
     public void Constructor_Throws_IfMonsterListIsEmpty()
     {
         // Arrange/Act/Assert
-        var ex = Assert.Throws<ArgumentException>(() => new Dungeon("Ice Dungeon", "Mmm, stew", 33, [], "Bossman 38"));
+        var ex = Assert.Throws<ArgumentException>(() => new Dungeon(null, "Ice Dungeon", "Mmm, stew", 33, [], "Bossman 38"));
         Assert.That(ex.Message, Does.Contain("monsters"));
     }
 
@@ -119,7 +119,7 @@ public class DungeonTests
     public void SetState_ThrowsIfFloorNumberIsNegative(int floorNumber)
     {
         // Arrange
-        var dungeon = new Dungeon("Test Dungeon", "N/A", 7, ["Troll"], "Nobody");
+        var dungeon = new Dungeon(null, "Test Dungeon", "N/A", 7, ["Troll"], "Nobody");
         
         // Act/Assert
         var ex = Assert.Throws<ArgumentOutOfRangeException>(() => dungeon.SetState(floorNumber, true));
@@ -130,7 +130,7 @@ public class DungeonTests
     public void SetState_SetsCurrentFloorNumber()
     {
         // Arrange
-        var dungeon = new Dungeon("North Seaside Cave", "N/A", 1, ["Vole"], "Nobody");
+        var dungeon = new Dungeon(null, "North Seaside Cave", "N/A", 1, ["Vole"], "Nobody");
 
         // Act
         dungeon.SetState(33, false);
@@ -144,7 +144,7 @@ public class DungeonTests
     {
         // Arrange
         var floorNumber = 0;
-        var dungeon = new Dungeon("South Seaside Cave", "N/A", 1, ["Mole"], "Nobody");
+        var dungeon = new Dungeon(null, "South Seaside Cave", "N/A", 1, ["Mole"], "Nobody");
         dungeon.FloorLoot[$"B{floorNumber + 1}"] = ["Troll Hair", "Vole Tail", "Moleskin"];
 
         // Act
@@ -160,7 +160,7 @@ public class DungeonTests
     {
         // Arrange
         var floorNumber = 0;
-        var dungeon = new Dungeon("South Seaside Cave", "N/A", 3, ["Mole"], "Nobody");
+        var dungeon = new Dungeon(null, "South Seaside Cave", "N/A", 3, ["Mole"], "Nobody");
         dungeon.FloorLoot[$"B{floorNumber + 1}"] = ["Troll Hair"];
         dungeon.FloorLoot[$"B{floorNumber + 2}"] = ["Vole Tail", "Moleskin"];
 
@@ -349,7 +349,8 @@ public class DungeonTests
 
     class DungeonStub : Dungeon
     {
-        public DungeonStub(string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null) : base(name, description, numFloors, monsters, boss, locationClass)
+        public DungeonStub(string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null) 
+            : base(null, name, description, numFloors, monsters, boss, locationClass)
         {
         }
 
