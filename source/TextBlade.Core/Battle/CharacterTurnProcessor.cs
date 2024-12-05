@@ -65,7 +65,14 @@ public class CharacterTurnProcessor
             Console.WriteLine($"    {i+1}: {monster.Name} ({monster.CurrentHealth}/{monster.TotalHealth} health)");
         }
 
-        var target = int.Parse(Console.ReadKey().KeyChar.ToString());
+        var target = 0;
+        while (target == 0 || target > _monsters.Count)
+        {
+            if (!int.TryParse(Console.ReadKey().KeyChar.ToString().Trim(), out target))
+            {
+                Console.WriteLine($"That's not a valid number! Enter a number from 1 to {_monsters.Count}: ");
+            }
+        }
         return target;
     }
 
@@ -89,7 +96,7 @@ public class CharacterTurnProcessor
         var message = new StringBuilder();
         message.Append($"{character.Name} attacks {targetMonster.Name}! ");
         
-        var damage = character.Strength - targetMonster.Toughness;
+        var damage = character.TotalStrength - targetMonster.Toughness;
         targetMonster.Damage(damage);
         
         var damageAmount = damage <= 0 ? "NO" : damage.ToString();

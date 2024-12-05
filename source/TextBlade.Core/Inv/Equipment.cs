@@ -24,6 +24,16 @@ public class Equipment : Item
         StatsModifiers = statsModifiers;
     }
 
+    public int GetStatsModifier(CharacterStats stat)
+    {
+        if (!StatsModifiers.ContainsKey(stat))
+        {
+            return 0;
+        }
+
+        return StatsModifiers[stat];
+    }
+
     /// <summary>
     /// A convenient way to represent our stats in a human-readable/understandable way
     /// </summary>

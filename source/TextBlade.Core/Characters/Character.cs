@@ -38,6 +38,16 @@ public class Character : Entity
         this.CurrentHealth = 1;
     }
 
+    /// <summary>
+    /// Total strength: character strength + all equipment strength (including, potentially, all armour).
+    /// </summary>
+    public int TotalStrength { get { return this.Strength + this.Equipment.Sum(e => e.Value.GetStatsModifier(CharacterStats.Strength)); } }
+
+    /// <summary>
+    /// Total toughness: character toughness + all equipment toughness (including, potentially, your weapon).
+    /// </summary>
+    public int TotalToughness { get { return this.Toughness + this.Equipment.Sum(e => e.Value.GetStatsModifier(CharacterStats.Toughness)); } }
+
     internal IEnumerable<string> GetExperiencePoints(int experiencePoints)
     {
         if (this.CurrentHealth <= 0)

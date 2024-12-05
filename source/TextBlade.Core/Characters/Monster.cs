@@ -23,7 +23,7 @@ public class Monster : Entity
     internal int Attack(Character target)
     {
         var attack = this.Strength;
-        var blocked = target.Toughness;
+        var blocked = target.TotalToughness;
         if (target.IsDefending)
         {
             blocked = (int)(blocked * 1.5);
