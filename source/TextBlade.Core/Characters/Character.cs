@@ -6,6 +6,8 @@ namespace TextBlade.Core.Characters;
 
 public class Character : Entity
 {
+    public const int EquipmentStrengthMultiplier = 2; // 2 => equipment strength adds 2x to damage 
+
     public int TotalSkillPoints { get; set; }
     public int CurrentSkillPoints { get; set; }
     public List<Skill> Skills { get; set; } = new(); // NOT populated by JSON
@@ -41,7 +43,7 @@ public class Character : Entity
     /// <summary>
     /// Total strength: character strength + all equipment strength (including, potentially, all armour).
     /// </summary>
-    public int TotalStrength { get { return this.Strength + this.Equipment.Sum(e => e.Value.GetStatsModifier(CharacterStats.Strength)); } }
+    public int TotalStrength { get { return this.Strength + EquipmentStrengthMultiplier * this.Equipment.Sum(e => e.Value.GetStatsModifier(CharacterStats.Strength)); } }
 
     /// <summary>
     /// Total toughness: character toughness + all equipment toughness (including, potentially, your weapon).
