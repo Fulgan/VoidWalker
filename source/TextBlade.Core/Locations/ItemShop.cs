@@ -39,6 +39,7 @@ public class ItemShop : Location
             message.AppendLine($"   {i}: {item}: {_itemCosts[item]} gold");
         }
 
+        message.AppendLine($"You have {CurrentSaveData.Gold} gold.");
         return message.ToString();
     }
 
