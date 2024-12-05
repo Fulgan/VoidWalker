@@ -11,7 +11,10 @@ public class ShowPartyStatusCommand : ICommand
 
         foreach (var member in party)
         {
-            yield return $"    {member.Name}: {member.CurrentHealth}/{member.TotalHealth} health";
+            var equipment = string.Join(", ", member.Equipment.Values.Select(e => $"{e.Name}: {e}"));
+
+            yield return $"    {member.Name}: {member.CurrentHealth}/{member.TotalHealth} health.";
+            yield return $"        Equipment: {(string.IsNullOrWhiteSpace(equipment) ? "nothing" : equipment)}";
         }
     }
 }

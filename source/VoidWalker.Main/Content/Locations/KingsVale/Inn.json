@@ -5,5 +5,5 @@
   "LinkedLocations": [
       {"Id": "Locations/KingsVale/KingsVale", "Description": "Back to King's Vale"}
   ],
-  "InnCost": 100
+  "InnCost": 10
 }
