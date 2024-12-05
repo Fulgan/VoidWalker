@@ -79,15 +79,24 @@ public class Game : IGame
 
             /// This area stinks: type-specific things...
             var dungeonSaveData = BattleResultsApplier.ApplyResultsIfBattle(command, _currentLocation, _saveData);
-            AutoSaveIfItsBeenAWhile(dungeonSaveData);
+            if (command is IBattleCommand)
+            {
+                SaveGame(dungeonSaveData);
 
-            if (command is ManuallySaveCommand)
+                // After battle, tell me the floor status again.
+                LocationDisplayer.ShowLocation(_currentLocation);
+            }
+            else if (command is ManuallySaveCommand)
             {
                 SaveGame();
             }
             else if (command is LookCommand)
             {
                 LocationDisplayer.ShowLocation(_currentLocation);
+            }
+            else
+            {
+                AutoSaveIfItsBeenAWhile(dungeonSaveData);
             }
         }
     }
