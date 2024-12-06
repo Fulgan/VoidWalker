@@ -189,7 +189,7 @@ public class Dungeon : Location
         var currentFloorData = _floorMonsters[CurrentFloorNumber];
         if (input == "f" || input == "fight")
         {
-            return new FightCommand(_game, currentFloorData);
+            return new TakeTurnsBattleCommand(_game, currentFloorData);
         }
         if (input == "d" || input == "down" || input == "descend" || input == ">")
         {

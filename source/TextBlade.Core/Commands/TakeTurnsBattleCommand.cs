@@ -12,7 +12,7 @@ namespace TextBlade.Core.Commands;
 /// <summary>
 /// Unlike most of the other commands, handles all the (fighting) logic and user input/response internally.
 /// </summary>
-public class FightCommand : ICommand, IBattleCommand
+public class TakeTurnsBattleCommand : ICommand, IBattleCommand
 {
     public const string VictoryMessage = "Victory! You gained {0} gold and {1} experience points!";
     public const string DefeatMessage = "Defeat!";
@@ -26,7 +26,7 @@ public class FightCommand : ICommand, IBattleCommand
     private readonly List<Monster> _monsters = new();
     private readonly IGame _game;
 
-    static FightCommand()
+    static TakeTurnsBattleCommand()
     {
         // By convention for now
         var jsonPath = Path.Join("Content", "Data", "Monsters.json");
@@ -51,7 +51,7 @@ public class FightCommand : ICommand, IBattleCommand
         }
     }
 
-    public FightCommand(IGame game, List<string> monsterNames)
+    public TakeTurnsBattleCommand(IGame game, List<string> monsterNames)
     {
         _game = game;
 

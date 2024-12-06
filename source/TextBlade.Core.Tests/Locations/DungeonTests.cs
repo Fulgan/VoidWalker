@@ -276,7 +276,7 @@ public class DungeonTests
     [Test]
     [TestCase("f")]
     [TestCase("fight")]
-    public void GetCommandFor_ReturnsFightCommand(string command)
+    public void GetCommandFor_ReturnsTakeTurnsBattleCommand(string command)
     {
         // Arrange
         var dungeon = CreateDungeon();
@@ -285,7 +285,7 @@ public class DungeonTests
         var actual = dungeon.GetCommandFor(command);
 
         // Assert
-        Assert.That(actual, Is.InstanceOf<FightCommand>());
+        Assert.That(actual, Is.InstanceOf<TakeTurnsBattleCommand>());
     }
 
     [Test]
