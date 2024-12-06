@@ -97,6 +97,11 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                     continue;
                 }
 
+                if (_monsters.All(m => m.CurrentHealth <= 0))
+                {
+                    continue;
+                }
+
                 yield return characterTurnProcessor.ProcessTurnFor(character);
             }
 

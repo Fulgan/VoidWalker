@@ -23,7 +23,7 @@ public class CharacterTurnProcessor
     {
         Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [i]tem, [s]kill, or [d]efend");
         var input = Console.ReadKey();
-        int target; // not going to work for healing skills
+        Monster target; // not going to work for healing skills
 
         switch(input.KeyChar)
         {
@@ -42,7 +42,7 @@ public class CharacterTurnProcessor
                 target = PickTarget();
                 // Depending on the skill, the target is an instance of Character or Monster.
                 // For now, assume monster.
-                return SkillApplier.Apply(character, skill, _monsters[target - 1]);
+                return SkillApplier.Apply(character, skill, target);
             case 'i':
             case 'I':
                 foreach (var message in new ShowInventoryCommand(true).Execute(_game, _party))
@@ -56,24 +56,32 @@ public class CharacterTurnProcessor
         }
     }
 
-    private int PickTarget()
+    private Monster PickTarget()
     {
-        Console.WriteLine("Pick a target:");
-        for (int i = 0; i < _monsters.Count; i++)
+        var validTargets = _monsters.Where(m => m.CurrentHealth > 0);
+        if (!validTargets.Any())
         {
-            var monster = _monsters[i];
+            throw new InvalidOperationException("Character's turn when all monsters are dead.");
+        }
+
+        Console.WriteLine("Pick a target:");
+
+        for (int i = 0; i < validTargets.Count(); i++)
+        {
+            var monster = validTargets.ElementAt(i);
             Console.WriteLine($"    {i+1}: {monster.Name} ({monster.CurrentHealth}/{monster.TotalHealth} health)");
         }
 
         var target = 0;
-        while (target == 0 || target > _monsters.Count)
+        while (target == 0 || target > validTargets.Count())
         {
             if (!int.TryParse(Console.ReadKey().KeyChar.ToString().Trim(), out target))
             {
-                Console.WriteLine($"That's not a valid number! Enter a number from 1 to {_monsters.Count}: ");
+                Console.WriteLine($"That's not a valid number! Enter a number from 1 to {validTargets.Count()}: ");
             }
         }
-        return target;
+
+        return validTargets.ElementAt(target - 1);
     }
 
     private static Skill PickSkillFor(Character character)
@@ -89,10 +97,9 @@ public class CharacterTurnProcessor
         return character.Skills[target - 1];
     }
 
-    private string Attack(Character character, int target)
+    private string Attack(Character character, Monster targetMonster)
     {
         // Assume target number is legit
-        var targetMonster = _monsters[target - 1];
         var message = new StringBuilder();
         message.Append($"{character.Name} attacks {targetMonster.Name}! ");
         
