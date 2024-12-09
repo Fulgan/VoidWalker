@@ -38,7 +38,7 @@
     },
     "Heal":
     {
-        "DamageMultiplier":-0.5,
+        "DamageMultiplier":-1.5,
         "Cost": 5,
         "Target":"Character"
     }

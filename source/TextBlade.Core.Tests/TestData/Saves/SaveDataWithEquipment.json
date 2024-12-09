@@ -92,7 +92,7 @@
               {
                 "$type": "TextBlade.Core.Battle.Skill, TextBlade.Core",
                 "Name": "Heal",
-                "DamageMultiplier": -0.5,
+                "DamageMultiplier": -1.5,
                 "Cost": 5,
                 "Target": "Character",
                 "StatusInflicted": "",

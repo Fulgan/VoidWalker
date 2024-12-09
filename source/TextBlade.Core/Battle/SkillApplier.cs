@@ -37,7 +37,7 @@ public static class SkillApplier
         else if (target is Character)
         {
             // If you're healing, heal for 2x
-            damage = user.Special * skill.DamageMultiplier * 2;
+            damage = (int)Math.Ceiling(user.Special * skill.DamageMultiplier * 2);
         }
 
         var roundedDamage = (int)damage;
