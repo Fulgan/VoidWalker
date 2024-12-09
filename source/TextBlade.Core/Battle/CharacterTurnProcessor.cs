@@ -121,7 +121,7 @@ public class CharacterTurnProcessor
         Console.WriteLine("Pick a skill:");
         for (int i = 0; i < character.Skills.Count; i++)
         {
-            Console.WriteLine($"    {i+1}: {character.SkillNames[i]}");
+            Console.WriteLine($"    {i+1}: {character.SkillNames[i]} - {character.Skills[i].ToString()}");
         }
 
         var target = int.Parse(Console.ReadKey().KeyChar.ToString());
