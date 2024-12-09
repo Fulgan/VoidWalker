@@ -23,7 +23,7 @@ public class ShowHelpCommand : ICommand
         {
             // If you update this, update the huge case statement in InputProcessor for commands.
             $"Each location lists other locations you can visit; use [{Colours.Command}]numbers[/] to indicate where to travel.",
-            "Some locations have location-specific keys, like [{Colours.Command}]S[/] to sleep at inns, so watch out for those.",
+            $"Some locations have location-specific keys, like [{Colours.Command}]S[/] to sleep at inns, so watch out for those.",
             "The following commands are also available:"
         };
 
