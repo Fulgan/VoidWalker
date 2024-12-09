@@ -13,6 +13,6 @@
             "Name": "Nusaybah",
             "CurrentHealth": 75, "TotalHealth": 75, "CurrentSkillPoints": 150, "TotalSkillPoints": 150,
             "Strength": 35, "Toughness": 8, "Special": 10, "SpecialDefense": 10,
-            "SkillNames": ["Fire α", "Ice α", "Poison", "Heal"] }
+            "SkillNames": ["Fire A", "Ice A", "Poison", "Heal"] }
     ]
 }

@@ -21,14 +21,14 @@
         "Value": 150
     },
 
-    "Potion-α":
+    "Potion-A":
     {
         "$type": "TextBlade.Core.Inv.Consumable, TextBlade.Core",
         "ItemType": "Consumable",
         "Value": 25,
         "RestoreHealth": 50
     },
-    "Potion-β":
+    "Potion-B":
     {
         "$type": "TextBlade.Core.Inv.Consumable, TextBlade.Core",
         "ItemType": "Consumable",

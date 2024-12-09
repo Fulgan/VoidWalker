@@ -10,7 +10,7 @@
         "Cost": 20,
         "Target":"All"
     },
-    "Fire α":
+    "Fire A":
     {
         "DamageMultiplier": 1.1,
         "Cost": 7,
@@ -18,7 +18,7 @@
         "StatusInflicted": "Burn",
         "StatusStacks": 5
     },
-    "Ice α":
+    "Ice A":
     {
         "DamageMultiplier": 1.5,
         "Cost": 7,

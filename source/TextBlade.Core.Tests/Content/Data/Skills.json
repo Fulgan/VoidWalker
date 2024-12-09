@@ -17,13 +17,13 @@
         "StatusInflicted":"Bleed",
         "StatusStacks": 5
     },
-    "Fire α":
+    "Fire A":
     {
         "DamageMultiplier": 1.5,
         "Cost": 7,
         "DamageType":"Fire"
     },
-    "Ice α":
+    "Ice A":
     {
         "DamageMultiplier": 1.5,
         "Cost": 7,

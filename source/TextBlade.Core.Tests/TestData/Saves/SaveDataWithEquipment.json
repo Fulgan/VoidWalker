@@ -61,7 +61,7 @@
             "$values": [
               {
                 "$type": "TextBlade.Core.Battle.Skill, TextBlade.Core",
-                "Name": "Fire α",
+                "Name": "Fire A",
                 "DamageMultiplier": 1.1,
                 "Cost": 7,
                 "Target": "Enemy",
@@ -71,7 +71,7 @@
               },
               {
                 "$type": "TextBlade.Core.Battle.Skill, TextBlade.Core",
-                "Name": "Ice α",
+                "Name": "Ice A",
                 "DamageMultiplier": 1.5,
                 "Cost": 7,
                 "Target": "Enemy",
@@ -104,8 +104,8 @@
           "SkillNames": {
             "$type": "System.Collections.Generic.List`1[[System.String, System.Private.CoreLib]], System.Private.CoreLib",
             "$values": [
-              "Fire α",
-              "Ice α",
+              "Fire A",
+              "Ice A",
               "Poison",
               "Heal"
             ]
@@ -137,7 +137,7 @@
         "Iron Sword": 1,
         "Iron Helmet": 1,
         "Iron Armour": 1,
-        "Potion-α": 1
+        "Potion-A": 1
       },
       "NameToData": {
         "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[TextBlade.Core.Inv.Item, TextBlade.Core]], System.Private.CoreLib",
@@ -171,11 +171,11 @@
           },
           "Name": "Iron Armour"
         },
-        "Potion-α": {
+        "Potion-A": {
           "$type": "TextBlade.Core.Inv.Item, TextBlade.Core",
           "Description": null,
           "ItemType": "Consumable",
-          "Name": "Potion-α"
+          "Name": "Potion-A"
         }
       }
     },
