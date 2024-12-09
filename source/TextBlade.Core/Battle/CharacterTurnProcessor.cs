@@ -23,14 +23,14 @@ public class CharacterTurnProcessor
     {
         Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [i]tem, [s]kill, or [d]efend");
         var input = Console.ReadKey();
-        Monster target; // not going to work for healing skills
+        Entity target; // not going to work for healing skills
 
         switch(input.KeyChar)
         {
             case 'a':
             case 'A':
-                target = PickTarget();
-                return Attack(character, target);
+                target = PickTargetMonster();
+                return Attack(character, target as Monster);
             case 'd':
             case 'D':
                 character.Defend();
@@ -39,7 +39,7 @@ public class CharacterTurnProcessor
             case 'S':
                 // Assumes you get back a valid skill: something you have SP for.
                 var skill = PickSkillFor(character);
-                target = PickTarget();
+                target = PickTargetFor(skill);
                 // Depending on the skill, the target is an instance of Character or Monster.
                 // For now, assume monster.
                 return SkillApplier.Apply(character, skill, target);
@@ -56,7 +56,33 @@ public class CharacterTurnProcessor
         }
     }
 
-    private Monster PickTarget()
+    private Entity PickTargetFor(Skill skill)
+    {
+        switch (skill.Target)
+        {
+            case null:
+            case "":
+            case "Enemy":
+            case "Monster": // TODO: it's Enemy now, will switch
+                return PickTargetMonster();
+            case "Character":
+                return PickTargetCharacter();
+            default:
+                throw new InvalidOperationException($"TextBlade doesn't know how to pick a target of type: {skill.Target ?? "(null)"}");
+        }       
+    }
+
+    /// <summary>
+    /// Lets the player pick from any character, dead or alive.
+    /// </summary>
+    /// <returns></returns>
+    private Character PickTargetCharacter()
+    {
+        var validTargets = _party;
+        return PickFromList(validTargets) as Character;
+    }
+
+    private Entity PickTargetMonster()
     {
         var validTargets = _monsters.Where(m => m.CurrentHealth > 0);
         if (!validTargets.Any())
@@ -64,6 +90,12 @@ public class CharacterTurnProcessor
             throw new InvalidOperationException("Character's turn when all monsters are dead.");
         }
 
+        // Refactor: we use this "pick a valid int from this list" everywhere. DRY.
+        return PickFromList(validTargets);
+    }
+
+    private static Entity PickFromList(IEnumerable<Entity> validTargets)
+    {
         Console.WriteLine("Pick a target:");
 
         for (int i = 0; i < validTargets.Count(); i++)
@@ -99,6 +131,8 @@ public class CharacterTurnProcessor
 
     private string Attack(Character character, Monster targetMonster)
     {
+        ArgumentNullException.ThrowIfNull(targetMonster);
+
         // Assume target number is legit
         var message = new StringBuilder();
         message.Append($"{character.Name} attacks {targetMonster.Name}! ");

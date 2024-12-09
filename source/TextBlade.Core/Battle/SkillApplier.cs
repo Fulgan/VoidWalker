@@ -5,7 +5,7 @@ namespace TextBlade.Core.Battle;
 
 public static class SkillApplier
 {
-    internal static string Apply(Character user, Skill skill, Monster target)
+    internal static string Apply(Character user, Skill skill, Entity target)
     {
         var message = new StringBuilder();
         message.Append(ApplyDamage(user, skill, target));
@@ -14,21 +14,35 @@ public static class SkillApplier
         return message.ToString();
     }
 
-    private static string ApplyDamage(Character user, Skill skill, Monster target)
+    private static string ApplyDamage(Character user, Skill skill, Entity target)
     {
-        float damage = (user.Strength - target.Toughness) * skill.DamageMultiplier;
-        if (target.Weakness == skill.DamageType)
+        /////// TODO: REFACTOR so this method is not polymorphic
+        ArgumentNullException.ThrowIfNull(target);
+        float damage = 0;
+
+        if (target is Monster m)
         {
-            damage *= 2;
+            damage = (user.Strength - target.Toughness) * skill.DamageMultiplier;
+            if (m.Weakness == skill.DamageType)
+            {
+                // Targeting their weakness? 2x damage!
+                damage *= 2;
+            }
+        }
+        else if (target is Character)
+        {
+            // If you're healing, heal for 2x
+            damage = user.Special * skill.DamageMultiplier * 2;
         }
 
         var roundedDamage = (int)damage;
         target.Damage(roundedDamage);
-
-        return $"{user.Name} uses {skill.Name} on {target.Name}! {roundedDamage} damage!";
+        
+        var damageMessage = damage > 0 ? $"{roundedDamage} damage" : $"healed for {-roundedDamage}";
+        return $"{user.Name} uses {skill.Name} on {target.Name}! {damageMessage}!";
     }
     
-    private static string InflictStatuses(Character user, Skill skill, Monster target)
+    private static string InflictStatuses(Character user, Skill skill, Entity target)
     {
         if (string.IsNullOrWhiteSpace(skill.StatusInflicted))
         {

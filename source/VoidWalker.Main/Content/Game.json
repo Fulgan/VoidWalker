@@ -5,14 +5,14 @@
         {
             "Name": "Aisha",
             "CurrentHealth": 120, "TotalHealth": 120, "CurrentSkillPoints": 50, "TotalSkillPoints": 50,
-            "Strength": 25, "Toughness": 10,
+            "Strength": 25, "Toughness": 10, "Special": 5, "SpecialDefense": 5,
             "SkillNames": ["DoubleStrike", "Whirlwind"]
         },
 
         {
             "Name": "Nusaybah",
             "CurrentHealth": 75, "TotalHealth": 75, "CurrentSkillPoints": 150, "TotalSkillPoints": 150,
-            "Strength": 35, "Toughness": 8,
+            "Strength": 35, "Toughness": 8, "Special": 10, "SpecialDefense": 10,
             "SkillNames": ["Fire α", "Ice α", "Poison", "Heal"] }
     ]
 }
