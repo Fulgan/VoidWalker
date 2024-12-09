@@ -62,6 +62,7 @@ public class CharacterTurnProcessor
         {
             case null:
             case "":
+            case "Single":
             case "Enemy":
             case "Monster": // TODO: it's Enemy now, will switch
                 return [PickTargetMonster()];
