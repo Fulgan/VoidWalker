@@ -30,7 +30,7 @@ public class CharacterTurnProcessor
             case 'a':
             case 'A':
                 targets = [PickTargetMonster()];
-                return Attack(character, targets as Monster);
+                return Attack(character, targets.First() as Monster);
             case 'd':
             case 'D':
                 character.Defend();
