@@ -5,11 +5,16 @@ namespace TextBlade.Core.Battle;
 
 public static class SkillApplier
 {
-    internal static string Apply(Character user, Skill skill, Entity target)
+    internal static string Apply(Character user, Skill skill, IEnumerable<Entity> targets)
     {
         var message = new StringBuilder();
-        message.Append(ApplyDamage(user, skill, target));
-        message.Append(InflictStatuses(user, skill, target));
+        
+        foreach (var target in targets)
+        {
+            message.Append(ApplyDamage(user, skill, target));
+            message.AppendLine(InflictStatuses(user, skill, target));
+        }
+
         user.CurrentSkillPoints -= skill.Cost;
         return message.ToString();
     }

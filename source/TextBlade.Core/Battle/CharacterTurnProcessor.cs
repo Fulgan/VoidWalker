@@ -23,14 +23,14 @@ public class CharacterTurnProcessor
     {
         Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [i]tem, [s]kill, or [d]efend");
         var input = Console.ReadKey();
-        Entity target; // not going to work for healing skills
+        IEnumerable<Entity> targets; 
 
         switch(input.KeyChar)
         {
             case 'a':
             case 'A':
-                target = PickTargetMonster();
-                return Attack(character, target as Monster);
+                targets = [PickTargetMonster()];
+                return Attack(character, targets as Monster);
             case 'd':
             case 'D':
                 character.Defend();
@@ -39,10 +39,10 @@ public class CharacterTurnProcessor
             case 'S':
                 // Assumes you get back a valid skill: something you have SP for.
                 var skill = PickSkillFor(character);
-                target = PickTargetFor(skill);
+                targets = PickTargetsFor(skill);
                 // Depending on the skill, the target is an instance of Character or Monster.
                 // For now, assume monster.
-                return SkillApplier.Apply(character, skill, target);
+                return SkillApplier.Apply(character, skill, targets);
             case 'i':
             case 'I':
                 foreach (var message in new ShowInventoryCommand(true).Execute(_game, _party))
@@ -56,7 +56,7 @@ public class CharacterTurnProcessor
         }
     }
 
-    private Entity PickTargetFor(Skill skill)
+    private IEnumerable<Entity> PickTargetsFor(Skill skill)
     {
         switch (skill.Target)
         {
@@ -64,9 +64,13 @@ public class CharacterTurnProcessor
             case "":
             case "Enemy":
             case "Monster": // TODO: it's Enemy now, will switch
-                return PickTargetMonster();
+                return [PickTargetMonster()];
+            case "All":
+                return _monsters.Where(m => m.CurrentHealth > 0);
             case "Character":
-                return PickTargetCharacter();
+                return [PickTargetCharacter()];
+            case "Party":
+                return _party;
             default:
                 throw new InvalidOperationException($"TextBlade doesn't know how to pick a target of type: {skill.Target ?? "(null)"}");
         }       
