@@ -9,7 +9,7 @@
     "Monsters": ["Goblin", "Spider", "Gargoyle", "Troll", "Ogre"],
     "FloorLoot": {
         "B2": ["Iron Sword", "Iron Shield", "Potion", "Potion"],
-        "B5": ["100 Gold", "High-Potion", "High-Potion", "High-Potion", "Iron Shield"]
+        "B5": ["High-Potion", "High-Potion", "High-Potion", "Iron Shield"]
     },
     "Boss": "Langosta Prime"
   }
