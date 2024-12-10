@@ -22,7 +22,6 @@ public class Game : IGame
 
     public Inventory Inventory => _saveData.Inventory;
     
-    private const string SupportedAudioExtension = "ogg";
     private const int AutoSaveIntervalMinutes = 1;
     private SaveData _saveData;
 
@@ -167,10 +166,7 @@ public class Game : IGame
             return;
         }
 
-        Console.WriteLine("Loading...");
-        _backgroundAudioPlayer.Load(Path.Join("Content", "Audio", $"{_currentLocation.BackgroundAudio}.{SupportedAudioExtension}"));
-        Console.WriteLine("Done!");
-        Thread.Sleep(1000);
+        _backgroundAudioPlayer.Load(Path.Join("Content", "Audio", _currentLocation.BackgroundAudio));
         _backgroundAudioPlayer.Play();
     }
 

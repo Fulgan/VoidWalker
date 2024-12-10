@@ -8,13 +8,15 @@ namespace TextBlade.Platform.Windows.Audio;
 [SupportedOSPlatform("windows")]
 public class NAudioSoundPlayer : ISoundPlayer
 {
+    internal const string SupportedAudioExtension = "ogg";
+
     private WaveOutEvent? _waveOut;
     private VorbisWaveReader? _reader;
     
     public void Load(string audioFile)
     {
         
-        _reader = new VorbisWaveReader(audioFile);
+        _reader = new VorbisWaveReader($"{audioFile}.{SupportedAudioExtension}");
         _waveOut = new WaveOutEvent();
         _waveOut.Init(_reader);
     }
