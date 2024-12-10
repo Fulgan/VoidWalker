@@ -22,7 +22,7 @@ public class Game : IGame
 
     public Inventory Inventory => _saveData.Inventory;
     
-    private const string SupportedAudioExtension = "wav";
+    private const string SupportedAudioExtension = "ogg";
     private const int AutoSaveIntervalMinutes = 1;
     private SaveData _saveData;
 

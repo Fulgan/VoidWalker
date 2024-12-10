@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Versioning;
+using NAudio.Vorbis;
 using NAudio.Wave;
 using TextBlade.Core.Services;
 
@@ -8,12 +9,12 @@ namespace TextBlade.Platform.Windows.Audio;
 public class NAudioSoundPlayer : ISoundPlayer
 {
     private WaveOutEvent? _waveOut;
-    private AudioFileReader? _reader;
+    private VorbisWaveReader? _reader;
     
     public void Load(string audioFile)
     {
         
-        _reader = new AudioFileReader(audioFile);
+        _reader = new VorbisWaveReader(audioFile);
         _waveOut = new WaveOutEvent();
         _waveOut.Init(_reader);
     }
