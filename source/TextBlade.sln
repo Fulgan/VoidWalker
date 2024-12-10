@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.ConsoleRunner", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.Core.Tests", "TextBlade.Core.Tests\TextBlade.Core.Tests.csproj", "{2E37EBCF-ADBF-4744-AC3F-0F27CB37A34B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.Platform.Windows", "TextBlade.Plateform.Windows\TextBlade.Platform.Windows.csproj", "{2120D242-D52E-42A1-8807-8549A58C90CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBlade.Platform.Windows", "TextBlade.Platform.Windows\TextBlade.Platform.Windows.csproj", "{2120D242-D52E-42A1-8807-8549A58C90CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
