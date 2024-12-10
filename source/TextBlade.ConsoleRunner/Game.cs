@@ -13,16 +13,16 @@ namespace TextBlade.ConsoleRunner;
 
 
 /// <summary>
-/// Now this here, this is yer basic game. Keeps track of the current location, party, etc.
+/// Your basic game class. Keeps track of the current location, party members, etc. in save data.
 /// Handles some basic parsing: showing output, reading input, and processing it (delegation).
 /// </summary>
 public class Game : IGame
 {
     public static IGame Current { get; private set; } = null!;
+    private const int AutoSaveIntervalMinutes = 1;
 
     public Inventory Inventory => _saveData.Inventory;
     
-    private const int AutoSaveIntervalMinutes = 1;
     private SaveData _saveData;
 
     private Location _currentLocation = null!;
@@ -40,7 +40,6 @@ public class Game : IGame
     /// <summary>
     /// Called whenever a location changes. Sleeping in an inn, descending a dungeon, do NOT trigger this.
     /// </summary>
-    /// <param name="location"></param>
     public void SetLocation(Location location)
     {
         _currentLocation = location;
@@ -51,50 +50,60 @@ public class Game : IGame
 
     public void Run()
     {
-        LoadGameOrStartNewGame();
+        try {
+            LoadGameOrStartNewGame();
 
-        // Don't execute code if we stay in the same location, e.g. press enter or "help" - only execute code
-        // if the location changed. Fixes a bug where spamming enter keeps adding the same location over and over ...
-        Location? previousLocation = null;
+            // Don't execute code if we stay in the same location, e.g. press enter or "help" - only execute code
+            // if the location changed. Fixes a bug where spamming enter keeps adding the same location over and over ...
+            Location? previousLocation = null;
 
-        while (_isRunning)
+            while (_isRunning)
+            {
+                if (previousLocation != _currentLocation)
+                {
+                    CodeBehindRunner.ExecuteLocationCode(_currentLocation);
+                    LocationDisplayer.ShowLocation(_currentLocation);
+                }
+
+                var command = InputProcessor.PromptForAction(_currentLocation);
+                previousLocation = _currentLocation;
+
+                var messages = command.Execute(this, _saveData.Party);
+                foreach (string message in messages)
+                {
+                    AnsiConsole.MarkupLine(message);
+                }
+
+                /// This area stinks: type-specific things...
+                var dungeonSaveData = BattleResultsApplier.ApplyResultsIfBattle(command, _currentLocation, _saveData);
+                if (command is IBattleCommand)
+                {
+                    SaveGame(dungeonSaveData);
+
+                    // After battle, tell me the floor status again.
+                    LocationDisplayer.ShowLocation(_currentLocation);
+                }
+                else if (command is ManuallySaveCommand)
+                {
+                    SaveGame();
+                }
+                else if (command is LookCommand)
+                {
+                    LocationDisplayer.ShowLocation(_currentLocation);
+                }
+                else
+                {
+                    AutoSaveIfItsBeenAWhile(dungeonSaveData);
+                }
+            }
+        }
+        catch (Exception ex)
         {
-            if (previousLocation != _currentLocation)
-            {
-                CodeBehindRunner.ExecuteLocationCode(_currentLocation);
-                LocationDisplayer.ShowLocation(_currentLocation);
-            }
-
-            var command = InputProcessor.PromptForAction(_currentLocation);
-            previousLocation = _currentLocation;
-
-            var messages = command.Execute(this, _saveData.Party);
-            foreach (string message in messages)
-            {
-                AnsiConsole.MarkupLine(message);
-            }
-
-            /// This area stinks: type-specific things...
-            var dungeonSaveData = BattleResultsApplier.ApplyResultsIfBattle(command, _currentLocation, _saveData);
-            if (command is IBattleCommand)
-            {
-                SaveGame(dungeonSaveData);
-
-                // After battle, tell me the floor status again.
-                LocationDisplayer.ShowLocation(_currentLocation);
-            }
-            else if (command is ManuallySaveCommand)
-            {
-                SaveGame();
-            }
-            else if (command is LookCommand)
-            {
-                LocationDisplayer.ShowLocation(_currentLocation);
-            }
-            else
-            {
-                AutoSaveIfItsBeenAWhile(dungeonSaveData);
-            }
+            string[] crashFiles = [@"SaveData\default.save", "crash.txt"];
+            AnsiConsole.MarkupLine("[red]Oh no! The game crashed![/]");
+            AnsiConsole.MarkupLine("Please reach out to the developers and let them know about this, so that they can look into it.");
+            AnsiConsole.MarkupLine($"Send them these files from your game directory, along with a description of what you were doing in-game: [blue]{string.Join(", ", crashFiles)}[/]");
+            File.WriteAllText("crash.txt", ex.ToString());
         }
     }
 
