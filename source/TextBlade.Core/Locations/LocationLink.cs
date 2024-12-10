@@ -1,7 +1,9 @@
-using System;
-
 namespace TextBlade.Core.Locations;
 
+/// <summary>
+/// A link to another location, with a text description.
+/// e.g. Id = Lake, description = "You see a lake nearby."
+/// </summary>
 public class LocationLink
 {
     public string Id { get; set; }

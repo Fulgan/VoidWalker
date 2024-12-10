@@ -6,8 +6,17 @@ namespace TextBlade.Core.Locations;
 /// <summary>
 /// Your regular location. Has reachable locations (sub-locations, adjacent locations, however you concieve of it.)
 /// </summary>
-public class Location : BaseLocation
+public class Location
 {
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public string BackgroundAudio { get; set; } = string.Empty;
+
+    /// <summary>
+    /// For custom code, this is the class name of the code-behind class for this location.
+    /// </summary>
+    public string? LocationClass { get; set; }
+
     /// <summary>
     /// Used by Game to pass along the current save data.
     /// Could be DI constructor injected, too.
@@ -17,8 +26,11 @@ public class Location : BaseLocation
     public List<LocationLink> LinkedLocations { get; set; } = new();
     public string LocationId { get; internal set; } = null!; // Saved so we know our location
     
-    public Location(string name, string description, string? locationClass = null) : base(name, description, locationClass)
+    public Location(string name, string description, string? locationClass = null)
     {
+        this.Name = name;
+        this.Description = description;
+        this.LocationClass = locationClass;
     } 
 
     public virtual ICommand GetCommandFor(string input)
