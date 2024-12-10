@@ -22,7 +22,6 @@ public class Game : IGame
 
     public Inventory Inventory => _saveData.Inventory;
     
-    // Don't kill the messenger. I swear, it's bad enough this only works on Windows.
     private const string SupportedAudioExtension = "wav";
     private const int AutoSaveIntervalMinutes = 1;
     private SaveData _saveData;
@@ -37,7 +36,6 @@ public class Game : IGame
     {
         _backgroundAudioPlayer = soundPlayer;
         Current = this;
-        _backgroundAudioPlayer.LoadCompleted += (sender, args) => _backgroundAudioPlayer.PlayLooping();
     }
 
     /// <summary>
@@ -161,7 +159,7 @@ public class Game : IGame
         dungeon.SetState(floorNumber, isClear);
     }
     
-    private void PlayBackgroundAudio()
+    private async void PlayBackgroundAudio()
     {
         _backgroundAudioPlayer.Stop();
         if (string.IsNullOrWhiteSpace(_currentLocation.BackgroundAudio))
@@ -169,8 +167,11 @@ public class Game : IGame
             return;
         }
 
-        _backgroundAudioPlayer.SoundLocation = Path.Join("Content", "Audio", $"{_currentLocation.BackgroundAudio}.{SupportedAudioExtension}");
-        _backgroundAudioPlayer.Load();
+        Console.WriteLine("Loading...");
+        _backgroundAudioPlayer.Load(Path.Join("Content", "Audio", $"{_currentLocation.BackgroundAudio}.{SupportedAudioExtension}"));
+        Console.WriteLine("Done!");
+        Thread.Sleep(1000);
+        _backgroundAudioPlayer.Play();
     }
 
     private void AutoSaveIfItsBeenAWhile(Dictionary<string, object>? locationSpecificData = null)
