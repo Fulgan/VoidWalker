@@ -20,10 +20,10 @@ public class Skill
         var statusText = string.IsNullOrWhiteSpace(StatusInflicted) ? string.Empty : $"inflicts {StatusInflicted} {StatusStacks} times,";
         if (DamageMultiplier == 0)
         {
-            return $"{statusText} costs {Cost} skill points";
+            return $"{Name}: {statusText} costs {Cost} skill points";
         }
 
         var dealsOrHeals = DamageMultiplier > 0 ? $"Deals {DamageMultiplier}" : $"Heals {-DamageMultiplier}";
-        return $"{dealsOrHeals}x {DamageType}-type damage against {Target}, {statusText} costs {Cost} skill points";
+        return $"{Name}: {dealsOrHeals}x {DamageType}-type damage against {Target}, {statusText} costs {Cost} skill points";
     }
 }

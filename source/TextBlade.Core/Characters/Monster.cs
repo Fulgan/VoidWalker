@@ -34,4 +34,9 @@ public class Monster : Entity
 
         return damage;
     }
+
+    public override string ToString()
+    {
+        return $"{this.Name} ({this.CurrentHealth}/{this.TotalHealth} health)";
+    }
 }

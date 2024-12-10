@@ -84,7 +84,7 @@ public class CharacterTurnProcessor
     private Character PickTargetCharacter()
     {
         var validTargets = _party;
-        return PickFromList(validTargets) as Character;
+        return PickFromList(validTargets);
     }
 
     private Entity PickTargetMonster()
@@ -99,42 +99,37 @@ public class CharacterTurnProcessor
         return PickFromList(validTargets);
     }
 
-    private static Entity PickFromList(IEnumerable<Entity> validTargets)
+    private static T PickFromList<T>(IEnumerable<T> items)
     {
         Console.WriteLine("Pick a target:");
 
-        for (int i = 0; i < validTargets.Count(); i++)
+        for (int i = 0; i < items.Count(); i++)
         {
-            var monster = validTargets.ElementAt(i);
-            Console.WriteLine($"    {i+1}: {monster.Name} ({monster.CurrentHealth}/{monster.TotalHealth} health)");
+            var item = items.ElementAt(i);
+            Console.WriteLine($"    {i + 1}: {item}");
         }
 
         var target = 0;
-        while (target == 0 || target > validTargets.Count())
+        while (target == 0 || target > items.Count())
         {
             if (!int.TryParse(Console.ReadKey().KeyChar.ToString().Trim(), out target))
             {
-                Console.WriteLine($"That's not a valid number! Enter a number from 1 to {validTargets.Count()}: ");
+                Console.WriteLine($"That's not a valid number! Enter a number from 1 to {items.Count()}: ");
             }
         }
 
-        return validTargets.ElementAt(target - 1);
+        return items.ElementAt(target - 1);
     }
 
     private static Skill PickSkillFor(Character character)
     {
         Console.WriteLine("Pick a skill:");
-        for (int i = 0; i < character.Skills.Count; i++)
-        {
-            Console.WriteLine($"    {i+1}: {character.SkillNames[i]} - {character.Skills[i].ToString()}");
-        }
-
-        var target = int.Parse(Console.ReadKey().KeyChar.ToString());
-        // Assume target is valid
-        return character.Skills[target - 1];
+        var skill = PickFromList(character.Skills);
+        return skill;
     }
 
-    private string Attack(Character character, Monster targetMonster)
+    // TODO: extract
+    private static string Attack(Character character, Monster targetMonster)
     {
         ArgumentNullException.ThrowIfNull(targetMonster);
 
