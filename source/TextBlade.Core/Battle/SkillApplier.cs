@@ -24,6 +24,7 @@ public static class SkillApplier
         /////// TODO: REFACTOR so this method is not polymorphic
         ArgumentNullException.ThrowIfNull(target);
         float damage = 0;
+        var hitWeakness = false;
 
         if (target is Monster m)
         {
@@ -32,6 +33,7 @@ public static class SkillApplier
             {
                 // Targeting their weakness? 2x damage!
                 damage *= 2;
+                hitWeakness = true;
             }
         }
         else if (target is Character)
@@ -44,7 +46,8 @@ public static class SkillApplier
         target.Damage(roundedDamage);
         
         var damageMessage = damage > 0 ? $"{roundedDamage} damage" : $"healed for {-roundedDamage}";
-        return $"{user.Name} uses {skill.Name} on {target.Name}! {damageMessage}!";
+        var effectiveMessage = hitWeakness ? "Super effective!" : "";
+        return $"{user.Name} uses {skill.Name} on {target.Name}! {effectiveMessage} {damageMessage}!";
     }
     
     private static string InflictStatuses(Character user, Skill skill, Entity target)
