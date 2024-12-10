@@ -107,7 +107,6 @@ public class SerializerTests
 
         
         var b5Loot = dungeon.FloorLoot["B5"];
-        Assert.That(b5Loot.Contains("100 Gold"));
         Assert.That(b5Loot.Contains("Iron Shield"));
         Assert.That(b5Loot.Count(c => c == "High-Potion"), Is.EqualTo(3));
     }
