@@ -8,7 +8,16 @@ public static class BattleResultsApplier
 {
     public static Dictionary<string, object>? ApplyResultsIfBattle(ICommand command, Location currentLocation, SaveData saveData)
     {
-        // Kinda a special case for battle commands
+        // Kinda a special case for battle commands. And manual save.
+        if (command is ManuallySaveCommand && currentLocation is Dungeon d)
+        {
+            return new Dictionary<string, object>
+            {
+                { "CurrentFloor", d.CurrentFloorNumber },
+                { "IsClear",  d.IsCurrentFloorClear() },
+            };
+        }
+
         if (command is not IBattleCommand battleCommand)
         {
             return null;

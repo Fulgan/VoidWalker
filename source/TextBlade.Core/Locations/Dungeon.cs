@@ -1,6 +1,4 @@
 using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
 using TextBlade.Core.Game;
@@ -157,7 +155,7 @@ public class Dungeon : Location
         }
 
         var treasureMessage = "";
-        if (FloorLoot.ContainsKey(_currentFloorLootKey) && _floorMonsters.Any())
+        if (FloorLoot.ContainsKey(_currentFloorLootKey) && currentFloorData.Any())
         {
             treasureMessage = "You see something shiny nearby.  ";
         }
@@ -210,5 +208,10 @@ public class Dungeon : Location
         }
 
         return new DoNothingCommand();
+    }
+
+    public bool IsCurrentFloorClear()
+    {
+        return _floorMonsters[CurrentFloorNumber].Count == 0;
     }
 }

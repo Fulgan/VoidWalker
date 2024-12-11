@@ -85,7 +85,7 @@ public class Game : IGame
                 }
                 else if (command is ManuallySaveCommand)
                 {
-                    SaveGame();
+                    SaveGame(dungeonSaveData);
                 }
                 else if (command is LookCommand)
                 {
