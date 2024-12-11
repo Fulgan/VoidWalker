@@ -45,8 +45,8 @@ public static class SkillApplier
         var roundedDamage = (int)damage;
         target.Damage(roundedDamage);
         
-        var damageMessage = damage > 0 ? $"{roundedDamage} damage" : $"healed for {-roundedDamage}";
-        var effectiveMessage = hitWeakness ? "Super effective!" : "";
+        var damageMessage = damage > 0 ? $"{roundedDamage} damage" : $"healed for [green]{-roundedDamage}[/]";
+        var effectiveMessage = hitWeakness ? "[#f80]Super effective![/]" : "";
         return $"{user.Name} uses {skill.Name} on {target.Name}! {effectiveMessage} {damageMessage}!";
     }
     
