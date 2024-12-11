@@ -27,7 +27,7 @@ public class Game : IGame
 
     private Location _currentLocation = null!;
     private readonly bool _isRunning = true;
-    private DateTime _lastSaveOn = DateTime.Now;
+    private DateTime _lastSaveOn = DateTime.UtcNow;
 
     private readonly ISoundPlayer _backgroundAudioPlayer; 
 
