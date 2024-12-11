@@ -102,7 +102,7 @@ public class Game : IGame
             string[] crashFiles = [@"SaveData\default.save", "crash.txt"];
             AnsiConsole.MarkupLine("[red]Oh no! The game crashed![/]");
             AnsiConsole.MarkupLine("Please reach out to the developers and let them know about this, so that they can look into it.");
-            AnsiConsole.MarkupLine($"Send them these files from your game directory, along with a description of what you were doing in-game: [blue]{string.Join(", ", crashFiles)}[/]");
+            AnsiConsole.MarkupLine($"Send them these files from your game directory, along with a description of what you were doing in-game: [green]{string.Join(", ", crashFiles)}[/]");
             File.WriteAllText("crash.txt", ex.ToString());
         }
     }
@@ -125,7 +125,7 @@ public class Game : IGame
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
             UnpackLocationSpecificData();
-            AnsiConsole.WriteLine("Save game loaded.");
+            AnsiConsole.WriteLine("Save game loaded. For help, type \"help\"");
         }
         else
         {
@@ -141,7 +141,7 @@ public class Game : IGame
             {
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
-            AnsiConsole.WriteLine("New game started.");
+            AnsiConsole.WriteLine("New game started. For help, type \"help\"");
         }
     }
 
