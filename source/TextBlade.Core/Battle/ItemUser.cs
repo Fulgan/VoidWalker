@@ -25,7 +25,7 @@ public static class ItemUser
         foreach (var member in party)
         {
             i++;
-            yield return $"    {i}: {member.Name} - {member.CurrentHealth}/{member.TotalHealth} health, {member.CurrentSkillPoints}/{member.TotalSkillPoints} skill points";
+            yield return $"    {i}: {member}";
         }
 
         yield return "Use on who? Or pess 0 to cancel.";

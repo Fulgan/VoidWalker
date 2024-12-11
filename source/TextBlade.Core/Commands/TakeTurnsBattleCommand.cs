@@ -87,7 +87,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         {
             var monstersStatus = string.Join(", ", _monsters.Select(m => $"{m.Name}: {m.CurrentHealth}/{m.TotalHealth} health"));
             yield return $"You face: [{Colours.Highlight}]{monstersStatus}[/]";
-            var partyStatus = string.Join(", ", party.Select(m => $"{m.Name}: {m.CurrentHealth}/{m.TotalHealth} health"));
+            var partyStatus = string.Join(", ", party);
             yield return $"Your party: [{Colours.Highlight}]{partyStatus}[/]";
 
             foreach (var character in party)
