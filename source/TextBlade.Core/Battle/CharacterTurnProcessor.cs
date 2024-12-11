@@ -39,6 +39,12 @@ public class CharacterTurnProcessor
             case 'S':
                 // Assumes you get back a valid skill: something you have SP for.
                 var skill = PickSkillFor(character);
+                if (character.CurrentSkillPoints < skill.Cost)
+                {
+                    Console.WriteLine("You don't have enough skill points for that!");
+                    // Recursion is risky, very risky ... hmm.
+                    return ProcessTurnFor(character);
+                }
                 targets = PickTargetsFor(skill);
                 // Depending on the skill, the target is an instance of Character or Monster.
                 // For now, assume monster.
