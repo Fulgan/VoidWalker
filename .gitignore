@@ -10,3 +10,6 @@ coverage.xml
 **/.idea/
 *.DotSettings.user
 **/Properties/*
+
+*.zip
+publish
