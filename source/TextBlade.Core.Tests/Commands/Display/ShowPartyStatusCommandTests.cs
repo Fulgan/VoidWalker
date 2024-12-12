@@ -24,7 +24,7 @@ public class ShowPartyStatusCommandTests
 
         // Assert
         Assert.That(actual.Any(a => a.StartsWith("Party status")));
-        Assert.That(actual.Any(a => a.Contains("Bilal: 10/25")));
-        Assert.That(actual.Any(a => a.Contains("Aisha: 103/110")));
+        Assert.That(actual.Any(a => a.Contains("Bilal: 10/25 health")));
+        Assert.That(actual.Any(a => a.Contains("Aisha: 103/110 health")));
     }
 }
