@@ -1,6 +1,8 @@
 [Oo]bj
 [Bb]in
 sonarToken.txt
+crash.txt
+
 .vs
 .sonarqube
 coverage.xml
