@@ -1,5 +1,5 @@
 $gameName = "VoidWalker"
-$version = "v0.0.4"
+$version = [System.IO.File]::ReadAllText("source/VoidWalker.Main/version.txt").Trim()
 $publishToItch = $False
 $mainProject = "source/VoidWalker.Main"
 

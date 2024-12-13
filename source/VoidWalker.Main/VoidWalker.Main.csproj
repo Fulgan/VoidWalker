@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <File Include="version.txt" />
     <Folder Include="Content\Audio\" />
   </ItemGroup>
 

@@ -1,4 +1,6 @@
-﻿using Spectre.Console;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Spectre.Console;
 using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Commands;
@@ -115,6 +117,8 @@ public class Game : IGame
 
     private void LoadGameOrStartNewGame()
     {
+        var gameJson = ShowGameIntro();
+
         if (SaveGameManager.HasSave("default"))
         {
             _saveData = SaveGameManager.LoadGame("default");
@@ -129,8 +133,7 @@ public class Game : IGame
         }
         else
         {
-            var runner = new NewGameRunner(this);
-            runner.ShowGameIntro();
+            var runner = new NewGameRunner(gameJson);
             _saveData = new();
             _saveData.Party = runner.CreateParty();
             _saveData.Inventory = new();
@@ -143,6 +146,30 @@ public class Game : IGame
             }
             AnsiConsole.WriteLine("New game started. For help, type \"help\"");
         }
+    }
+
+    private JObject ShowGameIntro()
+    {
+        var gameJsonPath = Path.Join("Content", "game.json");
+
+        if (!File.Exists(gameJsonPath))
+        {
+            throw new InvalidOperationException("Content/game.json file is missing!");
+        }
+
+        AnsiConsole.Background = Color.Black;
+        var gameJsonContents = File.ReadAllText(gameJsonPath);
+        if (JsonConvert.DeserializeObject(gameJsonContents) is not JObject gameJson)
+        {
+            throw new Exception("game.json is not a valid JSON object!");
+        }
+
+        var version = File.ReadAllText("version.txt").Trim();
+        var gameName = gameJson["GameName"];
+        AnsiConsole.MarkupLine($"[white]Welcome to[/] [red]{gameName}[/] version [white]{version}[/]!");
+
+        // Keeps things DRY
+        return gameJson;
     }
 
     private void UnpackLocationSpecificData()
