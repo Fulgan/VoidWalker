@@ -91,6 +91,6 @@ public class Character : Entity
 
     public override string ToString()
     {
-        return $"{this.Name} - {this.CurrentHealth}/{this.TotalHealth} health, {this.CurrentSkillPoints}/{this.TotalSkillPoints} skill points";
+        return $"{this.Name}: {this.CurrentHealth}/{this.TotalHealth} health, {this.CurrentSkillPoints}/{this.TotalSkillPoints} skill points";
     }
 }

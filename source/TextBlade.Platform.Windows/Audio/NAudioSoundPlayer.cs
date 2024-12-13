@@ -28,7 +28,10 @@ public class NAudioSoundPlayer : ISoundPlayer
 
     public void Play() => _waveOut?.Play();
 
-    public void Stop() => _waveOut?.Stop();
+    // Stop doesn't work ... 
+    // NAudio is no longer maintained, gotta switch out.
+    // There's no decent alternative, though ...
+    public void Stop() => _waveOut?.Pause();
 
     private void RewindAndPlay(object? sender, StoppedEventArgs args)
     {
