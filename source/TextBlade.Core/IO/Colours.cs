@@ -2,8 +2,8 @@ namespace TextBlade.Core.IO;
 
 public static class Colours
 {
-    public const string Command = "red";
-    public const string Highlight = "#00a";
+    public const string Command = "#f66";
+    public const string Highlight = "#88f";
 
     // Status effects
     public const string Poison = "#22e";
