@@ -4,12 +4,13 @@ namespace TextBlade.Core.Inv;
 
 public class Equipment : Item
 {
-    // TODO: store JSON so we can see custom attributes
     // Supposed to be readonly. We need to serialize it though.
     public Dictionary<CharacterStats, int> StatsModifiers { get; private set; } = new();
 
+    public string? DamageType { get; set; }
+
     // This is obvious, but maybe not? Best to enshrine it in code.
-    public Equipment(string name, string itemType, Dictionary<CharacterStats, int> statsModifiers, int value = 1) : base(name, string.Empty, itemType, value)
+    public Equipment(string name, string itemType, Dictionary<CharacterStats, int> statsModifiers, string? damageType = null, int value = 1) : base(name, string.Empty, itemType, value)
     {
         if (this.ItemType == ItemType.Consumable)
         {
@@ -21,7 +22,13 @@ public class Equipment : Item
             throw new ArgumentException("Equipment needs stats modifiers.");
         }
 
+        if (damageType != null && damageType != "Normal" && itemType != ItemType.Weapon.ToString())
+        {
+            throw new ArgumentException("DamageType only applies to weapons", nameof(damageType));
+        }
+
         StatsModifiers = statsModifiers;
+        DamageType = damageType;
     }
 
     public int GetStatsModifier(CharacterStats stat)

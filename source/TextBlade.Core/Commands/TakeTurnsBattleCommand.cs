@@ -24,7 +24,6 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
     public bool IsVictory { get; private set; }
 
     private readonly List<Monster> _monsters = new();
-    private readonly IGame _game;
 
     static TakeTurnsBattleCommand()
     {
@@ -51,10 +50,8 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         }
     }
 
-    public TakeTurnsBattleCommand(IGame game, List<string> monsterNames)
+    public TakeTurnsBattleCommand(List<string> monsterNames)
     {
-        _game = game;
-
         foreach (var name in monsterNames)
         {
             var data = s_allMonstersData[name];

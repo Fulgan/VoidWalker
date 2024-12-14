@@ -4,7 +4,8 @@
         "$type": "TextBlade.Core.Inv.Equipment, TextBlade.Core",
         "ItemType": "Weapon",
         "StatsModifiers": { "Strength": 7 },
-        "Value": 200
+        "Value": 200,
+        "DamageType": "Fire"
     },
     "Iron Helmet":
     {

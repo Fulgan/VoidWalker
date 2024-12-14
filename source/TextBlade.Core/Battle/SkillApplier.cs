@@ -44,7 +44,7 @@ public static class SkillApplier
 
         var roundedDamage = (int)damage;
         target.Damage(roundedDamage);
-        
+        // TODO: DRY the 2x damage part with CharacterTurnProcessor
         var damageMessage = damage > 0 ? $"{roundedDamage} damage" : $"healed for [green]{-roundedDamage}[/]";
         var effectiveMessage = hitWeakness ? "[#f80]Super effective![/]" : "";
         return $"{user.Name} uses {skill.Name} on {target.Name}! {effectiveMessage} {damageMessage}!";
