@@ -8,6 +8,12 @@ namespace TextBlade.Core.Locations;
 /// </summary>
 public class Location
 {
+    /// <summary>
+    /// Used by Game to pass along the current save data.
+    /// Could be DI constructor injected, too.
+    /// </summary>
+    public static SaveData CurrentSaveData { set; protected get; } = null!;
+
     public string Name { get; set; }
     public string Description { get; set; }
     public string BackgroundAudio { get; set; } = string.Empty;
@@ -17,12 +23,6 @@ public class Location
     /// </summary>
     public string? LocationClass { get; set; }
 
-    /// <summary>
-    /// Used by Game to pass along the current save data.
-    /// Could be DI constructor injected, too.
-    /// </summary>
-    public SaveData CurrentSaveData { set; protected get; }
-
     public List<LocationLink> LinkedLocations { get; set; } = new();
     public string LocationId { get; internal set; } = null!; // Saved so we know our location
     
@@ -31,7 +31,7 @@ public class Location
         this.Name = name;
         this.Description = description;
         this.LocationClass = locationClass;
-    } 
+    }
 
     public virtual ICommand GetCommandFor(string input)
     {
@@ -49,6 +49,18 @@ public class Location
     {
         // Override for stuff like "type f/fight to fight"
         return string.Empty;
+    }
+    
+    public virtual Dictionary<string, object>? GetCustomSaveData()
+    {
+        return null; // nothing extra to save
+    }
+
+    // The opposite/twin of GetCustomSaveData. Sets state based on saved data.
+    // Note that, if a location saves this, and a second location sets this, we overwrite the first data.
+    // Meaning, go halfway to dungeon 2, then back to dungeon 1, then back to dungeon 2 and it resets.
+    public virtual void SetStateBasedOnCustomSaveData(Dictionary<string, object>? extraData)
+    {
     }
 }
 

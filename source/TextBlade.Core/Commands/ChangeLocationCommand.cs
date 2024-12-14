@@ -7,7 +7,7 @@ namespace TextBlade.Core.Commands;
 
 public class ChangeLocationCommand : ICommand
 {
-    // Used for saving only, so we know the ID of our current location
+    // Used for saving, so we know the ID of our current location
     private readonly string _locationId;
     private readonly string _locationPath;
 

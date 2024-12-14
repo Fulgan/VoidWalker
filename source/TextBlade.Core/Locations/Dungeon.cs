@@ -12,14 +12,14 @@ public class Dungeon : Location
     // Simple but complex. Can be "Iron Shield," can be listed twice to give me two, can be "100 Gold," etc.
     // Floor (e.g. B2) => list of lootz
     public Dictionary<string, List<string>> FloorLoot { get; set; } = [];
-    public int CurrentFloorNumber { get; private set; } = 0; // base 0. Setter = save game loader
 
     // It's a list, one entry per floor.
     // Each entry is a list of monsters and other stuff on that floor.
     // I'm sure I'll put treasure and stuff in here eventually.
-    protected readonly List<List<string>> _floorMonsters = [];
+    private readonly List<List<string>> _floorMonsters = [];
+    private int _currentFloorNumber  = 0;
     
-    private string _currentFloorLootKey => $"B{CurrentFloorNumber + 1}";
+    private string _currentFloorLootKey => $"B{_currentFloorNumber + 1}";
     private IGame _game;
 
     public Dungeon(IGame game, string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null)
@@ -88,7 +88,7 @@ public class Dungeon : Location
     public void OnVictory(Inventory inventory)
     {
         // Clear out all monsters
-        _floorMonsters[CurrentFloorNumber].Clear();
+        _floorMonsters[_currentFloorNumber].Clear();
 
         // Grant loot if applicable
         if (!FloorLoot.ContainsKey(_currentFloorLootKey))
@@ -114,36 +114,9 @@ public class Dungeon : Location
         }
     }
 
-    /// <summary>
-    /// Set the dungeon to a specific floor, and clear (or not) enemies and loot.
-    /// Used after loading a game to resume state.
-    /// </summary>
-    public void SetState(int floorNumber, bool isClear)
-    {
-        if (floorNumber < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(floorNumber));
-        }
-
-        this.CurrentFloorNumber = floorNumber;
-        if (!isClear)
-        {
-            return;
-        }
-
-        _floorMonsters[floorNumber].Clear();
-        if (!FloorLoot.ContainsKey(_currentFloorLootKey))
-        {
-            return;
-        }
-
-        // Obvious, innit? If the current floor is clear, you auto-grabbed the loot already.
-        FloorLoot[_currentFloorLootKey].Clear();
-    }
-
     public override string GetExtraDescription()
     {
-       var currentFloorData = _floorMonsters[CurrentFloorNumber];
+       var currentFloorData = _floorMonsters[_currentFloorNumber];
         var monstersMessage = new StringBuilder();
         if (currentFloorData.Count == 0)
         {
@@ -160,16 +133,16 @@ public class Dungeon : Location
             treasureMessage = "You see something shiny nearby.  ";
         }
 
-        return $"You are on floor {CurrentFloorNumber + 1}. {treasureMessage}{monstersMessage}";
+        return $"You are on floor {_currentFloorNumber + 1}. {treasureMessage}{monstersMessage}";
     }
 
     public override string GetExtraMenuOptions()
     {
         var message = new StringBuilder();
-        var currentFloorData = _floorMonsters[CurrentFloorNumber];
+        var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (currentFloorData.Count == 0)
         {
-            if (CurrentFloorNumber < _floorMonsters.Count - 1)
+            if (_currentFloorNumber < _floorMonsters.Count - 1)
             {
                 message.AppendLine("You see stairs leading down. Type d/down/descend to go to the next floor.");
             }
@@ -184,7 +157,7 @@ public class Dungeon : Location
 
     override public ICommand GetCommandFor(string input)
     {
-        var currentFloorData = _floorMonsters[CurrentFloorNumber];
+        var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")
         {
             return new TakeTurnsBattleCommand(_game, currentFloorData);
@@ -195,14 +168,14 @@ public class Dungeon : Location
             {
                 Console.WriteLine("You can't descend while monsters are around!");
             }
-            else if (CurrentFloorNumber == _floorMonsters.Count - 1)
+            else if (_currentFloorNumber == _floorMonsters.Count - 1)
             {
                 Console.WriteLine("You're already at the bottom of the dungeon!");
             }
             else
             {
                 // Valid descent
-                CurrentFloorNumber++;
+                _currentFloorNumber++;
                 return new LookCommand();
             }
         }
@@ -212,6 +185,41 @@ public class Dungeon : Location
 
     public bool IsCurrentFloorClear()
     {
-        return _floorMonsters[CurrentFloorNumber].Count == 0;
+        return _floorMonsters[_currentFloorNumber].Count == 0;
+    }
+
+    public override Dictionary<string, object>? GetCustomSaveData()
+    {
+        return new Dictionary<string, object>
+        {
+            { "CurrentFloor", this._currentFloorNumber },
+            { "IsClear",  this.IsCurrentFloorClear() },
+        };
+    }
+
+    public override void SetStateBasedOnCustomSaveData(Dictionary<string, object> extraData)
+    {
+        var floorNumber = Convert.ToInt32(extraData["CurrentFloor"]);
+        var isClear = (bool)extraData["IsClear"];
+        
+        if (floorNumber < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(floorNumber));
+        }
+
+        this._currentFloorNumber = floorNumber;
+        if (!isClear)
+        {
+            return;
+        }
+
+        _floorMonsters[floorNumber].Clear();
+        if (!FloorLoot.ContainsKey(_currentFloorLootKey))
+        {
+            return;
+        }
+
+        // Obvious, innit? If the current floor is clear, you auto-grabbed the loot already.
+        FloorLoot[_currentFloorLootKey].Clear();
     }
 }

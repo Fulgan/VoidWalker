@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using NAudio.Wave.SampleProviders;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Spectre.Console;
 using TextBlade.ConsoleRunner.IO;
@@ -44,8 +45,29 @@ public class Game : IGame
     /// </summary>
     public void SetLocation(Location location)
     {
+        // Only the freshest data here: rehydrate your current location state.
+        // This is for when you leave dungeon, go to town, then back to the dungeon.
+        // Fixes a bug where: clear a dungeon floor, go to town, go back to the dungeon real quick.
+        // You saved, yes, but t_saveData is stale.
+        if (SaveGameManager.HasSave("default"))
+        {
+            _saveData = SaveGameManager.LoadGame("default");
+        }
+        
+        Location.CurrentSaveData = _saveData;
+
+        if (location.LocationId == _saveData.CurrentLocationId)
+        {
+            location.SetStateBasedOnCustomSaveData(_saveData.LocationSpecificData);
+        }
+        
+        // If a current location requires saving when you change away from it, save it here.
+        if (_currentLocation?.GetCustomSaveData() != null)
+        {
+            SaveGame();
+        }
+
         _currentLocation = location;
-        _currentLocation.CurrentSaveData = _saveData;
         PlayBackgroundAudio();
         AutoSaveIfItsBeenAWhile();
     }
@@ -77,17 +99,17 @@ public class Game : IGame
                 }
 
                 /// This area stinks: type-specific things...
-                var dungeonSaveData = BattleResultsApplier.ApplyResultsIfBattle(command, _currentLocation, _saveData);
+                BattleResultsApplier.ApplyResultsIfBattle(command, _currentLocation, _saveData);
                 if (command is IBattleCommand)
                 {
-                    SaveGame(dungeonSaveData);
+                    SaveGame();
 
                     // After battle, tell me the floor status again.
                     LocationDisplayer.ShowLocation(_currentLocation);
                 }
                 else if (command is ManuallySaveCommand)
                 {
-                    SaveGame(dungeonSaveData);
+                    SaveGame();
                 }
                 else if (command is LookCommand)
                 {
@@ -95,7 +117,7 @@ public class Game : IGame
                 }
                 else
                 {
-                    AutoSaveIfItsBeenAWhile(dungeonSaveData);
+                    AutoSaveIfItsBeenAWhile();
                 }
             }
         }
@@ -109,9 +131,9 @@ public class Game : IGame
         }
     }
 
-    private void SaveGame(Dictionary<string, object>? locationSpecificData = null)
+    private void SaveGame()
     {
-        SaveGameManager.SaveGame("default", _currentLocation.LocationId, _saveData.Party, _saveData.Inventory, _saveData.Gold, locationSpecificData);
+        SaveGameManager.SaveGame("default", _currentLocation.LocationId, _saveData.Party, _saveData.Inventory, _saveData.Gold, _currentLocation.LocationId, _currentLocation.GetCustomSaveData());
         AnsiConsole.MarkupLine("[green]Game saved.[/]");
     }
 
@@ -124,11 +146,17 @@ public class Game : IGame
             _saveData = SaveGameManager.LoadGame("default");
             GameSwitches.Switches = _saveData.Switches;
             var messages = new ChangeLocationCommand(_saveData.CurrentLocationId).Execute(this, _saveData.Party);
+
             foreach (var message in messages)
             {
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
-            UnpackLocationSpecificData();
+
+            if (_saveData.LocationSpecificDataLocationId == _currentLocation.LocationId)
+            {
+                _currentLocation.SetStateBasedOnCustomSaveData(_saveData.LocationSpecificData);
+            }
+
             AnsiConsole.WriteLine("Save game loaded. For help, type \"help\"");
         }
         else
@@ -172,29 +200,7 @@ public class Game : IGame
         return gameJson;
     }
 
-    private void UnpackLocationSpecificData()
-    {
-        var extraData = _saveData.LocationSpecificData;
-        if (extraData == null || extraData.Count == 0)
-        {
-            return;
-        }
-
-        // Duck typing...
-        var dungeon = _currentLocation as Dungeon;
-
-        // These are all dungeon-specific
-        if (dungeon == null)
-        {
-            return;
-        }
-
-        var floorNumber = Convert.ToInt32(extraData["CurrentFloor"]);
-        var isClear = (bool)extraData["IsClear"];
-        dungeon.SetState(floorNumber, isClear);
-    }
-    
-    private async void PlayBackgroundAudio()
+    private void PlayBackgroundAudio()
     {
         _backgroundAudioPlayer.Stop();
         if (string.IsNullOrWhiteSpace(_currentLocation.BackgroundAudio))
@@ -206,7 +212,7 @@ public class Game : IGame
         _backgroundAudioPlayer.Play();
     }
 
-    private void AutoSaveIfItsBeenAWhile(Dictionary<string, object>? locationSpecificData = null)
+    private void AutoSaveIfItsBeenAWhile()
     {
         var elapsed = DateTime.UtcNow - _lastSaveOn;
         if (elapsed.TotalMinutes < AutoSaveIntervalMinutes)
@@ -215,6 +221,6 @@ public class Game : IGame
         }
         
         _lastSaveOn = DateTime.UtcNow;
-        SaveGame(locationSpecificData);
+        SaveGame();
     }
 }

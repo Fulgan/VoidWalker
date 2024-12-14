@@ -136,7 +136,7 @@ public class DungeonTests
         dungeon.SetState(33, false);
 
         // Assert
-        Assert.That(dungeon.CurrentFloorNumber, Is.EqualTo(33));
+        Assert.That(dungeon._currentFloorNumber, Is.EqualTo(33));
     }
 
     [Test]
@@ -302,7 +302,7 @@ public class DungeonTests
         dungeon.GetCommandFor(command);
 
         // Assert
-        Assert.That(dungeon.CurrentFloorNumber, Is.EqualTo(1)); // base 0
+        Assert.That(dungeon._currentFloorNumber, Is.EqualTo(1)); // base 0
     }
 
     [Test]
@@ -318,7 +318,7 @@ public class DungeonTests
         var actual = dungeon.GetCommandFor(command);
 
         // Assert
-        Assert.That(dungeon.CurrentFloorNumber, Is.EqualTo(0));
+        Assert.That(dungeon._currentFloorNumber, Is.EqualTo(0));
         Assert.That(actual, Is.InstanceOf<DoNothingCommand>());
     }
 
@@ -336,7 +336,7 @@ public class DungeonTests
         var actual = dungeon.GetCommandFor(command);
 
         // Assert
-        Assert.That(dungeon.CurrentFloorNumber, Is.EqualTo(0));
+        Assert.That(dungeon._currentFloorNumber, Is.EqualTo(0));
         Assert.That(actual, Is.InstanceOf<DoNothingCommand>());
     }
 

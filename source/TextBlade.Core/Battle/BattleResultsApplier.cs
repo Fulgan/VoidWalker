@@ -6,21 +6,17 @@ namespace TextBlade.Core.Battle;
 
 public static class BattleResultsApplier
 {
-    public static Dictionary<string, object>? ApplyResultsIfBattle(ICommand command, Location currentLocation, SaveData saveData)
+    public static void ApplyResultsIfBattle(ICommand command, Location currentLocation, SaveData saveData)
     {
         // Kinda a special case for battle commands. And manual save.
-        if (command is ManuallySaveCommand && currentLocation is Dungeon d)
+        if (command is ManuallySaveCommand && currentLocation is Dungeon)
         {
-            return new Dictionary<string, object>
-            {
-                { "CurrentFloor", d.CurrentFloorNumber },
-                { "IsClear",  d.IsCurrentFloorClear() },
-            };
+            return;
         }
 
         if (command is not IBattleCommand battleCommand)
         {
-            return null;
+            return;
         }
 
         saveData.Gold += battleCommand.TotalGold;
@@ -47,7 +43,7 @@ public static class BattleResultsApplier
         var dungeon = currentLocation as Dungeon;
         if (dungeon == null)
         {
-            return null;
+            return;
         }
 
         if (battleCommand.IsVictory)
@@ -55,11 +51,5 @@ public static class BattleResultsApplier
             // Wipe out the dungeon floor's inhabitants.
             dungeon.OnVictory(saveData.Inventory);
         }
-        
-        return new Dictionary<string, object>
-        {
-            { "CurrentFloor", dungeon.CurrentFloorNumber },
-            { "IsClear", battleCommand.IsVictory }
-        };
     }
 }

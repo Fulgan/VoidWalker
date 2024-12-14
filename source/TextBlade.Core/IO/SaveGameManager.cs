@@ -10,7 +10,7 @@ public static class SaveGameManager
     private const string SaveFolder = "SaveData";
     private const string SaveFileExtension = ".save";
 
-    public static void SaveGame(string saveSlot, string currentLocationId, List<Character> party, Inventory inventory, int gold, Dictionary<string, object>? locationSpecificData = null)
+    public static void SaveGame(string saveSlot, string currentLocationId, List<Character> party, Inventory inventory, int gold, string? locationSpecificDataLocationId = null, Dictionary<string, object>? locationSpecificData = null)
     {
         var saveData = new SaveData()
         {
@@ -18,6 +18,7 @@ public static class SaveGameManager
             Switches = GameSwitches.Switches,
             CurrentLocationId = currentLocationId,
             LocationSpecificData = locationSpecificData,
+            LocationSpecificDataLocationId = locationSpecificDataLocationId,
             Inventory = inventory,
             Gold = gold,
         };
