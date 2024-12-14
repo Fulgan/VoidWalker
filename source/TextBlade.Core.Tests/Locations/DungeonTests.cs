@@ -116,31 +116,31 @@ public class DungeonTests
     [TestCase(-1)]
     [TestCase(-11)]
     [TestCase(-111111)]
-    public void SetState_ThrowsIfFloorNumberIsNegative(int floorNumber)
+    public void SetStateBasedOnCustomSaveData_ThrowsIfFloorNumberIsNegative(int floorNumber)
     {
         // Arrange
         var dungeon = new Dungeon(null, "Test Dungeon", "N/A", 7, ["Troll"], "Nobody");
         
         // Act/Assert
-        var ex = Assert.Throws<ArgumentOutOfRangeException>(() => dungeon.SetState(floorNumber, true));
+        var ex = Assert.Throws<ArgumentOutOfRangeException>(() => dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(floorNumber, true)));
         Assert.That(ex, Is.Not.Null);
     }
 
     [Test]
-    public void SetState_SetsCurrentFloorNumber()
+    public void SetStateBasedOnCustomSaveData_SetsCurrentFloorNumber()
     {
         // Arrange
-        var dungeon = new Dungeon(null, "North Seaside Cave", "N/A", 1, ["Vole"], "Nobody");
+        var dungeon = new Dungeon(null, "North Seaside Cave", "N/A", 40, ["Vole"], "Nobody");
 
         // Act
-        dungeon.SetState(33, false);
+        dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(33, false));
 
         // Assert
-        Assert.That(dungeon._currentFloorNumber, Is.EqualTo(33));
+        Assert.That(dungeon.GetCustomSaveData()["CurrentFloor"], Is.EqualTo(33));
     }
 
     [Test]
-    public void SetState_DoesNotClearMonstersOrLoot_IfIsClearIsFalse()
+    public void SetStateBasedOnCustomSaveData_DoesNotClearMonstersOrLoot_IfIsClearIsFalse()
     {
         // Arrange
         var floorNumber = 0;
@@ -148,7 +148,7 @@ public class DungeonTests
         dungeon.FloorLoot[$"B{floorNumber + 1}"] = ["Troll Hair", "Vole Tail", "Moleskin"];
 
         // Act
-        dungeon.SetState(floorNumber, false);
+        dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(floorNumber, false));
 
         // Assert
         Assert.That(dungeon.FloorLoot[$"B{floorNumber + 1}"], Is.Not.Empty);
@@ -156,7 +156,7 @@ public class DungeonTests
     }
 
     [Test]
-    public void SetState_ClearsMonstersOrLoot_IfIsClearIsTrue()
+    public void SetStateBasedOnCustomSaveData_ClearsMonstersOrLoot_IfIsClearIsTrue()
     {
         // Arrange
         var floorNumber = 0;
@@ -165,7 +165,7 @@ public class DungeonTests
         dungeon.FloorLoot[$"B{floorNumber + 2}"] = ["Vole Tail", "Moleskin"];
 
         // Act
-        dungeon.SetState(floorNumber, true);
+        dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(floorNumber, true));
 
         // Assert
         Assert.That(dungeon.FloorLoot[$"B{floorNumber + 1}"], Is.Empty);
@@ -192,7 +192,7 @@ public class DungeonTests
     {
         // Arrange
         var dungeon = CreateDungeon();
-        dungeon.SetState(0, true);
+        dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(0, true));
         
         // Act
         var actual = dungeon.GetExtraDescription();
@@ -237,7 +237,7 @@ public class DungeonTests
     {
         // Arrange
         var dungeon = CreateDungeon();
-        dungeon.SetState(0, true);
+        dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(0, true));
 
         // Act
         var actual = dungeon.GetExtraMenuOptions();
@@ -251,7 +251,7 @@ public class DungeonTests
     {
         // Arrange
         var dungeon = CreateDungeon(1);
-        dungeon.SetState(0, true);
+        dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(0, true));
 
         // Act
         var actual = dungeon.GetExtraMenuOptions();
@@ -296,13 +296,13 @@ public class DungeonTests
     {
         // Arrange
         var dungeon = CreateDungeon();
-        dungeon.SetState(0, true);
+        dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(0, true));
 
         // Act
         dungeon.GetCommandFor(command);
 
         // Assert
-        Assert.That(dungeon._currentFloorNumber, Is.EqualTo(1)); // base 0
+        Assert.That(dungeon.GetCustomSaveData()["CurrentFloor"], Is.EqualTo(1)); // base 0
     }
 
     [Test]
@@ -318,7 +318,7 @@ public class DungeonTests
         var actual = dungeon.GetCommandFor(command);
 
         // Assert
-        Assert.That(dungeon._currentFloorNumber, Is.EqualTo(0));
+        Assert.That(dungeon.GetCustomSaveData()["CurrentFloor"], Is.EqualTo(0));
         Assert.That(actual, Is.InstanceOf<DoNothingCommand>());
     }
 
@@ -330,13 +330,13 @@ public class DungeonTests
     {
         // Arrange
         var dungeon = CreateDungeon(1);
-        dungeon.SetState(0, true);
+        dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(0, true));
 
         // Act
         var actual = dungeon.GetCommandFor(command);
 
         // Assert
-        Assert.That(dungeon._currentFloorNumber, Is.EqualTo(0));
+        Assert.That(dungeon.GetCustomSaveData()["CurrentFloor"], Is.EqualTo(0));
         Assert.That(actual, Is.InstanceOf<DoNothingCommand>());
     }
 
@@ -345,6 +345,14 @@ public class DungeonTests
     {
         var dungeon = new DungeonStub("Real Dungeon #1", "It's real I swear", numFloors, ["Blue Slime", "Green Slime", "Red Slime"], "Giant Slime");
         return dungeon;
+    }
+
+    private Dictionary<string, object> MakeCustomData(int floorNum, bool isFloorClear)
+    {
+        return new Dictionary<string, object>() {
+            { "CurrentFloor", floorNum },
+            { "IsClear", isFloorClear },
+        };
     }
 
     class DungeonStub : Dungeon

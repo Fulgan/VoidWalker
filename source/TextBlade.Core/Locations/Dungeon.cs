@@ -16,7 +16,7 @@ public class Dungeon : Location
     // It's a list, one entry per floor.
     // Each entry is a list of monsters and other stuff on that floor.
     // I'm sure I'll put treasure and stuff in here eventually.
-    private readonly List<List<string>> _floorMonsters = [];
+    protected readonly List<List<string>> _floorMonsters = [];
     private int _currentFloorNumber  = 0;
     
     private string _currentFloorLootKey => $"B{_currentFloorNumber + 1}";
