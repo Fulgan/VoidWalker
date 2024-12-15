@@ -115,13 +115,10 @@ public class CharacterTurnProcessor
             Console.WriteLine($"    {i + 1}: {item}");
         }
 
-        var target = 0;
-        while (target == 0 || target > items.Count())
+        int target;
+        while (!int.TryParse(Console.ReadKey().KeyChar.ToString().Trim(), out target) || target == 0 || target > items.Count())
         {
-            if (!int.TryParse(Console.ReadKey().KeyChar.ToString().Trim(), out target))
-            {
-                Console.WriteLine($"That's not a valid number! Enter a number from 1 to {items.Count()}: ");
-            }
+            Console.WriteLine($"That's not a valid number! Enter a number from 1 to {items.Count()}: ");
         }
 
         return items.ElementAt(target - 1);
