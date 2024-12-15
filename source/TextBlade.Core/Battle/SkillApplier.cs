@@ -28,7 +28,7 @@ public static class SkillApplier
 
         if (target is Monster m)
         {
-            damage = (user.Strength - target.Toughness) * skill.DamageMultiplier;
+            damage = (user.TotalStrength - target.Toughness) * skill.DamageMultiplier;
             if (m.Weakness == skill.DamageType)
             {
                 // Targeting their weakness? 2x damage!
