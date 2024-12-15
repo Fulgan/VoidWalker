@@ -11,6 +11,7 @@ public class CharacterTurnProcessor
     private readonly List<Monster> _monsters;
     private readonly IGame _game;
     private readonly List<Character> _party;
+    private readonly char[] validInputs = ['a', 'i', 's', 'd'];
 
     public CharacterTurnProcessor(IGame game, List<Character> party, List<Monster> monsters)
     {
@@ -21,22 +22,25 @@ public class CharacterTurnProcessor
 
     internal string ProcessTurnFor(Character character)
     {
-        Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [i]tem, [s]kill, or [d]efend");
-        var input = Console.ReadKey();
+        char input = ' ';
+
+        while (!validInputs.Contains(input))
+        {
+            Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [i]tem, [s]kill, or [d]efend");
+            input = Console.ReadKey().KeyChar.ToString().ToLower()[0];
+        }
+
         IEnumerable<Entity> targets; 
 
-        switch(input.KeyChar)
+        switch(input)
         {
             case 'a':
-            case 'A':
                 targets = [PickTargetMonster()];
                 return Attack(character, targets.First() as Monster);
             case 'd':
-            case 'D':
                 character.Defend();
                 return $"{character.Name} defends!";
             case 's':
-            case 'S':
                 // Assumes you get back a valid skill: something you have SP for.
                 var skill = PickSkillFor(character);
                 if (character.CurrentSkillPoints < skill.Cost)
@@ -50,7 +54,6 @@ public class CharacterTurnProcessor
                 // For now, assume monster.
                 return SkillApplier.Apply(character, skill, targets);
             case 'i':
-            case 'I':
                 foreach (var message in new ShowInventoryCommand(true).Execute(_game, _party))
                 {
                     // Special case: show immediately because it requires input from the player.
