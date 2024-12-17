@@ -16,7 +16,7 @@ public static class Burner
     public static string Burn(Entity e)
     {
         var fireSpreadPercent = MaximumBurnDamagePercent - MinimumBurnDamagePercent;
-        var firePercentDamage = Random.Shared.NextSingle() * fireSpreadPercent;
+        var firePercentDamage = MinimumBurnDamagePercent + (Random.Shared.NextSingle() * fireSpreadPercent);
         
         var fireDamage = (int)Math.Max(MinimumFireDamage, firePercentDamage * e.CurrentHealth);
 
