@@ -22,7 +22,7 @@ public class EquipmentEquipper
             yield return message;
         }
 
-        yield return "Equip for who? Or pess 0 to cancel.";
+        yield return "Equip for who? Or press 0 to cancel.";
 
         var input = 0;
         if (!int.TryParse(_console.ReadKey().ToString(), out input))

@@ -35,7 +35,7 @@ public class ItemUser
             yield return $"    {i}: {member}";
         }
 
-        yield return "Use on who? Or pess 0 to cancel.";
+        yield return "Use on who? Or press 0 to cancel.";
 
         var input = 0;
         if (!int.TryParse(_console.ReadKey().ToString(), out input))
