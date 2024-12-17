@@ -1,12 +1,19 @@
-using System.Runtime.CompilerServices;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Inv;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Battle;
 
-public static class ItemUser
+public class ItemUser
 {
-    internal static IEnumerable<string> UseIfRequested(Item itemData, Inventory inventory, List<Character> party)
+    private readonly IConsole _console;
+
+    public ItemUser(IConsole console)
+    {
+        _console = console;
+    }
+
+    internal IEnumerable<string> UseIfRequested(Item itemData, Inventory inventory, List<Character> party)
     {
         Consumable consumable = ValidateArguments(itemData, inventory, party);
         
@@ -31,7 +38,7 @@ public static class ItemUser
         yield return "Use on who? Or pess 0 to cancel.";
 
         var input = 0;
-        if (!int.TryParse(Console.ReadLine().Trim(), out input))
+        if (!int.TryParse(_console.ReadKey().ToString(), out input))
         {
             yield return "Cancelling.";
             yield break;
@@ -52,7 +59,7 @@ public static class ItemUser
         yield return "Healed.";
     }
 
-    private static Consumable ValidateArguments(Item itemData, Inventory inventory, List<Character> party)
+    private Consumable ValidateArguments(Item itemData, Inventory inventory, List<Character> party)
     {
         if (itemData == null)
         {

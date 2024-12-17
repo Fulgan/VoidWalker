@@ -20,6 +20,11 @@ public class TextConsole : IConsole
         return Console.ReadKey().KeyChar.ToString().ToLower()[0];
     }
 
+    public string ReadLine()
+    {
+        return Console.ReadLine()?.ToLower().Trim() ?? string.Empty;
+    }
+
     public void WriteLine(string markup)
     {
         AnsiConsole.MarkupLine(markup);

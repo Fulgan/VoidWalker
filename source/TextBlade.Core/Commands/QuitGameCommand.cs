@@ -6,12 +6,19 @@ namespace TextBlade.Core.Commands;
 
 public class QuitGameCommand : ICommand
 {
+    private readonly IConsole _console;
+
+    public QuitGameCommand(IConsole console)
+    {
+        _console = console;
+    }
+
     public IEnumerable<string> Execute(IGame game, List<Character> party)
     {
         yield return $"Quit the game? Are you sure? [{Colours.Command}]y[/]/[{Colours.Command}]n[/]";
-        var input = Console.ReadKey();
+        var input = _console.ReadKey();
 
-        if (input.KeyChar != 'y' && input.KeyChar != 'Y')
+        if (input != 'y')
         {
             yield return "Cancelling ...";
             yield break;

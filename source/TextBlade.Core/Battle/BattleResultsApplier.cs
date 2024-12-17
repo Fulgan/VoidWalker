@@ -4,9 +4,16 @@ using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Battle;
 
-public static class BattleResultsApplier
+public class BattleResultsApplier
 {
-    public static void ApplyResultsIfBattle(ICommand command, Location currentLocation, SaveData saveData)
+    private readonly IConsole _console;
+
+    public BattleResultsApplier(IConsole console)
+    {
+        _console = console;
+    }
+
+    public void ApplyResultsIfBattle(ICommand command, Location currentLocation, SaveData saveData)
     {
         // Kinda a special case for battle commands. And manual save.
         if (command is ManuallySaveCommand && currentLocation is Dungeon)
@@ -28,7 +35,7 @@ public static class BattleResultsApplier
                 foreach (var message in character.GetExperiencePoints(battleCommand.TotalExperiencePoints))
                 {
                     // TODO: return higher-up so we can apply styling/colour to it...
-                    Console.WriteLine(message);
+                    _console.WriteLine(message);
                 }
             }
         }

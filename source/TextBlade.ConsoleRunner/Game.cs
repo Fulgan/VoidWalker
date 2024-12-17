@@ -94,7 +94,7 @@ public class Game : IGame
                     _locationDisplayer.ShowLocation(_currentLocation);
                 }
 
-                var command = InputProcessor.PromptForAction(_currentLocation);
+                var command = new InputProcessor(_console).PromptForAction(_currentLocation);
                 previousLocation = _currentLocation;
 
                 var messages = command.Execute(this, _saveData.Party);
@@ -104,7 +104,7 @@ public class Game : IGame
                 }
 
                 /// This area stinks: type-specific things...
-                BattleResultsApplier.ApplyResultsIfBattle(command, _currentLocation, _saveData);
+                new BattleResultsApplier(_console).ApplyResultsIfBattle(command, _currentLocation, _saveData);
                 if (command is IBattleCommand)
                 {
                     SaveGame();
@@ -133,6 +133,10 @@ public class Game : IGame
             _console.WriteLine("Please reach out to the developers and let them know about this, so that they can look into it.");
             _console.WriteLine($"Send them these files from your game directory, along with a description of what you were doing in-game: [green]{string.Join(", ", crashFiles)}[/]");
             File.WriteAllText("crash.txt", ex.ToString());
+            
+            #if DEBUG
+                throw;
+            #endif
         }
     }
 

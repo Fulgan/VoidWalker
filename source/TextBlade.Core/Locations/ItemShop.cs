@@ -10,9 +10,11 @@ public class ItemShop : Location
     // TODO: Possibly make this tuples of (item, cost) so users can override costs.
     public IEnumerable<string> Items { get; set; }
     private readonly Dictionary<string, int> _itemCosts = new();
+    private readonly IConsole _console;
     
-    public ItemShop(string name, string description, IEnumerable<string> items, string? locationClass = null) : base(name, description, locationClass)
+    public ItemShop(IConsole console, string name, string description, IEnumerable<string> items, string? locationClass = null) : base(name, description, locationClass)
     {
+        _console = console;
         this.Items = items;
 
         if (Items == null || !Items.Any())
@@ -59,13 +61,13 @@ public class ItemShop : Location
         int number;
         if (!int.TryParse(input.Substring(input.IndexOf(' ')).Trim(), out number))
         {
-            Console.WriteLine("That's not a number!");
+            _console.WriteLine("That's not a number!");
             return new DoNothingCommand();
         }
 
         if (number <= 0 || number > _itemCosts.Count)
         {
-            Console.WriteLine("There's no item with that number!");
+            _console.WriteLine("There's no item with that number!");
             return new DoNothingCommand();
         }
 
@@ -75,14 +77,14 @@ public class ItemShop : Location
 
         if (gold < cost)
         {
-            Console.WriteLine($"You can't afford that! You have only {gold} gold.");
+            _console.WriteLine($"You can't afford that! You have only {gold} gold.");
             return new DoNothingCommand();
         }
 
         CurrentSaveData.Gold -= cost;
         var item = ItemsData.GetItem(selectedItem);
         CurrentSaveData.Inventory.Add(item);
-        Console.WriteLine($"Purchased! You have {CurrentSaveData.Gold} gold left.");
+        _console.WriteLine($"Purchased! You have {CurrentSaveData.Gold} gold left.");
         return new DoNothingCommand();
     }
 }

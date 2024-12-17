@@ -20,9 +20,9 @@ public class Dungeon : Location
     private int _currentFloorNumber  = 0;
     
     private string _currentFloorLootKey => $"B{_currentFloorNumber + 1}";
-    private IGame _game;
+    private readonly IConsole _console;
 
-    public Dungeon(IGame game, string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null)
+    public Dungeon(string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null)
     : base(name, description, locationClass)
     {
         if (numFloors <= 0)
@@ -34,8 +34,6 @@ public class Dungeon : Location
         {
             throw new ArgumentException(nameof(monsters));
         }
-
-        _game = game;
 
         // Iterate up to the second-last floor and generate monsters
         for (int i = 0; i < numFloors - 1; i++)
@@ -98,10 +96,10 @@ public class Dungeon : Location
 
         var loot = FloorLoot[_currentFloorLootKey];
 
-        Console.WriteLine("Your party spies a treasure chest. You hurry over and open it. Within it, you find: ");
+        _console.WriteLine("Your party spies a treasure chest. You hurry over and open it. Within it, you find: ");
         foreach (var itemName in loot)
         {
-            Console.WriteLine($"    {itemName}");
+            _console.WriteLine($"    {itemName}");
             var item = ItemsData.GetItem(itemName);
 
             if (item == null)
@@ -160,17 +158,17 @@ public class Dungeon : Location
         var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")
         {
-            return new TakeTurnsBattleCommand(currentFloorData);
+            return new TakeTurnsBattleCommand(_console, currentFloorData);
         }
         if (input == "d" || input == "down" || input == "descend" || input == ">")
         {
             if (currentFloorData.Any())
             {
-                Console.WriteLine("You can't descend while monsters are around!");
+                _console.WriteLine("You can't descend while monsters are around!");
             }
             else if (_currentFloorNumber == _floorMonsters.Count - 1)
             {
-                Console.WriteLine("You're already at the bottom of the dungeon!");
+                _console.WriteLine("You're already at the bottom of the dungeon!");
             }
             else
             {

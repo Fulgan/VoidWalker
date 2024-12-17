@@ -10,12 +10,20 @@ public class CharacterTurnProcessor
 {
     private readonly List<Monster> _monsters;
     private readonly IGame _game;
+    private readonly IConsole _console;
+
     private readonly List<Character> _party;
     private readonly char[] validInputs = ['a', 'i', 's', 'd'];
 
-    public CharacterTurnProcessor(IGame game, List<Character> party, List<Monster> monsters)
+    public CharacterTurnProcessor(IGame game, IConsole console, List<Character> party, List<Monster> monsters)
     {
+        ArgumentNullException.ThrowIfNull(game);
+        ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(party);
+        ArgumentNullException.ThrowIfNull(monsters);
+        
         _game = game;
+        _console = console;
         _party = party;
         _monsters = monsters;
     }
@@ -26,8 +34,12 @@ public class CharacterTurnProcessor
 
         while (!validInputs.Contains(input))
         {
-            Console.WriteLine($"{character.Name}'s turn. Pick an action: [a]ttack, [i]tem, [s]kill, or [d]efend");
-            input = Console.ReadKey().KeyChar.ToString().ToLower()[0];
+            _console.WriteLine($"{character.Name}'s turn. Pick an action:");
+            _console.WriteLine($"    [{Colours.Command}]A:[/] attack");
+            _console.WriteLine($"    [{Colours.Command}]S:[/] skill");
+            _console.WriteLine($"    [{Colours.Command}]D:[/] defend");
+            _console.WriteLine($"    [{Colours.Command}]I:[/] item");
+            input = _console.ReadKey();
         }
 
         IEnumerable<Entity> targets; 
@@ -45,7 +57,7 @@ public class CharacterTurnProcessor
                 var skill = PickSkillFor(character);
                 if (character.CurrentSkillPoints < skill.Cost)
                 {
-                    Console.WriteLine("You don't have enough skill points for that!");
+                    _console.WriteLine("You don't have enough skill points for that!");
                     // Recursion is risky, very risky ... hmm.
                     return ProcessTurnFor(character);
                 }
@@ -54,10 +66,10 @@ public class CharacterTurnProcessor
                 // For now, assume monster.
                 return SkillApplier.Apply(character, skill, targets);
             case 'i':
-                foreach (var message in new ShowInventoryCommand(true).Execute(_game, _party))
+                foreach (var message in new ShowInventoryCommand(_console, true).Execute(_game, _party))
                 {
                     // Special case: show immediately because it requires input from the player.
-                    Console.WriteLine(message);
+                    _console.WriteLine(message);
                 }
                 return string.Empty;
             default:
@@ -108,34 +120,34 @@ public class CharacterTurnProcessor
         return PickFromList(validTargets);
     }
 
-    private static T PickFromList<T>(IEnumerable<T> items)
+    private T PickFromList<T>(IEnumerable<T> items)
     {
-        Console.WriteLine("Pick a target:");
+        _console.WriteLine("Pick a target:");
 
         for (int i = 0; i < items.Count(); i++)
         {
             var item = items.ElementAt(i);
-            Console.WriteLine($"    {i + 1}: {item}");
+            _console.WriteLine($"    {i + 1}: {item}");
         }
 
         int target;
-        while (!int.TryParse(Console.ReadKey().KeyChar.ToString().Trim(), out target) || target == 0 || target > items.Count())
+        while (!int.TryParse(_console.ReadKey().ToString(), out target) || target == 0 || target > items.Count())
         {
-            Console.WriteLine($"That's not a valid number! Enter a number from 1 to {items.Count()}: ");
+            _console.WriteLine($"That's not a valid number! Enter a number from 1 to {items.Count()}: ");
         }
 
         return items.ElementAt(target - 1);
     }
 
-    private static Skill PickSkillFor(Character character)
+    private Skill PickSkillFor(Character character)
     {
-        Console.WriteLine("Pick a skill:");
+        _console.WriteLine("Pick a skill:");
         var skill = PickFromList(character.Skills);
         return skill;
     }
 
     // TODO: extract
-    private static string Attack(Character character, Monster targetMonster)
+    private string Attack(Character character, Monster targetMonster)
     {
         ArgumentNullException.ThrowIfNull(targetMonster);
 

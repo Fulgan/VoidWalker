@@ -42,7 +42,7 @@ public class LocationDisplayer
         foreach (var location in currentLocation.LinkedLocations)
         {
             i++;
-            Console.WriteLine($"    {i}) {location.Description}");
+            _console.WriteLine($"    {i}) {location.Description}");
         }
 
         var extraOption = currentLocation.GetExtraMenuOptions();

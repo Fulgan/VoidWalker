@@ -1,10 +1,18 @@
 using TextBlade.Core.Inv;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Characters.PartyManagement;
 
-public static class EquipmentEquipper
+public class EquipmentEquipper
 {
-    internal static IEnumerable<string> EquipIfRequested(Item itemData, Inventory inventory, List<Character> party)
+    private readonly IConsole _console;
+
+    public EquipmentEquipper(IConsole console)
+    {
+        _console = console;
+    }
+
+    internal IEnumerable<string> EquipIfRequested(Item itemData, Inventory inventory, List<Character> party)
     {
         Equipment equipment = ValidateArguments(itemData, inventory, party);
 
@@ -17,7 +25,7 @@ public static class EquipmentEquipper
         yield return "Equip for who? Or pess 0 to cancel.";
 
         var input = 0;
-        if (!int.TryParse(Console.ReadLine().Trim(), out input))
+        if (!int.TryParse(_console.ReadKey().ToString(), out input))
         {
             yield return "Cancelling.";
             yield break;
@@ -44,7 +52,7 @@ public static class EquipmentEquipper
         yield return equipMessage;
     }
 
-    private static Equipment ValidateArguments(Item itemData, Inventory inventory, List<Character> party)
+    private Equipment ValidateArguments(Item itemData, Inventory inventory, List<Character> party)
     {
         if (itemData == null)
         {
@@ -75,7 +83,7 @@ public static class EquipmentEquipper
         return equipment;
     }
 
-    private static IEnumerable<string> DisplayEquipmentStats(Equipment itemData, List<Character> party)
+    private IEnumerable<string> DisplayEquipmentStats(Equipment itemData, List<Character> party)
     {
         var messages = new List<string>
         {

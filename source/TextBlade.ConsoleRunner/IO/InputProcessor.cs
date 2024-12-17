@@ -1,15 +1,23 @@
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
+using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.ConsoleRunner.IO;
 
-public static class InputProcessor
+public class InputProcessor
 {
-    public static ICommand PromptForAction(Location currentLocation)
+    private readonly IConsole _console;
+
+    public InputProcessor(IConsole console)
     {
-        Console.Write("Enter a command, or the number of your destination: ");
-        var rawResponse = Console.ReadLine().Trim().ToLowerInvariant();
+        _console = console;
+    }
+
+    public ICommand PromptForAction(Location currentLocation)
+    {
+        _console.WriteLine("Enter a command, or the number of your destination.");
+        var rawResponse = _console.ReadLine();
         
         // It's some special command that the location handles. That doesn't change location.
         var command = currentLocation.GetCommandFor(rawResponse);
@@ -25,7 +33,7 @@ public static class InputProcessor
             // Check if it's valid
             if (destinationOption <= 0 || destinationOption > currentLocation.LinkedLocations.Count)
             {
-                Console.WriteLine("That's not a valid destination!");
+                _console.WriteLine("That's not a valid destination!");
                 return new DoNothingCommand();
             }
 
@@ -39,11 +47,11 @@ public static class InputProcessor
         {
             case "quit":
             case "q":
-                return new QuitGameCommand();
+                return new QuitGameCommand(_console);
             case "i":
             case "inv":
             case "inventory":
-                return new ShowInventoryCommand();
+                return new ShowInventoryCommand(_console);
             case "p":
             case "party":
             case "status":

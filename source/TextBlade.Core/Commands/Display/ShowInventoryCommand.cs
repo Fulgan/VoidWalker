@@ -2,15 +2,24 @@ using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Characters.PartyManagement;
 using TextBlade.Core.Game;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands.Display;
 
 public class ShowInventoryCommand : ICommand
 {
+    private readonly IConsole _console;
+    private readonly EquipmentEquipper _equipper;
+    private readonly ItemUser _itemUser;
+
     private bool _isInBattle = false;
 
-    public ShowInventoryCommand(bool isInBattle = false)
+    public ShowInventoryCommand(IConsole console, bool isInBattle = false)
     {
+        _console = console;
+        _equipper = new(console);
+        _itemUser = new(console);
+
         _isInBattle = isInBattle;
     }
 
@@ -38,13 +47,13 @@ public class ShowInventoryCommand : ICommand
         var index = 0;
         while (index == 0)
         {        
-            var rawInput = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
-            if (rawInput == "0" || rawInput == "b" || rawInput == "back")
+            var rawInput = _console.ReadKey();
+            if (rawInput == '0' || rawInput == 'b')
             {
                 yield break;
             }
 
-            if (!int.TryParse(rawInput, out index))
+            if (!int.TryParse(rawInput.ToString(), out index))
             {
                 continue;
             }
@@ -63,13 +72,13 @@ public class ShowInventoryCommand : ICommand
             case Inv.ItemType.Helmet:
             case Inv.ItemType.Armour:
             case Inv.ItemType.Weapon:
-                foreach (var message in EquipmentEquipper.EquipIfRequested(itemData, inventory, party))
+                foreach (var message in _equipper.EquipIfRequested(itemData, inventory, party))
                 {
                     yield return message;
                 }
                 break;
             case Inv.ItemType.Consumable:
-                foreach (var message in ItemUser.UseIfRequested(itemData, inventory, party))
+                foreach (var message in _itemUser.UseIfRequested(itemData, inventory, party))
                 {
                     yield return message;
                 }

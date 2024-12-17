@@ -24,6 +24,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
     public bool IsVictory { get; private set; }
 
     private readonly List<Monster> _monsters = new();
+    private readonly IConsole _console;
 
     static TakeTurnsBattleCommand()
     {
@@ -50,8 +51,13 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         }
     }
 
-    public TakeTurnsBattleCommand(List<string> monsterNames)
+    public TakeTurnsBattleCommand(IConsole console, List<string> monsterNames)
     {
+        ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(monsterNames);
+
+        _console = console;
+
         foreach (var name in monsterNames)
         {
             var data = s_allMonstersData[name];
@@ -78,7 +84,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         var isPartyWipedOut = () => party.TrueForAll(p => p.CurrentHealth <= 0);
         var areMonstersDefeated = () => _monsters.TrueForAll(m => m.CurrentHealth <= 0);
         var isBattleOver = () => isPartyWipedOut() || areMonstersDefeated();
-        var characterTurnProcessor = new CharacterTurnProcessor(game, party, _monsters);
+        var characterTurnProcessor = new CharacterTurnProcessor(game, _console, party, _monsters);
 
         while (!isBattleOver())
         {
