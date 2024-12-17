@@ -1,25 +1,31 @@
 using System.Text;
 using TextBlade.Core.Characters;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Battle;
 
-public static class SkillApplier
+public class SkillApplier
 {
-    internal static string Apply(Character user, Skill skill, IEnumerable<Entity> targets)
+    private readonly IConsole _console;
+
+
+    public SkillApplier(IConsole console)
     {
-        var message = new StringBuilder();
-        
+        _console = console;
+    }
+    
+    internal void Apply(Character user, Skill skill, IEnumerable<Entity> targets)
+    {
         foreach (var target in targets)
         {
-            message.Append(ApplyDamage(user, skill, target));
-            message.AppendLine(InflictStatuses(user, skill, target));
+            ApplyDamage(user, skill, target);
+            InflictStatuses(user, skill, target);
         }
 
         user.CurrentSkillPoints -= skill.Cost;
-        return message.ToString();
     }
 
-    private static string ApplyDamage(Character user, Skill skill, Entity target)
+    private void ApplyDamage(Character user, Skill skill, Entity target)
     {
         /////// TODO: REFACTOR so this method is not polymorphic
         ArgumentNullException.ThrowIfNull(target);
@@ -47,20 +53,20 @@ public static class SkillApplier
         // TODO: DRY the 2x damage part with CharacterTurnProcessor
         var damageMessage = damage > 0 ? $"{roundedDamage} damage" : $"healed for [green]{-roundedDamage}[/]";
         var effectiveMessage = hitWeakness ? "[#f80]Super effective![/]" : "";
-        return $"{user.Name} uses {skill.Name} on {target.Name}! {effectiveMessage} {damageMessage}!";
+        _console.WriteLine($"{user.Name} uses {skill.Name} on {target.Name}! {effectiveMessage} {damageMessage}!");
     }
     
-    private static string InflictStatuses(Character user, Skill skill, Entity target)
+    private void InflictStatuses(Character user, Skill skill, Entity target)
     {
         if (string.IsNullOrWhiteSpace(skill.StatusInflicted))
         {
-            return string.Empty;
+            return;
         }
 
         var status = skill.StatusInflicted;
         var stacks = skill.StatusStacks;
         target.InflictStatus(status, stacks);
 
-        return $"{user.Name} inflicts {skill.StatusInflicted} x{skill.StatusStacks} on {target.Name}!";
+        _console.WriteLine($"{user.Name} inflicts {skill.StatusInflicted} x{skill.StatusStacks} on {target.Name}!");
     }
 }

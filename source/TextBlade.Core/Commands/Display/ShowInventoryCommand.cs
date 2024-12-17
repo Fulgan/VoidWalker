@@ -23,9 +23,9 @@ public class ShowInventoryCommand : ICommand
         _isInBattle = isInBattle;
     }
 
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public void Execute(IGame game, List<Character> party)
     {
-        yield return "Inventory:";
+        _console.WriteLine("Inventory:");
 
         var inventory = game.Inventory;
         var items = inventory.ItemsInOrder;
@@ -38,11 +38,11 @@ public class ShowInventoryCommand : ICommand
 
         foreach (var item in items)
         {
-            yield return $"  {i}: {item.Name} x{inventory.ItemQuantities[item.Name]}";
+            _console.WriteLine($"  {i}: {item.Name} x{inventory.ItemQuantities[item.Name]}");
             i++;
         }
 
-        yield return $"Use{(_isInBattle ? "" : "/equip")} which item? Type 0 or b or back to go back.";
+        _console.WriteLine($"Use{(_isInBattle ? "" : "/equip")} which item? Type 0 or b or back to go back.");
         
         var index = 0;
         while (index == 0)
@@ -50,17 +50,18 @@ public class ShowInventoryCommand : ICommand
             var rawInput = _console.ReadKey();
             if (rawInput == '0' || rawInput == 'b')
             {
-                yield break;
+                _console.WriteLine($"[{Colours.Cancel}]Cancelling.[/]");
+                return;
             }
 
             if (!int.TryParse(rawInput.ToString(), out index))
             {
-                continue;
+                _console.WriteLine("That's not a valid number.");
             }
 
             if (index < 1 || index > items.Count())
             {
-                yield return "Please enter a valid number!";
+                _console.WriteLine($"Please enter a number between {1} and {items.Count()}.");
                 index = 0;
              }
         }
@@ -72,16 +73,10 @@ public class ShowInventoryCommand : ICommand
             case Inv.ItemType.Helmet:
             case Inv.ItemType.Armour:
             case Inv.ItemType.Weapon:
-                foreach (var message in _equipper.EquipIfRequested(itemData, inventory, party))
-                {
-                    yield return message;
-                }
+                _equipper.EquipIfRequested(itemData, inventory, party);
                 break;
             case Inv.ItemType.Consumable:
-                foreach (var message in _itemUser.UseIfRequested(itemData, inventory, party))
-                {
-                    yield return message;
-                }
+                _itemUser.UseIfRequested(itemData, inventory, party);
                 break;
         }
     }

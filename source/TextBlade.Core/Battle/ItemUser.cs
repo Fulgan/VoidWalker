@@ -13,7 +13,7 @@ public class ItemUser
         _console = console;
     }
 
-    internal IEnumerable<string> UseIfRequested(Item itemData, Inventory inventory, List<Character> party)
+    internal void UseIfRequested(Item itemData, Inventory inventory, List<Character> party)
     {
         Consumable consumable = ValidateArguments(itemData, inventory, party);
         
@@ -26,28 +26,26 @@ public class ItemUser
             message += ", " + skillPointsMessage;
         }
 
-        yield return message;
+        _console.WriteLine(message);
 
         int i = 0;
         foreach (var member in party)
         {
             i++;
-            yield return $"    {i}: {member}";
+            _console.WriteLine($"    {i}: {member}");
         }
 
-        yield return "Use on who? Or press 0 to cancel.";
+        _console.WriteLine("Use on who? Or press 0 to cancel.");
 
-        var input = 0;
+        int input;
         if (!int.TryParse(_console.ReadKey().ToString(), out input))
         {
-            yield return "Cancelling.";
-            yield break;
+            _console.WriteLine("Cancelling.");
         }
 
         if (input <= 0 || input > party.Count)
         {
-            yield return "Invalid number, cancelling.";
-            yield break;
+            _console.WriteLine("Invalid number, cancelling.");
         }
 
         var partyMember = party[input - 1];
@@ -56,7 +54,7 @@ public class ItemUser
         partyMember.CurrentSkillPoints = Math.Min(partyMember.CurrentSkillPoints + consumable.RestoreSkillPoints, partyMember.TotalSkillPoints);
 
         inventory.Remove(consumable.Name);
-        yield return "Healed.";
+        _console.WriteLine("Healed.");
     }
 
     private Consumable ValidateArguments(Item itemData, Inventory inventory, List<Character> party)

@@ -5,19 +5,20 @@ namespace TextBlade.Core.Battle;
 
 public class BasicMonsterAi
 {
+    private readonly IConsole _console;
     private readonly List<Character> _party;
 
-    public BasicMonsterAi(List<Character> party)
+    public BasicMonsterAi(IConsole console, List<Character> party)
     {
+        _console = console;
         _party = party.Where(p => p.CurrentHealth > 0).ToList();
     }
     
-    public string ProcessTurnFor(Monster monster)
+    public void ProcessTurnFor(Monster monster)
     {
         if (_party.Count == 0)
         {
             // Wiped out, nothing to do
-            return string.Empty;
         }
 
         var target = _party[Random.Shared.Next(0, _party.Count)];
@@ -28,6 +29,7 @@ public class BasicMonsterAi
         {
             message += $"{target.Name} [{Colours.Highlight}]DIES![/] Oh no!";
         }
-        return message;
+
+        _console.WriteLine(message);
     }    
 }

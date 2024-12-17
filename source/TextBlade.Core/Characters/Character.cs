@@ -1,6 +1,7 @@
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters.PartyManagement;
 using TextBlade.Core.Inv;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Characters;
 
@@ -50,20 +51,18 @@ public class Character : Entity
     /// </summary>
     public int TotalToughness { get { return this.Toughness + this.Equipment.Sum(e => e.Value.GetStatsModifier(CharacterStats.Toughness)); } }
 
-    internal IEnumerable<string> GetExperiencePoints(int experiencePoints)
+    internal void GainExperiencePoints(IConsole console, int experiencePoints)
     {
         if (this.CurrentHealth <= 0)
         {
-            yield break;
+            return;
         }
 
+        var manager = new LevelManager(console);
         this.ExperiencePoints += experiencePoints;
-        if (LevelManager.CanLevelUp(this))
+        if (manager.CanLevelUp(this))
         {
-            foreach (var message in LevelManager.LevelUp(this))
-            {
-                yield return message;
-            }
+            manager.LevelUp(this);
         }
     }
 

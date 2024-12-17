@@ -20,7 +20,14 @@ public class InputProcessor
         var rawResponse = _console.ReadLine();
         
         // It's some special command that the location handles. That doesn't change location.
-        var command = currentLocation.GetCommandFor(rawResponse);
+        var command = currentLocation.GetCommandFor(_console, rawResponse);
+        var response = currentLocation.GetResponseFor(rawResponse);
+
+        if (response != string.Empty)
+        {
+            _console.WriteLine(response);
+        }
+        
         if (!(command is DoNothingCommand))
         {
             return command;
@@ -55,9 +62,9 @@ public class InputProcessor
             case "p":
             case "party":
             case "status":
-                return new ShowPartyStatusCommand();
+                return new ShowPartyStatusCommand(_console);
             case "credits":
-                return new ShowCreditsCommand();
+                return new ShowCreditsCommand(_console);
             case "s":
             case "save":
                 return new ManuallySaveCommand();
@@ -67,7 +74,7 @@ public class InputProcessor
             case "help":
             case "h":
             case "?":
-                return new ShowHelpCommand();
+                return new ShowHelpCommand(_console);
         }
 
         return new DoNothingCommand();

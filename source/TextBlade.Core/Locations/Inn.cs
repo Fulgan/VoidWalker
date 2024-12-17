@@ -1,4 +1,5 @@
 using TextBlade.Core.Commands;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Locations;
 
@@ -13,7 +14,7 @@ public class Inn : Location
     {
     }
 
-    public override ICommand GetCommandFor(string input)
+    public override ICommand GetCommandFor(IConsole console, string input)
     {
         if (input.ToLower() == "s")
         {

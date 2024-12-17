@@ -28,7 +28,7 @@ public class CharacterTurnProcessor
         _monsters = monsters;
     }
 
-    internal string ProcessTurnFor(Character character)
+    internal void ProcessTurnFor(Character character)
     {
         char input = ' ';
 
@@ -48,10 +48,12 @@ public class CharacterTurnProcessor
         {
             case 'a':
                 targets = [PickTargetMonster()];
-                return Attack(character, targets.First() as Monster);
+                Attack(character, targets.First() as Monster);
+                break;
             case 'd':
                 character.Defend();
-                return $"{character.Name} defends!";
+                _console.WriteLine($"{character.Name} defends!");
+                break;
             case 's':
                 // Assumes you get back a valid skill: something you have SP for.
                 var skill = PickSkillFor(character);
@@ -59,21 +61,19 @@ public class CharacterTurnProcessor
                 {
                     _console.WriteLine("You don't have enough skill points for that!");
                     // Recursion is risky, very risky ... hmm.
-                    return ProcessTurnFor(character);
+                    ProcessTurnFor(character);
                 }
                 targets = PickTargetsFor(skill);
                 // Depending on the skill, the target is an instance of Character or Monster.
                 // For now, assume monster.
-                return SkillApplier.Apply(character, skill, targets);
+                new SkillApplier(_console).Apply(character, skill, targets);
+                break;
             case 'i':
-                foreach (var message in new ShowInventoryCommand(_console, true).Execute(_game, _party))
-                {
-                    // Special case: show immediately because it requires input from the player.
-                    _console.WriteLine(message);
-                }
-                return string.Empty;
+                new ShowInventoryCommand(_console, true).Execute(_game, _party);
+                break;
             default:
-                return string.Empty;
+                _console.WriteLine("Invalid input!");
+                break;
         }
     }
 
@@ -147,7 +147,7 @@ public class CharacterTurnProcessor
     }
 
     // TODO: extract
-    private string Attack(Character character, Monster targetMonster)
+    private void Attack(Character character, Monster targetMonster)
     {
         ArgumentNullException.ThrowIfNull(targetMonster);
 
@@ -176,6 +176,6 @@ public class CharacterTurnProcessor
             message.Append($"{targetMonster.Name} DIES!");
         }
         
-        return message.ToString();
+        _console.WriteLine(message.ToString());
     }
 }

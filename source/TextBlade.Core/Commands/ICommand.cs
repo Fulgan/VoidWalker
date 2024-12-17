@@ -9,5 +9,5 @@ public interface ICommand
     /// Execute a command. And return strings to run through console.
     /// Everything else is here so we can act on it.
     /// </summary>
-    public IEnumerable<string> Execute(IGame game, List<Character> party);
+    public void Execute(IGame game, List<Character> party);
 }

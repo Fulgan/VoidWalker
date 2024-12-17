@@ -6,6 +6,13 @@ namespace TextBlade.Core.Commands;
 
 public class SleepAtInnCommand : ICommand
 {
+    private readonly IConsole _console;
+
+    public SleepAtInnCommand(IConsole console)
+    {
+        _console = console;
+    }
+
     private readonly int _innCost = 0;
 
     public SleepAtInnCommand(int innCost)
@@ -13,7 +20,7 @@ public class SleepAtInnCommand : ICommand
         _innCost = innCost;
     }
 
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public void Execute(IGame game, List<Character> party)
     {
         // Check if we have enough gold. Subtract if we do!
 
@@ -22,6 +29,6 @@ public class SleepAtInnCommand : ICommand
             character.FullyHeal();
         }
 
-        yield return $"You sleep at the inn. All party members have recovered to [{Colours.Highlight}]full health[/]!";
+        _console.WriteLine($"You sleep at the inn. All party members have recovered to [{Colours.Highlight}]full health[/]!");
     }
 }

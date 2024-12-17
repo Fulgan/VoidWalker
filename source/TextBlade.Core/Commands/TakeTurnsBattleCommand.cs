@@ -77,7 +77,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         }
     }
 
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public void Execute(IGame game, List<Character> party)
     {
         // Problem: we don't have access to AnsiConsole in this layer. Nor can we wait for the Game class
         // to process it, because it's an interactive battle. That ... sucks...
@@ -89,9 +89,9 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         while (!isBattleOver())
         {
             var monstersStatus = string.Join(", ", _monsters.Select(m => $"{m.Name}: {m.CurrentHealth}/{m.TotalHealth} health"));
-            yield return $"You face: [{Colours.Highlight}]{monstersStatus}[/]";
+            _console.WriteLine($"You face: [{Colours.Highlight}]{monstersStatus}[/]");
             var partyStatus = string.Join(", ", party);
-            yield return $"Your party: [{Colours.Highlight}]{partyStatus}[/]";
+            _console.WriteLine($"Your party: [{Colours.Highlight}]{partyStatus}[/]");
 
             foreach (var character in party)
             {
@@ -105,7 +105,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                     continue;
                 }
 
-                yield return characterTurnProcessor.ProcessTurnFor(character);
+                characterTurnProcessor.ProcessTurnFor(character);
             }
 
             foreach (var monster in _monsters)
@@ -115,7 +115,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                     continue;
                 }
 
-                yield return new BasicMonsterAi(party).ProcessTurnFor(monster);
+                new BasicMonsterAi(_console, party).ProcessTurnFor(monster);
             }
 
             foreach (var e in _monsters)
@@ -127,7 +127,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                 
                 foreach (var message in e.OnRoundComplete())
                 {
-                    yield return message;
+                    _console.WriteLine(message);
                 }
             }
 
@@ -140,7 +140,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                 
                 foreach (var message in e.OnRoundComplete())
                 {
-                    yield return message;
+                    _console.WriteLine(message);
                 }
             }
         }
@@ -148,12 +148,12 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         if (isPartyWipedOut())
         {
             this.IsVictory = false;
-            yield return DefeatMessage;
+            _console.WriteLine(DefeatMessage);
         }
         else if (areMonstersDefeated())
         {
             this.IsVictory = true;
-            yield return string.Format(VictoryMessage, TotalGold, TotalExperiencePoints);
+            _console.WriteLine(string.Format(VictoryMessage, TotalGold, TotalExperiencePoints));
         }
         else
         {

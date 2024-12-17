@@ -13,18 +13,18 @@ public class QuitGameCommand : ICommand
         _console = console;
     }
 
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public void Execute(IGame game, List<Character> party)
     {
-        yield return $"Quit the game? Are you sure? [{Colours.Command}]y[/]/[{Colours.Command}]n[/]";
+        _console.WriteLine($"Quit the game? Are you sure? [{Colours.Command}]y[/]/[{Colours.Command}]n[/]");
         var input = _console.ReadKey();
 
         if (input != 'y')
         {
-            yield return "Cancelling ...";
-            yield break;
+            _console.WriteLine("Cancelling ...");
+            return;
         }
 
-        yield return "Bye!";
+        _console.WriteLine("Bye!");
         Environment.Exit(0);
     }
 }

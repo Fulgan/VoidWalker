@@ -12,29 +12,29 @@ public class EquipmentEquipper
         _console = console;
     }
 
-    internal IEnumerable<string> EquipIfRequested(Item itemData, Inventory inventory, List<Character> party)
+    internal void EquipIfRequested(Item itemData, Inventory inventory, List<Character> party)
     {
         Equipment equipment = ValidateArguments(itemData, inventory, party);
 
         var messages = DisplayEquipmentStats(equipment, party);
         foreach (var message in messages)
         {
-            yield return message;
+            _console.WriteLine(message);
         }
 
-        yield return "Equip for who? Or press 0 to cancel.";
+        _console.WriteLine("Equip for who? Or press 0 to cancel.");
 
         var input = 0;
         if (!int.TryParse(_console.ReadKey().ToString(), out input))
         {
-            yield return "Cancelling.";
-            yield break;
+            _console.WriteLine("Cancelling.");
+            return;
         }
 
         if (input <= 0 || input > party.Count)
         {
-            yield return "Invalid number, cancelling.";
-            yield break;
+            _console.WriteLine("Invalid number, cancelling.");
+            return;
         }
 
         var partyMember = party[input - 1];
@@ -49,7 +49,7 @@ public class EquipmentEquipper
 
         partyMember.Equipment[itemData.ItemType] = equipment;
         inventory.Remove(equipment.Name);
-        yield return equipMessage;
+        _console.WriteLine(equipMessage);
     }
 
     private Equipment ValidateArguments(Item itemData, Inventory inventory, List<Character> party)

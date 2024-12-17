@@ -32,11 +32,7 @@ public class BattleResultsApplier
         {
             foreach (var character in saveData.Party.Where(c => c.CurrentHealth > 0))
             {
-                foreach (var message in character.GetExperiencePoints(battleCommand.TotalExperiencePoints))
-                {
-                    // TODO: return higher-up so we can apply styling/colour to it...
-                    _console.WriteLine(message);
-                }
+                character.GainExperiencePoints(_console, battleCommand.TotalExperiencePoints);
             }
         }
         else
@@ -56,7 +52,15 @@ public class BattleResultsApplier
         if (battleCommand.IsVictory)
         {
             // Wipe out the dungeon floor's inhabitants.
-            dungeon.OnVictory(saveData.Inventory);
+            var loot = dungeon.OnVictory(saveData.Inventory);
+            if (loot.Any())
+            {
+                _console.WriteLine("Your party spies a treasure chest. You hurry over and open it. Within it, you find: ");
+                foreach (var itemName in loot)
+                {
+                    _console.WriteLine($"    {itemName}");
+                }
+            }
         }
     }
 }

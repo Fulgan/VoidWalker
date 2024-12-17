@@ -97,11 +97,7 @@ public class Game : IGame
                 var command = new InputProcessor(_console).PromptForAction(_currentLocation);
                 previousLocation = _currentLocation;
 
-                var messages = command.Execute(this, _saveData.Party);
-                foreach (string message in messages)
-                {
-                    _console.WriteLine(message);
-                }
+                command.Execute(this, _saveData.Party);
 
                 /// This area stinks: type-specific things...
                 new BattleResultsApplier(_console).ApplyResultsIfBattle(command, _currentLocation, _saveData);
@@ -154,12 +150,7 @@ public class Game : IGame
         {
             _saveData = SaveGameManager.LoadGame("default");
             GameSwitches.Switches = _saveData.Switches;
-            var messages = new ChangeLocationCommand(_saveData.CurrentLocationId).Execute(this, _saveData.Party);
-
-            foreach (var message in messages)
-            {
-                // ... There is no message ... needed for IAsyncEnumerable to work ... ?
-            }
+            new ChangeLocationCommand(_saveData.CurrentLocationId).Execute(this, _saveData.Party);
 
             if (_saveData.LocationSpecificDataLocationId == _currentLocation.LocationId)
             {
@@ -176,11 +167,7 @@ public class Game : IGame
             _saveData.Inventory = new();
 
             var startLocationId = runner.GetStartingLocationId();
-            var messages = new ChangeLocationCommand(startLocationId).Execute(this, _saveData.Party);
-            foreach (var message in messages)
-            {
-                // ... There is no message ... needed for IAsyncEnumerable to work ... ?
-            }
+            new ChangeLocationCommand(startLocationId).Execute(this, _saveData.Party);
             _console.WriteLine("New game started. For help, type \"help\"");
         }
     }

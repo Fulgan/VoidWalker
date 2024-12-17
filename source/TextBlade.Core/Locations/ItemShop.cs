@@ -10,11 +10,9 @@ public class ItemShop : Location
     // TODO: Possibly make this tuples of (item, cost) so users can override costs.
     public IEnumerable<string> Items { get; set; }
     private readonly Dictionary<string, int> _itemCosts = new();
-    private readonly IConsole _console;
     
-    public ItemShop(IConsole console, string name, string description, IEnumerable<string> items, string? locationClass = null) : base(name, description, locationClass)
+    public ItemShop(string name, string description, IEnumerable<string> items, string? locationClass = null) : base(name, description, locationClass)
     {
-        _console = console;
         this.Items = items;
 
         if (Items == null || !Items.Any())
@@ -50,7 +48,7 @@ public class ItemShop : Location
         return "Type \"B item number\" to buy that item.";
     }
 
-    public override ICommand GetCommandFor(string input)
+    public override ICommand GetCommandFor(IConsole console, string input)
     {
         input = input.ToLower();
         if (!input.StartsWith("b "))
@@ -61,13 +59,13 @@ public class ItemShop : Location
         int number;
         if (!int.TryParse(input.Substring(input.IndexOf(' ')).Trim(), out number))
         {
-            _console.WriteLine("That's not a number!");
+            console.WriteLine("That's not a number!");
             return new DoNothingCommand();
         }
 
         if (number <= 0 || number > _itemCosts.Count)
         {
-            _console.WriteLine("There's no item with that number!");
+            console.WriteLine("There's no item with that number!");
             return new DoNothingCommand();
         }
 
@@ -77,14 +75,16 @@ public class ItemShop : Location
 
         if (gold < cost)
         {
-            _console.WriteLine($"You can't afford that! You have only {gold} gold.");
+            console.WriteLine($"You can't afford that! You have only {gold} gold.");
             return new DoNothingCommand();
         }
 
         CurrentSaveData.Gold -= cost;
+
         var item = ItemsData.GetItem(selectedItem);
         CurrentSaveData.Inventory.Add(item);
-        _console.WriteLine($"Purchased! You have {CurrentSaveData.Gold} gold left.");
+        
+        console.WriteLine($"Purchased! You have {CurrentSaveData.Gold} gold left.");
         return new DoNothingCommand();
     }
 }

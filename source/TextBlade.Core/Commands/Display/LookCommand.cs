@@ -9,9 +9,8 @@ namespace TextBlade.Core.Commands.Display;
 /// </summary>
 public class LookCommand : ICommand
 {
-    public IEnumerable<string> Execute(IGame game, List<Character> party)
+    public void Execute(IGame game, List<Character> party)
     {
         // This stinks.
-        yield return string.Empty;
     }
 }

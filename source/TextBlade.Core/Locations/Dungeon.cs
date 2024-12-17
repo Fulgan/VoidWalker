@@ -1,7 +1,6 @@
 using System.Text;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
-using TextBlade.Core.Game;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 
@@ -20,7 +19,6 @@ public class Dungeon : Location
     private int _currentFloorNumber  = 0;
     
     private string _currentFloorLootKey => $"B{_currentFloorNumber + 1}";
-    private readonly IConsole _console;
 
     public Dungeon(string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null)
     : base(name, description, locationClass)
@@ -83,7 +81,7 @@ public class Dungeon : Location
         _floorMonsters.Add(finalFloor);
     }
 
-    public void OnVictory(Inventory inventory)
+    public IList<string> OnVictory(Inventory inventory)
     {
         // Clear out all monsters
         _floorMonsters[_currentFloorNumber].Clear();
@@ -91,15 +89,13 @@ public class Dungeon : Location
         // Grant loot if applicable
         if (!FloorLoot.ContainsKey(_currentFloorLootKey))
         {
-            return;
+            return Array.Empty<string>();
         }
 
         var loot = FloorLoot[_currentFloorLootKey];
 
-        _console.WriteLine("Your party spies a treasure chest. You hurry over and open it. Within it, you find: ");
         foreach (var itemName in loot)
         {
-            _console.WriteLine($"    {itemName}");
             var item = ItemsData.GetItem(itemName);
 
             if (item == null)
@@ -110,6 +106,8 @@ public class Dungeon : Location
             item.Name = itemName;
             inventory.Add(item);
         }
+
+        return loot;
     }
 
     public override string GetExtraDescription()
@@ -153,22 +151,24 @@ public class Dungeon : Location
         return message.ToString();
     }
 
-    override public ICommand GetCommandFor(string input)
+    override public ICommand GetCommandFor(IConsole console, string input)
     {
         var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")
         {
-            return new TakeTurnsBattleCommand(_console, currentFloorData);
+            return new TakeTurnsBattleCommand(console, currentFloorData);
         }
         if (input == "d" || input == "down" || input == "descend" || input == ">")
         {
             if (currentFloorData.Any())
             {
-                _console.WriteLine("You can't descend while monsters are around!");
+                // Monsters here
+                return new DoNothingCommand();
             }
             else if (_currentFloorNumber == _floorMonsters.Count - 1)
             {
-                _console.WriteLine("You're already at the bottom of the dungeon!");
+                // Already at the bottom
+                return new DoNothingCommand();
             }
             else
             {
@@ -179,6 +179,25 @@ public class Dungeon : Location
         }
 
         return new DoNothingCommand();
+    }
+
+    public string GetResponseFor(string input)
+    {
+        var currentFloorData = _floorMonsters[_currentFloorNumber];
+
+        if (input == "d" || input == "down" || input == "descend" || input == ">")
+        {
+            if (currentFloorData.Any())
+            {
+                return "You can't descend while monsters are around!";
+            }
+            else if (_currentFloorNumber == _floorMonsters.Count - 1)
+            {
+                return "You're already at the bottom of the dungeon!";
+            }
+        }
+
+        return string.Empty;
     }
 
     public bool IsCurrentFloorClear()
