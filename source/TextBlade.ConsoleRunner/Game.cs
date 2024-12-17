@@ -30,13 +30,18 @@ public class Game : IGame
 
     private Location _currentLocation = null!;
     private readonly bool _isRunning = true;
+    private readonly LocationDisplayer _locationDisplayer;
     private DateTime _lastSaveOn = DateTime.UtcNow;
 
+    private readonly IConsole _console;
     private readonly ISoundPlayer _backgroundAudioPlayer; 
 
-    public Game(ISoundPlayer soundPlayer)
+    public Game(IConsole console, ISoundPlayer soundPlayer)
     {
+        _console = console;
         _backgroundAudioPlayer = soundPlayer;
+        _locationDisplayer = new(_console);
+
         Current = this;
     }
 
@@ -86,7 +91,7 @@ public class Game : IGame
                 if (previousLocation != _currentLocation)
                 {
                     CodeBehindRunner.ExecuteLocationCode(_currentLocation);
-                    LocationDisplayer.ShowLocation(_currentLocation);
+                    _locationDisplayer.ShowLocation(_currentLocation);
                 }
 
                 var command = InputProcessor.PromptForAction(_currentLocation);
@@ -95,7 +100,7 @@ public class Game : IGame
                 var messages = command.Execute(this, _saveData.Party);
                 foreach (string message in messages)
                 {
-                    AnsiConsole.MarkupLine(message);
+                    _console.WriteLine(message);
                 }
 
                 /// This area stinks: type-specific things...
@@ -105,7 +110,7 @@ public class Game : IGame
                     SaveGame();
 
                     // After battle, tell me the floor status again.
-                    LocationDisplayer.ShowLocation(_currentLocation);
+                    _locationDisplayer.ShowLocation(_currentLocation);
                 }
                 else if (command is ManuallySaveCommand)
                 {
@@ -113,7 +118,7 @@ public class Game : IGame
                 }
                 else if (command is LookCommand)
                 {
-                    LocationDisplayer.ShowLocation(_currentLocation);
+                    _locationDisplayer.ShowLocation(_currentLocation);
                 }
                 else
                 {
@@ -124,9 +129,9 @@ public class Game : IGame
         catch (Exception ex)
         {
             string[] crashFiles = [@"SaveData\default.save", "crash.txt"];
-            AnsiConsole.MarkupLine("[red]Oh no! The game crashed![/]");
-            AnsiConsole.MarkupLine("Please reach out to the developers and let them know about this, so that they can look into it.");
-            AnsiConsole.MarkupLine($"Send them these files from your game directory, along with a description of what you were doing in-game: [green]{string.Join(", ", crashFiles)}[/]");
+            _console.WriteLine("[red]Oh no! The game crashed![/]");
+            _console.WriteLine("Please reach out to the developers and let them know about this, so that they can look into it.");
+            _console.WriteLine($"Send them these files from your game directory, along with a description of what you were doing in-game: [green]{string.Join(", ", crashFiles)}[/]");
             File.WriteAllText("crash.txt", ex.ToString());
         }
     }
@@ -134,7 +139,7 @@ public class Game : IGame
     private void SaveGame()
     {
         SaveGameManager.SaveGame("default", _currentLocation.LocationId, _saveData.Party, _saveData.Inventory, _saveData.Gold, _currentLocation.LocationId, _currentLocation.GetCustomSaveData());
-        AnsiConsole.MarkupLine("[green]Game saved.[/]");
+        _console.WriteLine("[green]Game saved.[/]");
     }
 
     private void LoadGameOrStartNewGame()
@@ -157,7 +162,7 @@ public class Game : IGame
                 _currentLocation.SetStateBasedOnCustomSaveData(_saveData.LocationSpecificData);
             }
 
-            AnsiConsole.WriteLine("Save game loaded. For help, type \"help\"");
+            _console.WriteLine("Save game loaded. For help, type \"help\"");
         }
         else
         {
@@ -172,7 +177,7 @@ public class Game : IGame
             {
                 // ... There is no message ... needed for IAsyncEnumerable to work ... ?
             }
-            AnsiConsole.WriteLine("New game started. For help, type \"help\"");
+            _console.WriteLine("New game started. For help, type \"help\"");
         }
     }
 
@@ -185,7 +190,6 @@ public class Game : IGame
             throw new InvalidOperationException("Content/game.json file is missing!");
         }
 
-        AnsiConsole.Background = Color.Black;
         var gameJsonContents = File.ReadAllText(gameJsonPath);
         if (JsonConvert.DeserializeObject(gameJsonContents) is not JObject gameJson)
         {
@@ -194,7 +198,7 @@ public class Game : IGame
 
         var version = File.ReadAllText("version.txt").Trim();
         var gameName = gameJson["GameName"];
-        AnsiConsole.MarkupLine($"[white]Welcome to[/] [red]{gameName}[/] version [white]{version}[/]!");
+        _console.WriteLine($"[white]Welcome to[/] [red]{gameName}[/] version [white]{version}[/]!");
 
         // Keeps things DRY
         return gameJson;

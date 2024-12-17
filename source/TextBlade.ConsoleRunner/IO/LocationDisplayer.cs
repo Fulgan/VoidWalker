@@ -4,32 +4,39 @@ using TextBlade.Core.Locations;
 
 namespace TextBlade.ConsoleRunner;
 
-public static class LocationDisplayer
+public class LocationDisplayer
 {
+    private IConsole _console;
+    
+    public LocationDisplayer(IConsole console)
+    {
+        _console = console;
+    }
+
     /// <summary>
     /// Show a location.
     /// </summary>
-    public static void ShowLocation(Location currentLocation)
+    public void ShowLocation(Location currentLocation)
     {
         ShowLocationAndLinkedLocations(currentLocation);
         ShowLocationSpecificCommands(currentLocation);
     }
 
-    private static void ShowLocationAndLinkedLocations(Location currentLocation)
+    private void ShowLocationAndLinkedLocations(Location currentLocation)
     {
         if (currentLocation == null)
         {
             throw new InvalidOperationException("Current location is null!");
         }
 
-        AnsiConsole.MarkupLine($"You are in [{Colours.Highlight}]{currentLocation.Name}: {currentLocation.Description}[/]");
+        _console.WriteLine($"You are in [{Colours.Highlight}]{currentLocation.Name}: {currentLocation.Description}[/]");
         var extaDescription = currentLocation.GetExtraDescription();
         if (extaDescription != null)
         {
-            AnsiConsole.MarkupLine($"[#aae]{extaDescription}[/]");
+            _console.WriteLine($"[#aae]{extaDescription}[/]");
         }
 
-        AnsiConsole.MarkupLine($"You can go to [{Colours.Highlight}]{currentLocation.LinkedLocations.Count}[/] places:");
+        _console.WriteLine($"You can go to [{Colours.Highlight}]{currentLocation.LinkedLocations.Count}[/] places:");
         
         int i = 0;
         foreach (var location in currentLocation.LinkedLocations)
@@ -41,17 +48,17 @@ public static class LocationDisplayer
         var extraOption = currentLocation.GetExtraMenuOptions();
         if (extraOption != null)
         {
-            AnsiConsole.MarkupLine($"[{Colours.Command}]{extraOption}[/]");
+            _console.WriteLine($"[{Colours.Command}]{extraOption}[/]");
         }
     }
 
-    private static void ShowLocationSpecificCommands(Location currentLocation)
+    private void ShowLocationSpecificCommands(Location currentLocation)
     {
         // TODO: polymorphism? A bunch of lil classes like "ShowInnCommand"? idk.
         if (currentLocation is Inn inn)
         {
             var innCost = inn.InnCost;
-            AnsiConsole.MarkupLine($"It costs [{Colours.Highlight}]{innCost} gold[/] to stay at this inn for the night. Type [{Colours.Command}]S[/] to sleep.");
+            _console.WriteLine($"It costs [{Colours.Highlight}]{innCost} gold[/] to stay at this inn for the night. Type [{Colours.Command}]S[/] to sleep.");
         }
     }
 }
