@@ -9,7 +9,7 @@ namespace TextBlade.Platform.Windows.Audio;
 public class NAudioSoundPlayer : ISoundPlayer
 {
     internal const string SupportedAudioExtension = "ogg";
-    private const float VolumeMultiplier = 0.7f;
+    private const float VolumeMultiplier = 0.5f;
 
     private WaveOutEvent? _waveOut;
     private VorbisWaveReader? _reader;
