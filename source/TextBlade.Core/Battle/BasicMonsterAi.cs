@@ -13,17 +13,19 @@ public class BasicMonsterAi
         ArgumentNullException.ThrowIfNull(console);
         
         _console = console;
-        _party = party.Where(p => p.CurrentHealth > 0).ToList();
+        _party = party;
     }
     
     public void ProcessTurnFor(Monster monster)
     {
-        if (_party.Count == 0)
+        var validTargets = _party.Where(p => p.CurrentHealth > 0).ToList();
+        if (validTargets.Count == 0)
         {
             // Wiped out, nothing to do
+            return;
         }
 
-        var target = _party[Random.Shared.Next(0, _party.Count)];
+        var target = validTargets[Random.Shared.Next(0, validTargets.Count)];
 
         var damage = monster.Attack(target);
         var message = $"{monster.Name} attacks {target.Name} for [{Colours.Highlight}]{damage}[/] damage! ";

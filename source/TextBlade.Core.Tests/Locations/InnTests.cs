@@ -1,5 +1,7 @@
+using NSubstitute;
 using NUnit.Framework;
 using TextBlade.Core.Commands;
+using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Tests.Locations;
@@ -24,7 +26,7 @@ public class InnTests
         var inn = new Inn("The Inn of Fluffy Pillows", "An odd pillow-shaped white building", string.Empty);
         
         // Act
-        var actual = inn.GetCommandFor(input);
+        var actual = inn.GetCommandFor(Substitute.For<IConsole>(), input);
 
         // Assert
         Assert.That(actual, Is.InstanceOf<DoNothingCommand>());
@@ -39,7 +41,7 @@ public class InnTests
         var inn = new Inn("The Inn of Fluffy Minnows", "An odd fish-shaped white building", string.Empty);
         
         // Act
-        var actual = inn.GetCommandFor(s);
+        var actual = inn.GetCommandFor(Substitute.For<IConsole>(), s);
 
         // Assert
         Assert.That(actual, Is.InstanceOf<SleepAtInnCommand>());

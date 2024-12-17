@@ -1,5 +1,7 @@
+using NSubstitute;
 using NUnit.Framework;
 using TextBlade.Core.Commands;
+using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Tests.Locations;
@@ -14,7 +16,7 @@ public class LocationTests
         var location = new Location("A", "B");
 
         // Act
-        var actual = location.GetCommandFor("q");
+        var actual = location.GetCommandFor(Substitute.For<IConsole>(), "q");
 
         // Assert
         Assert.That(actual, Is.InstanceOf<DoNothingCommand>());

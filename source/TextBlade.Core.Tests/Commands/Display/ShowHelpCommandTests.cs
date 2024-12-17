@@ -26,7 +26,7 @@ public class ShowHelpCommandTests
 
         // Assert
         var expected = $"[{Colours.Command}]{expectedCommand}[/]".ToUpperInvariant();
-        var actual = console.LastMessage;
+        var actual = string.Join('\n', console.Messages);
         Assert.That(actual.ToUpperInvariant(), Does.Contain(expected));
     }
 }
