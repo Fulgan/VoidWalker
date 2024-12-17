@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using TextBlade.Core.Commands.Display;
 using TextBlade.Core.IO;
+using TextBlade.Core.Tests.Stubs;
 
 namespace TextBlade.Core.Tests.Commands.Display;
 
@@ -17,12 +18,15 @@ public class ShowHelpCommandTests
     [TestCase("quit")]
     public void Execute_ReturnsABunchOfCommands(string expectedCommand)
     {
-        // Arrange/Act
-        var actuals = new ShowHelpCommand().Execute(null, null);
+        // Arrange
+        var console = new ConsoleStub();
+        
+        // Act
+        new ShowHelpCommand(console).Execute(null, null);
 
         // Assert
         var expected = $"[{Colours.Command}]{expectedCommand}[/]".ToUpperInvariant();
-        var actual = actuals.Single(a => a.ToUpperInvariant().Contains(expected));
+        var actual = console.LastMessage;
         Assert.That(actual.ToUpperInvariant(), Does.Contain(expected));
     }
 }

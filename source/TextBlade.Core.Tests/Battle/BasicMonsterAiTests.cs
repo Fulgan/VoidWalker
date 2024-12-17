@@ -1,6 +1,9 @@
+using NSubstitute;
 using NUnit.Framework;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
+using TextBlade.Core.IO;
+using TextBlade.Core.Tests.Stubs;
 
 namespace TextBlade.Core.Tests.Battle;
 
@@ -17,17 +20,15 @@ public class BasicMonsterAiTests
             new Character("Target B", 0, 100, toughness: 7),
         };
 
-        var ai = new BasicMonsterAi(party);
+        var ai = new BasicMonsterAi(Substitute.For<IConsole>(), party);
 
         // Act.
-        string result = "";
         for (int i = 0; i < 10; i++)
         {
-            result = ai.ProcessTurnFor(new Monster("Attacker-Sama", 100, 15, 0));
+            ai.ProcessTurnFor(new Monster("Attacker-Sama", 100, 15, 0));
         }
 
         // Assert
-        Assert.That(result, Is.Empty);
         Assert.That(party[0].CurrentHealth, Is.EqualTo(0));
         Assert.That(party[1].CurrentHealth, Is.EqualTo(0));
     }
@@ -42,19 +43,16 @@ public class BasicMonsterAiTests
             new Character("Target B", 100, 100, toughness: 7),
         };
 
-        var ai = new BasicMonsterAi(party);
+        var ai = new BasicMonsterAi(Substitute.For<IConsole>(), party);
         var attacker = new Monster("Attacker-Sama", 100, 15, 0);
-
-        string result = "";
 
         // Act. Do it a few times. Because random is random.
         for (int i = 0; i < 10; i++)
         {
-            result = ai.ProcessTurnFor(attacker);
+            ai.ProcessTurnFor(attacker);
         }
 
         // Assert
-        Assert.That(result.Contains($"{attacker.Name} attacks"));
         Assert.That(party[0].CurrentHealth != party[0].TotalHealth);
         Assert.That(party[1].CurrentHealth != party[1].TotalHealth);
     }
@@ -69,13 +67,14 @@ public class BasicMonsterAiTests
             new Character(targetName, 1, 1, toughness: 7),
         };
 
-        var ai = new BasicMonsterAi(party);
+        var console = new ConsoleStub();
+        var ai = new BasicMonsterAi(console, party);
         var attacker = new Monster("Stone Monster", 100, 999, 999);
 
         // Act
-        var result = ai.ProcessTurnFor(attacker);
+        ai.ProcessTurnFor(attacker);
 
         // Assert
-        Assert.That(result, Does.Contain($"DIES"));
+        Assert.That(console.LastMessage, Does.Contain($"DIES"));
     }
 }

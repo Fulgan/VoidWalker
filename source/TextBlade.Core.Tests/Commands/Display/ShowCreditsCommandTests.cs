@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using TextBlade.Core.Commands.Display;
+using TextBlade.Core.Tests.Stubs;
 
 namespace TextBlade.Core.Tests.Commands.Display;
 
@@ -10,11 +11,12 @@ public class ShowCreditsCommandTests
     public void ShowCreditsCommand_ReturnsTextBladeMessage()
     {
         // Arrange
-        var command = new ShowCreditsCommand();
+        var console = new ConsoleStub();
+        var command = new ShowCreditsCommand(console);
         
         // Act
-        var actuals = command.Execute(null, null);
-        var actual = actuals.Single();
+        command.Execute(null, null);
+        var actual = console.LastMessage;
 
         // Assert
         Assert.That(actual, Does.Contain("TextBlade"));

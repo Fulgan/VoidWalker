@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands.Display;
+using TextBlade.Core.Tests.Stubs;
 
 namespace TextBlade.Core.Tests.Commands.Display;
 
@@ -17,14 +18,15 @@ public class ShowPartyStatusCommandTests
             new Character("Aisha", 110, 0, 0) { CurrentHealth = 103 },
         };
 
-        var command = new ShowPartyStatusCommand();
+        var console = new ConsoleStub();
+        var command = new ShowPartyStatusCommand(console);
 
         // Act
-        var actual = command.Execute(null, party);
+        command.Execute(null, party);
 
         // Assert
-        Assert.That(actual.Any(a => a.StartsWith("Party status")));
-        Assert.That(actual.Any(a => a.Contains("Bilal: 10/25 health")));
-        Assert.That(actual.Any(a => a.Contains("Aisha: 103/110 health")));
+        Assert.That(console.Messages.Any(a => a.StartsWith("Party status")));
+        Assert.That(console.Messages.Any(a => a.Contains("Bilal: 10/25 health")));
+        Assert.That(console.Messages.Any(a => a.Contains("Aisha: 103/110 health")));
     }
 }

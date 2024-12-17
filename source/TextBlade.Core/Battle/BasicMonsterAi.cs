@@ -10,6 +10,8 @@ public class BasicMonsterAi
 
     public BasicMonsterAi(IConsole console, List<Character> party)
     {
+        ArgumentNullException.ThrowIfNull(console);
+        
         _console = console;
         _party = party.Where(p => p.CurrentHealth > 0).ToList();
     }
