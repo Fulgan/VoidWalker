@@ -162,12 +162,12 @@ public class Dungeon : Location
         {
             if (currentFloorData.Any())
             {
-                // Monsters here
+                console.WriteLine("You can't descend while monsters are around!");
                 return new DoNothingCommand();
             }
             else if (_currentFloorNumber == _floorMonsters.Count - 1)
             {
-                // Already at the bottom
+                console.WriteLine("You're already at the bottom of the dungeon!");
                 return new DoNothingCommand();
             }
             else
@@ -179,25 +179,6 @@ public class Dungeon : Location
         }
 
         return new DoNothingCommand();
-    }
-
-    public string GetResponseFor(string input)
-    {
-        var currentFloorData = _floorMonsters[_currentFloorNumber];
-
-        if (input == "d" || input == "down" || input == "descend" || input == ">")
-        {
-            if (currentFloorData.Any())
-            {
-                return "You can't descend while monsters are around!";
-            }
-            else if (_currentFloorNumber == _floorMonsters.Count - 1)
-            {
-                return "You're already at the bottom of the dungeon!";
-            }
-        }
-
-        return string.Empty;
     }
 
     public bool IsCurrentFloorClear()

@@ -21,13 +21,7 @@ public class InputProcessor
         
         // It's some special command that the location handles. That doesn't change location.
         var command = currentLocation.GetCommandFor(_console, rawResponse);
-        var response = currentLocation.GetResponseFor(rawResponse);
 
-        if (response != string.Empty)
-        {
-            _console.WriteLine(response);
-        }
-        
         if (!(command is DoNothingCommand))
         {
             return command;

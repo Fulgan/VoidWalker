@@ -33,12 +33,6 @@ public class Location
         this.LocationClass = locationClass;
     }
 
-    public virtual string GetResponseFor(string input)
-    {
-        // The sibling of GetcommandFor. Returns the message.
-        return string.Empty;
-    }
-
     public virtual ICommand GetCommandFor(IConsole console, string input)
     {
         // Leave it up to sub-types, like inn, to handle their own input and return a command.
