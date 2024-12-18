@@ -1,5 +1,7 @@
+using NSubstitute;
 using NUnit.Framework;
 using TextBlade.Core.Characters;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Tests.Characters;
 
@@ -14,7 +16,7 @@ public class CharacterTests
         var c = new Character("Muhammad", 100, 10, 3);
 
         // Act
-        c.Defend();
+        c.Defend(Substitute.For<IConsole>());
 
         // Assert
         Assert.That(c.IsDefending, Is.True);
@@ -25,7 +27,7 @@ public class CharacterTests
     {
         // Arrange
         var c = new Character("Muhammad", 100, 10, 3);
-        c.Defend();
+        c.Defend(Substitute.For<IConsole>());
 
         // Act
         c.OnRoundComplete();

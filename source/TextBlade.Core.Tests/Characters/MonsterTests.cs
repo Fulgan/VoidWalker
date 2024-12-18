@@ -1,5 +1,7 @@
+using NSubstitute;
 using NUnit.Framework;
 using TextBlade.Core.Characters;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Tests.Characters;
 
@@ -62,7 +64,7 @@ public class MonsterTests
         // Arrange
         var monster = new Monster("Green Slime", 100, 10, 5);
         var target = new Character("Asad", 100, 100, toughness: 3);
-        target.Defend();
+        target.Defend(Substitute.For<IConsole>());
 
         var expectedDamage = monster.Strength - target.Toughness;
 
