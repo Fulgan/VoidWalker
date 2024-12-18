@@ -1,5 +1,3 @@
-using TextBlade.Core.Characters;
-using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands.Display;

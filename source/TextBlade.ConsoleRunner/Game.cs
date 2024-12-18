@@ -1,13 +1,10 @@
-﻿using NAudio.Wave.SampleProviders;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Spectre.Console;
 using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
 using TextBlade.Core.Game;
-using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 using TextBlade.Core.Services;
@@ -24,8 +21,6 @@ public class Game : IGame
     public static IGame Current { get; private set; } = null!;
     private const int AutoSaveIntervalMinutes = 1;
 
-    public Inventory Inventory => _saveData.Inventory;
-    
     private SaveData _saveData;
 
     private Location _currentLocation = null!;
