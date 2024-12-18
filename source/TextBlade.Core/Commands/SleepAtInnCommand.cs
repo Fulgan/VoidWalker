@@ -7,22 +7,17 @@ namespace TextBlade.Core.Commands;
 public class SleepAtInnCommand : ICommand
 {
     private readonly IConsole _console;
-
-    public SleepAtInnCommand(IConsole console)
-    {
-        _console = console;
-    }
-
     private readonly int _innCost = 0;
 
-    public SleepAtInnCommand(int innCost)
+    public SleepAtInnCommand(IConsole console, int innCost)
     {
+        _console = console;
         _innCost = innCost;
     }
 
     public void Execute(IGame game, List<Character> party)
     {
-        // Check if we have enough gold. Subtract if we do!
+        // Check if we have enough gold BEFORE THIS POINT. Subtract if we do!
 
         foreach (var character in party)
         {

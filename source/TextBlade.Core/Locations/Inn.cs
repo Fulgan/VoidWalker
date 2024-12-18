@@ -18,7 +18,7 @@ public class Inn : Location
     {
         if (input.ToLower() == "s")
         {
-            return new SleepAtInnCommand(this.InnCost);
+            return new SleepAtInnCommand(console, this.InnCost);
         }
 
         return new DoNothingCommand();
