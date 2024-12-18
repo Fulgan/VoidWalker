@@ -48,7 +48,7 @@ public class CharacterTurnProcessor
         {
             case 'a':
                 targets = [PickTargetMonster()];
-                Attack(character, targets.First() as Monster);
+                new AttackExecutor(_console).Attack(character, targets.First() as Monster);
                 break;
             case 'd':
                 character.Defend();
@@ -144,38 +144,5 @@ public class CharacterTurnProcessor
         _console.WriteLine("Pick a skill:");
         var skill = PickFromList(character.Skills);
         return skill;
-    }
-
-    // TODO: extract
-    private void Attack(Character character, Monster targetMonster)
-    {
-        ArgumentNullException.ThrowIfNull(targetMonster);
-
-        // Assume target number is legit
-        var message = new StringBuilder();
-        message.Append($"{character.Name} attacks {targetMonster.Name}! ");
-        
-        var damage = character.TotalStrength - targetMonster.Toughness;
-        
-        var characterWeapon = character.EquippedOn(Inv.ItemType.Weapon);
-        // TODO: DRY with SkillApplier
-        var effectiveMessage = "";
-        if (characterWeapon?.DamageType == targetMonster.Weakness)
-        {
-            effectiveMessage = "[#f80]Super effective![/]";
-
-            damage *= 2;
-        }
-
-        targetMonster.Damage(damage);
-        
-        var damageAmount = damage <= 0 ? "NO" : damage.ToString();
-        message.Append($"[{Colours.Highlight}]{damageAmount}[/] damage! {effectiveMessage}");
-        if (targetMonster.CurrentHealth <= 0)
-        {
-            message.Append($"{targetMonster.Name} DIES!");
-        }
-        
-        _console.WriteLine(message.ToString());
     }
 }
