@@ -15,7 +15,7 @@ public class BattleResultsApplier
 
     public void ApplyResultsIfBattle(ICommand command, Location currentLocation, SaveData saveData)
     {
-        // Kinda a special case for battle commands. And manual save.
+        // Kinda a special case for battle commands. And manual save. Do nothing here, logic is handled in Game.
         if (command is ManuallySaveCommand && currentLocation is Dungeon)
         {
             return;
@@ -41,6 +41,7 @@ public class BattleResultsApplier
             {
                 character.Revive();
             }
+            return;
         }
 
         var dungeon = currentLocation as Dungeon;

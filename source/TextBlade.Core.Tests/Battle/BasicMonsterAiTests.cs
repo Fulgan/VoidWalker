@@ -34,16 +34,20 @@ public class BasicMonsterAiTests
     }
 
     [Test]
-    public void ProcessTurnFor_AttacksARandomPartyMember()
+    public void ProcessTurnFor_AttacksARandomAlivePartyMember()
     {
         // Arrange
         var party = new List<Character>
         {
             new Character("Target A", 100, 100, toughness: 10),
             new Character("Target B", 100, 100, toughness: 7),
+            new Character("Dead Duck", 100, 100, toughness: 7) { CurrentHealth = 0 },
+            new Character("Dead Duck 2", 100, 100, toughness: 7) { CurrentHealth = 0 },
+            new Character("Dead Duck 3", 100, 100, toughness: 7) { CurrentHealth = 0 },
         };
 
-        var ai = new BasicMonsterAi(Substitute.For<IConsole>(), party);
+        var console = new ConsoleStub();
+        var ai = new BasicMonsterAi(console, party);
         var attacker = new Monster("Attacker-Sama", 100, 15, 0);
 
         // Act. Do it a few times. Because random is random.
@@ -55,10 +59,12 @@ public class BasicMonsterAiTests
         // Assert
         Assert.That(party[0].CurrentHealth != party[0].TotalHealth);
         Assert.That(party[1].CurrentHealth != party[1].TotalHealth);
+        // Didn't target our duckies
+        Assert.That(console.Messages.All(m => !m.Contains("Dead Duck")));
     }
 
     [Test]
-    public void ProcessTurnFor_NotifiesIfAPlayerDies()
+    public void ProcessTurnFor_LogsIfAPlayerDies()
     {
         // Arrange
         var targetName = "Glass Boi";
