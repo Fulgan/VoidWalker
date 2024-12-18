@@ -83,9 +83,10 @@ public class Character : Entity
         return base.OnRoundComplete();
     }
 
-    internal void Defend()
+    internal void Defend(IConsole console)
     {
         this.IsDefending = true;
+        console.WriteLine($"{Name} defends!");
     }
 
     public override string ToString()

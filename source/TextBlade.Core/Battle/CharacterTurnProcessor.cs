@@ -51,21 +51,11 @@ public class CharacterTurnProcessor
                 new AttackExecutor(_console).Attack(character, targets.First() as Monster);
                 break;
             case 'd':
-                character.Defend();
-                _console.WriteLine($"{character.Name} defends!");
+                character.Defend(_console);
                 break;
             case 's':
-                // Assumes you get back a valid skill: something you have SP for.
                 var skill = PickSkillFor(character);
-                if (character.CurrentSkillPoints < skill.Cost)
-                {
-                    _console.WriteLine("You don't have enough skill points for that!");
-                    // Recursion is risky, very risky ... hmm.
-                    ProcessTurnFor(character);
-                }
                 targets = PickTargetsFor(skill);
-                // Depending on the skill, the target is an instance of Character or Monster.
-                // For now, assume monster.
                 new SkillApplier(_console).Apply(character, skill, targets);
                 break;
             case 'i':
@@ -77,7 +67,7 @@ public class CharacterTurnProcessor
         }
     }
 
-    private IEnumerable<Entity> PickTargetsFor(Skill skill)
+    private IEnumerable<Entity>? PickTargetsFor(Skill skill)
     {
         switch (skill.Target)
         {
@@ -141,8 +131,16 @@ public class CharacterTurnProcessor
 
     private Skill PickSkillFor(Character character)
     {
-        _console.WriteLine("Pick a skill:");
+        _console.WriteLine("Pick a skill: ");
         var skill = PickFromList(character.Skills);
+        
+        if (character.CurrentSkillPoints < skill.Cost)
+        {
+            _console.WriteLine($"{character.Name} has {character.CurrentSkillPoints} skill points, which isn't enough for {skill.Name}.");
+            _console.WriteLine("Pick a skill: ");
+            skill = PickFromList(character.Skills);
+        }
+
         return skill;
     }
 }
