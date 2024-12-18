@@ -55,8 +55,8 @@ public class Equipment : Item
                 statSign = "+";
             }
             
-            stats.Append($"{stat.Key} {statSign}{stat.Value}");
+            stats.Append($"{stat.Key} {statSign}{stat.Value} ");
         }
-        return stats.ToString();
+        return stats.ToString().Trim();
     }
 }
