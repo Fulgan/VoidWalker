@@ -22,7 +22,7 @@ public class ShowHelpCommandTests
         var console = new ConsoleStub();
         
         // Act
-        new ShowHelpCommand(console).Execute(null, null);
+        new ShowHelpCommand(console).Execute(null);
 
         // Assert
         var expected = $"[{Colours.Command}]{expectedCommand}[/]".ToUpperInvariant();

@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands.Display;
+using TextBlade.Core.IO;
 using TextBlade.Core.Tests.Stubs;
 
 namespace TextBlade.Core.Tests.Commands.Display;
@@ -22,7 +23,7 @@ public class ShowPartyStatusCommandTests
         var command = new ShowPartyStatusCommand(console);
 
         // Act
-        command.Execute(null, party);
+        command.Execute(new SaveData() { Party = party});
 
         // Assert
         Assert.That(console.Messages.Any(a => a.StartsWith("Party status")));
