@@ -13,7 +13,7 @@ public class ShowCreditsCommand : ICommand
         _console = console;
     }
     
-    public void Execute(IGame game, List<Character> party)
+    public void Execute(SaveData saveData)
     {
         var creditsFilePath = Path.Join("Content", "Credits.txt");
         if (File.Exists(creditsFilePath))

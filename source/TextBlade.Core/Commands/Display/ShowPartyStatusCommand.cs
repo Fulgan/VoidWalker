@@ -13,11 +13,11 @@ public class ShowPartyStatusCommand : ICommand
         _console = console;
     }
 
-    public void Execute(IGame game, List<Character> party)
+    public void Execute(SaveData saveData)
     {
         _console.WriteLine("Party status:");
 
-        foreach (var member in party)
+        foreach (var member in saveData.Party)
         {
             var equipment = string.Join(", ", member.Equipment.Values.Select(e => $"{e.Name}: {e}"));
 

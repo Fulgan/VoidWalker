@@ -15,11 +15,10 @@ public class SleepAtInnCommand : ICommand
         _innCost = innCost;
     }
 
-    public void Execute(IGame game, List<Character> party)
+    public void Execute(SaveData saveData)
     {
         // Check if we have enough gold BEFORE THIS POINT. Subtract if we do!
-
-        foreach (var character in party)
+        foreach (var character in saveData.Party)
         {
             character.FullyHeal();
         }

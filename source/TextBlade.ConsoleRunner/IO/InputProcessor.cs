@@ -1,5 +1,6 @@
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
+using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
@@ -8,9 +9,14 @@ namespace TextBlade.ConsoleRunner.IO;
 public class InputProcessor
 {
     private readonly IConsole _console;
+    private readonly IGame _game;
 
-    public InputProcessor(IConsole console)
+    public InputProcessor(IGame game, IConsole console)
     {
+        ArgumentNullException.ThrowIfNull(game);
+        ArgumentNullException.ThrowIfNull(console);
+
+        _game = game;
         _console = console;
     }
 
@@ -39,7 +45,7 @@ public class InputProcessor
             }
 
             var destination = currentLocation.LinkedLocations[destinationOption - 1];
-            return new ChangeLocationCommand(destination.Id);
+            return new ChangeLocationCommand(_game, destination.Id);
         }
 
         // Nah, nah, it's not a destination, just a global command.

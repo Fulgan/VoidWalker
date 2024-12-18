@@ -24,7 +24,7 @@ public class ShowHelpCommand : ICommand
         { "credits", "Shows the credits" },
     };
 
-    public void Execute(IGame game, List<Character> party)
+    public void Execute(SaveData saveData)
     {
         var toReturn = new List<string>
         {

@@ -24,6 +24,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
     public bool IsVictory { get; private set; }
 
     private readonly List<Monster> _monsters = new();
+    private readonly IGame _game;
     private readonly IConsole _console;
 
     static TakeTurnsBattleCommand()
@@ -77,23 +78,23 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         }
     }
 
-    public void Execute(IGame game, List<Character> party)
+    public void Execute(SaveData saveData)
     {
         // Problem: we don't have access to AnsiConsole in this layer. Nor can we wait for the Game class
         // to process it, because it's an interactive battle. That ... sucks...
-        var isPartyWipedOut = () => party.TrueForAll(p => p.CurrentHealth <= 0);
+        var isPartyWipedOut = () => saveData.Party.TrueForAll(p => p.CurrentHealth <= 0);
         var areMonstersDefeated = () => _monsters.TrueForAll(m => m.CurrentHealth <= 0);
         var isBattleOver = () => isPartyWipedOut() || areMonstersDefeated();
-        var characterTurnProcessor = new CharacterTurnProcessor(game, _console, party, _monsters);
+        var characterTurnProcessor = new CharacterTurnProcessor(_console, saveData, _monsters);
 
         while (!isBattleOver())
         {
             var monstersStatus = string.Join(", ", _monsters.Select(m => $"{m.Name}: {m.CurrentHealth}/{m.TotalHealth} health"));
             _console.WriteLine($"You face: [{Colours.Highlight}]{monstersStatus}[/]");
-            var partyStatus = string.Join(", ", party);
+            var partyStatus = string.Join(", ", saveData.Party);
             _console.WriteLine($"Your party: [{Colours.Highlight}]{partyStatus}[/]");
 
-            foreach (var character in party)
+            foreach (var character in saveData.Party)
             {
                 if (character.CurrentHealth <= 0)
                 {
@@ -115,7 +116,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                     continue;
                 }
 
-                new BasicMonsterAi(_console, party).ProcessTurnFor(monster);
+                new BasicMonsterAi(_console, saveData.Party).ProcessTurnFor(monster);
             }
 
             foreach (var e in _monsters)
@@ -131,7 +132,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                 }
             }
 
-            foreach (var e in party)
+            foreach (var e in saveData.Party)
             {
                 if (e.CurrentHealth <= 0)
                 {

@@ -94,10 +94,10 @@ public class Game : IGame
                     _locationDisplayer.ShowLocation(_currentLocation);
                 }
 
-                var command = new InputProcessor(_console).PromptForAction(_currentLocation);
+                var command = new InputProcessor(this, _console).PromptForAction(_currentLocation);
                 previousLocation = _currentLocation;
 
-                command.Execute(this, _saveData.Party);
+                command.Execute(_saveData);
 
                 /// This area stinks: type-specific things...
                 new BattleResultsApplier(_console).ApplyResultsIfBattle(command, _currentLocation, _saveData);
@@ -150,7 +150,7 @@ public class Game : IGame
         {
             _saveData = SaveGameManager.LoadGame("default");
             GameSwitches.Switches = _saveData.Switches;
-            new ChangeLocationCommand(_saveData.CurrentLocationId).Execute(this, _saveData.Party);
+            new ChangeLocationCommand(this, _saveData.CurrentLocationId).Execute(_saveData);
 
             if (_saveData.LocationSpecificDataLocationId == _currentLocation.LocationId)
             {
@@ -167,7 +167,7 @@ public class Game : IGame
             _saveData.Inventory = new();
 
             var startLocationId = runner.GetStartingLocationId();
-            new ChangeLocationCommand(startLocationId).Execute(this, _saveData.Party);
+            new ChangeLocationCommand(this, startLocationId).Execute(_saveData);
             _console.WriteLine("New game started. For help, type \"help\"");
         }
     }

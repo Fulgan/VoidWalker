@@ -1,7 +1,5 @@
-using System.Text;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands.Display;
-using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Battle;
@@ -9,22 +7,20 @@ namespace TextBlade.Core.Battle;
 public class CharacterTurnProcessor
 {
     private readonly List<Monster> _monsters;
-    private readonly IGame _game;
+    private readonly SaveData _saveData;
     private readonly IConsole _console;
 
     private readonly List<Character> _party;
     private readonly char[] validInputs = ['a', 'i', 's', 'd'];
 
-    public CharacterTurnProcessor(IGame game, IConsole console, List<Character> party, List<Monster> monsters)
+    public CharacterTurnProcessor(IConsole console, SaveData saveData, List<Monster> monsters)
     {
-        ArgumentNullException.ThrowIfNull(game);
         ArgumentNullException.ThrowIfNull(console);
-        ArgumentNullException.ThrowIfNull(party);
+        ArgumentNullException.ThrowIfNull(saveData);
         ArgumentNullException.ThrowIfNull(monsters);
         
-        _game = game;
         _console = console;
-        _party = party;
+        _saveData = saveData;
         _monsters = monsters;
     }
 
@@ -59,7 +55,7 @@ public class CharacterTurnProcessor
                 new SkillApplier(_console).Apply(character, skill, targets);
                 break;
             case 'i':
-                new ShowInventoryCommand(_console, true).Execute(_game, _party);
+                new ShowInventoryCommand(_console, true).Execute(_saveData);
                 break;
             default:
                 _console.WriteLine("Invalid input!");

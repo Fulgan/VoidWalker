@@ -1,7 +1,5 @@
 using TextBlade.Core.Battle;
-using TextBlade.Core.Characters;
 using TextBlade.Core.Characters.PartyManagement;
-using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands.Display;
@@ -9,6 +7,7 @@ namespace TextBlade.Core.Commands.Display;
 public class ShowInventoryCommand : ICommand
 {
     private readonly IConsole _console;
+
     private readonly EquipmentEquipper _equipper;
     private readonly ItemUser _itemUser;
 
@@ -16,6 +15,8 @@ public class ShowInventoryCommand : ICommand
 
     public ShowInventoryCommand(IConsole console, bool isInBattle = false)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         _console = console;
         _equipper = new(console);
         _itemUser = new(console);
@@ -23,11 +24,11 @@ public class ShowInventoryCommand : ICommand
         _isInBattle = isInBattle;
     }
 
-    public void Execute(IGame game, List<Character> party)
+    public void Execute(SaveData saveData)
     {
         _console.WriteLine("Inventory:");
 
-        var inventory = game.Inventory;
+        var inventory = saveData.Inventory;
         var items = inventory.ItemsInOrder;
         if (_isInBattle)
         {
@@ -73,10 +74,10 @@ public class ShowInventoryCommand : ICommand
             case Inv.ItemType.Helmet:
             case Inv.ItemType.Armour:
             case Inv.ItemType.Weapon:
-                _equipper.EquipIfRequested(itemData, inventory, party);
+                _equipper.EquipIfRequested(itemData, inventory, saveData.Party);
                 break;
             case Inv.ItemType.Consumable:
-                _itemUser.UseIfRequested(itemData, inventory, party);
+                _itemUser.UseIfRequested(itemData, inventory, saveData.Party);
                 break;
         }
     }

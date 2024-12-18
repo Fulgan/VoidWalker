@@ -1,5 +1,3 @@
-using TextBlade.Core.Characters;
-using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands;
@@ -13,7 +11,7 @@ public class QuitGameCommand : ICommand
         _console = console;
     }
 
-    public void Execute(IGame game, List<Character> party)
+    public void Execute(SaveData saveData)
     {
         _console.WriteLine($"Quit the game? Are you sure? [{Colours.Command}]y[/]/[{Colours.Command}]n[/]");
         var input = _console.ReadKey();

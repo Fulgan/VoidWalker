@@ -1,5 +1,5 @@
 using TextBlade.Core.Characters;
-using TextBlade.Core.Game;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands;
 
@@ -9,7 +9,7 @@ namespace TextBlade.Core.Commands;
 /// </summary>
 public class ManuallySaveCommand : ICommand
 {
-    public void Execute(IGame game, List<Character> party)
+    public void Execute(SaveData saveData)
     {
         // This stinks.
     }
