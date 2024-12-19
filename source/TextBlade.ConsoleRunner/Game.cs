@@ -47,7 +47,7 @@ public class Game : IGame
     {
         Location.CurrentSaveData = _saveData;
 
-        if (location.LocationId == _saveData.CurrentLocationId)
+        if (location.LocationId == _saveData.LocationSpecificDataLocationId)
         {
             location.SetStateBasedOnCustomSaveData(_saveData.LocationSpecificData);
         }
