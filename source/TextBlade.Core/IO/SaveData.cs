@@ -16,6 +16,6 @@ public class SaveData
     // Who owns the location specific data? e.g. the dungeon, but you're in town right now
     public string LocationSpecificDataLocationId { get; set; }
 
-    // For user code, i.e. ggame-specific things
+    // For user code, i.e. game-specific things
     public Dictionary<string, object>? GameSpecificData { get; set; }
 }

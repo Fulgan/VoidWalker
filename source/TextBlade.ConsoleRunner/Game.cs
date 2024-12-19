@@ -48,11 +48,11 @@ public class Game : IGame
         // Only the freshest data here: rehydrate your current location state.
         // This is for when you leave dungeon, go to town, then back to the dungeon.
         // Fixes a bug where: clear a dungeon floor, go to town, go back to the dungeon real quick.
-        // You saved, yes, but t_saveData is stale.
-        if (SaveGameManager.HasSave("default"))
-        {
-            _saveData = SaveGameManager.LoadGame("default");
-        }
+        // // You saved, yes, but _saveData is stale.
+        // if (SaveGameManager.HasSave("default"))
+        // {
+        //     _saveData = SaveGameManager.LoadGame("default");
+        // }
         
         Location.CurrentSaveData = _saveData;
 
