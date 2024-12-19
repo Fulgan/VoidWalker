@@ -10,7 +10,6 @@ public class CharacterTurnProcessor
     private readonly SaveData _saveData;
     private readonly IConsole _console;
 
-    private readonly List<Character> _party;
     private readonly char[] validInputs = ['a', 'i', 's', 'd'];
 
     public CharacterTurnProcessor(IConsole console, SaveData saveData, List<Monster> monsters)
@@ -78,7 +77,7 @@ public class CharacterTurnProcessor
             case "Character":
                 return [PickTargetCharacter()];
             case "Party":
-                return _party;
+                return _saveData.Party;
             default:
                 throw new InvalidOperationException($"TextBlade doesn't know how to pick a target of type: {skill.Target ?? "(null)"}");
         }       
@@ -90,7 +89,7 @@ public class CharacterTurnProcessor
     /// <returns></returns>
     private Character PickTargetCharacter()
     {
-        var validTargets = _party;
+        var validTargets = _saveData.Party;
         return PickFromList(validTargets);
     }
 
