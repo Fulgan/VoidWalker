@@ -124,7 +124,25 @@ public class Game : IGame
 
     private void SaveGame()
     {
-        SaveGameManager.SaveGame(SaveGameManager.CurrentGameSlot, _currentLocation.LocationId, _saveData.Party, _saveData.Inventory, _saveData.Gold, _currentLocation.LocationId, _currentLocation.GetCustomSaveData());
+        // Save location-specific data, favouring the current location's specific data. e.g. if you have save data from dungeon A, but are now in dungeon B,
+        // you save dungeon B's data.  But if the current location data is null, albeit previously saved, preserve that data. (e.g. if you're now in town,
+        // which saves nothing, but were previously in a dungeon, preserve that dungeon's data.)
+        var locationSpecificData = _currentLocation.GetCustomSaveData();
+        var locationSpecificDataLocationId = _currentLocation.LocationId;
+        
+        if (locationSpecificData == null)
+        {
+            locationSpecificData = _saveData.LocationSpecificData;
+            locationSpecificDataLocationId = _saveData.LocationSpecificDataLocationId;
+        }
+
+        // Update SaveData, so we don't end up with a mismatch between in-game and what's on disk
+        _saveData.LocationSpecificData = locationSpecificData;
+        _saveData.LocationSpecificDataLocationId = locationSpecificDataLocationId;
+
+        SaveGameManager.SaveGame(SaveGameManager.CurrentGameSlot, _currentLocation.LocationId, _saveData.Party, _saveData.Inventory, _saveData.Gold, locationSpecificDataLocationId, locationSpecificData);
+        _lastSaveOn = DateTime.UtcNow;
+
         _console.WriteLine("[green]Game saved.[/]");
     }
 
