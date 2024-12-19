@@ -129,7 +129,7 @@ public class CharacterTurnProcessor
         _console.WriteLine("Pick a skill: ");
         var skill = PickFromList(character.Skills);
         
-        if (character.CurrentSkillPoints < skill.Cost)
+        while (character.CurrentSkillPoints < skill.Cost)
         {
             _console.WriteLine($"{character.Name} has {character.CurrentSkillPoints} skill points, which isn't enough for {skill.Name}.");
             _console.WriteLine("Pick a skill: ");
