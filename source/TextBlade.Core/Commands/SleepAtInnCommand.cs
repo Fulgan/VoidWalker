@@ -1,5 +1,3 @@
-using TextBlade.Core.Characters;
-using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands;
@@ -7,7 +5,7 @@ namespace TextBlade.Core.Commands;
 public class SleepAtInnCommand : ICommand
 {
     private readonly IConsole _console;
-    private readonly int _innCost = 0;
+    private readonly int _innCost;
 
     public SleepAtInnCommand(IConsole console, int innCost)
     {
@@ -17,7 +15,14 @@ public class SleepAtInnCommand : ICommand
 
     public void Execute(SaveData saveData)
     {
-        // Check if we have enough gold BEFORE THIS POINT. Subtract if we do!
+        if (saveData.Gold < _innCost)
+        {
+            _console.WriteLine("You don't have enough gold!");
+            return;
+        }
+
+        saveData.Gold -= _innCost;
+
         foreach (var character in saveData.Party)
         {
             character.FullyHeal();
