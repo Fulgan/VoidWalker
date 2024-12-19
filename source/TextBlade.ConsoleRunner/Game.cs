@@ -45,15 +45,6 @@ public class Game : IGame
     /// </summary>
     public void SetLocation(Location location)
     {
-        // Only the freshest data here: rehydrate your current location state.
-        // This is for when you leave dungeon, go to town, then back to the dungeon.
-        // Fixes a bug where: clear a dungeon floor, go to town, go back to the dungeon real quick.
-        // // You saved, yes, but _saveData is stale.
-        // if (SaveGameManager.HasSave("default"))
-        // {
-        //     _saveData = SaveGameManager.LoadGame("default");
-        // }
-        
         Location.CurrentSaveData = _saveData;
 
         if (location.LocationId == _saveData.CurrentLocationId)
@@ -133,7 +124,7 @@ public class Game : IGame
 
     private void SaveGame()
     {
-        SaveGameManager.SaveGame("default", _currentLocation.LocationId, _saveData.Party, _saveData.Inventory, _saveData.Gold, _currentLocation.LocationId, _currentLocation.GetCustomSaveData());
+        SaveGameManager.SaveGame(SaveGameManager.CurrentGameSlot, _currentLocation.LocationId, _saveData.Party, _saveData.Inventory, _saveData.Gold, _currentLocation.LocationId, _currentLocation.GetCustomSaveData());
         _console.WriteLine("[green]Game saved.[/]");
     }
 
@@ -141,31 +132,43 @@ public class Game : IGame
     {
         var gameJson = ShowGameIntro();
 
-        if (SaveGameManager.HasSave("default"))
+        if (SaveGameManager.HasSave(SaveGameManager.CurrentGameSlot))
         {
-            _saveData = SaveGameManager.LoadGame("default");
-            GameSwitches.Switches = _saveData.Switches;
-            new ChangeLocationCommand(this, _saveData.CurrentLocationId).Execute(_saveData);
-
-            if (_saveData.LocationSpecificDataLocationId == _currentLocation.LocationId)
-            {
-                _currentLocation.SetStateBasedOnCustomSaveData(_saveData.LocationSpecificData);
-            }
-
-            _console.WriteLine("Save game loaded. For help, type \"help\"");
+            LoadGame();
         }
         else
         {
-            var runner = new NewGameRunner(gameJson);
-            _saveData = new();
-            _saveData.Party = runner.CreateParty();
-            _saveData.Inventory = new();
-
-            var startLocationId = runner.GetStartingLocationId();
-            new ChangeLocationCommand(this, startLocationId).Execute(_saveData);
-            _console.WriteLine("New game started. For help, type \"help\"");
+            StartNewGame(gameJson);
         }
     }
+
+    private void StartNewGame(JObject gameJson)
+    {
+        var runner = new NewGameRunner(gameJson);
+        _saveData = new();
+        _saveData.Party = runner.CreateParty();
+        _saveData.Inventory = new();
+
+        var startLocationId = runner.GetStartingLocationId();
+        new ChangeLocationCommand(this, startLocationId).Execute(_saveData);
+        _console.WriteLine("New game started. For help, type \"help\"");
+    }
+
+
+    private void LoadGame()
+    {
+        _saveData = SaveGameManager.LoadGame(SaveGameManager.CurrentGameSlot);
+        GameSwitches.Switches = _saveData.Switches;
+        new ChangeLocationCommand(this, _saveData.CurrentLocationId).Execute(_saveData);
+
+        if (_saveData.LocationSpecificDataLocationId == _currentLocation.LocationId)
+        {
+            _currentLocation.SetStateBasedOnCustomSaveData(_saveData.LocationSpecificData);
+        }
+
+        _console.WriteLine("Save game loaded. For help, type \"help\"");
+    }
+
 
     private JObject ShowGameIntro()
     {

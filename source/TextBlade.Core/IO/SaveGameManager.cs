@@ -7,6 +7,8 @@ namespace TextBlade.Core.IO;
 
 public static class SaveGameManager
 {
+    public const string CurrentGameSlot = "default";
+
     private const string SaveFolder = "SaveData";
     private const string SaveFileExtension = ".save";
 

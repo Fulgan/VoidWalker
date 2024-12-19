@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
-using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands;
@@ -14,17 +13,17 @@ namespace TextBlade.Core.Commands;
 /// </summary>
 public class TakeTurnsBattleCommand : ICommand, IBattleCommand
 {
+    private static JObject s_allMonstersData; // name => stats
+ 
     public const string VictoryMessage = "Victory! You gained {0} gold and {1} experience points!";
     public const string DefeatMessage = "Defeat!";
     private const string CommentsInJsonRegex = @"(//.*)";
-    private static JObject s_allMonstersData; // name => stats
 
     public int TotalGold => _monsters.Sum(m => m.Gold);
     public int TotalExperiencePoints => _monsters.Sum(m => m.ExperiencePoints);
     public bool IsVictory { get; private set; }
 
     private readonly List<Monster> _monsters = new();
-    private readonly IGame _game;
     private readonly IConsole _console;
 
     static TakeTurnsBattleCommand()
@@ -80,8 +79,6 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
 
     public void Execute(SaveData saveData)
     {
-        // Problem: we don't have access to AnsiConsole in this layer. Nor can we wait for the Game class
-        // to process it, because it's an interactive battle. That ... sucks...
         var isPartyWipedOut = () => saveData.Party.TrueForAll(p => p.CurrentHealth <= 0);
         var areMonstersDefeated = () => _monsters.TrueForAll(m => m.CurrentHealth <= 0);
         var isBattleOver = () => isPartyWipedOut() || areMonstersDefeated();
