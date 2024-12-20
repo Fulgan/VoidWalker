@@ -21,9 +21,9 @@ public class Game : IGame
     public static IGame Current { get; private set; } = null!;
     private const int AutoSaveIntervalMinutes = 1;
 
-    private SaveData _saveData;
+    protected SaveData _saveData;
+    protected Location _currentLocation = null!;
 
-    private Location _currentLocation = null!;
     private readonly bool _isRunning = true;
     private readonly LocationDisplayer _locationDisplayer;
     private DateTime _lastSaveOn = DateTime.UtcNow;
@@ -122,7 +122,7 @@ public class Game : IGame
         }
     }
 
-    private void SaveGame()
+    protected void SaveGame()
     {
         // Save location-specific data, favouring the current location's specific data. e.g. if you have save data from dungeon A, but are now in dungeon B,
         // you save dungeon B's data.  But if the current location data is null, albeit previously saved, preserve that data. (e.g. if you're now in town,

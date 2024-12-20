@@ -7,10 +7,10 @@ namespace TextBlade.Core.IO;
 
 public static class SaveGameManager
 {
-    public const string CurrentGameSlot = "default";
+    public static string CurrentGameSlot = "default";
 
-    private const string SaveFolder = "SaveData";
-    private const string SaveFileExtension = ".save";
+    public const string SaveFolder = "SaveData";
+    public const string SaveFileExtension = ".save";
 
     public static void SaveGame(string saveSlot, string currentLocationId, List<Character> party, Inventory inventory, int gold, string? locationSpecificDataLocationId = null, Dictionary<string, object>? locationSpecificData = null)
     {
