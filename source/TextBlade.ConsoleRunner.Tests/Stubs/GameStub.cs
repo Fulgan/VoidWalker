@@ -13,7 +13,8 @@ public class GameStub : Game
 
     new public void SaveGame() => base.SaveGame();
 
-    public Location CurrentLocation { 
+    public Location CurrentLocation
+    { 
         get { return _currentLocation; }
         set { _currentLocation = value; }
     }
