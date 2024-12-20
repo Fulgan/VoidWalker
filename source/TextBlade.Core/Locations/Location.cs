@@ -24,7 +24,7 @@ public class Location
     public string? LocationClass { get; set; }
 
     public List<LocationLink> LinkedLocations { get; set; } = new();
-    public string LocationId { get; internal set; } = null!; // Saved so we know our location
+    public string LocationId { get; set; } = null!; // Saved so we know our location; public for tests.
     
     public Location(string name, string description, string? locationClass = null)
     {

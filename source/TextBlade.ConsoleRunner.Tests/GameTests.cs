@@ -23,7 +23,7 @@ public class GameTests
     {
         // Arrange
         var game = CreateGameStub();
-        var dungeon = new Dungeon("Dinky Dungeon", "It's ... dinky ...", 3, ["Black Mold", "White Mold"], "Mulder");
+        var dungeon = new Dungeon("Dinky Dungeon", "It's ... dinky ...", 3, ["Black Mold", "White Mold"], "Mulder") { LocationId = "DinkyDungeon.json"};
         game.CurrentLocation = dungeon;
 
         // Act
@@ -34,6 +34,13 @@ public class GameTests
         var actual = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(saveFileName));
         Assert.That(actual.LocationSpecificData, Is.Not.Null);
         Assert.That(actual.LocationSpecificData.Keys, Does.Contain("CurrentFloor"));
+        Assert.That(actual.LocationSpecificDataLocationId, Is.EqualTo(dungeon.LocationId));
+    }
+
+    [Test]
+    public void SaveGame_UsesExistingSaveData_IfCurrentLocationHasNone()
+    {
+
     }
 
     public GameStub CreateGameStub()
