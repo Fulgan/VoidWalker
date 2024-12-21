@@ -1,4 +1,3 @@
-using System.Text;
 using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
 
@@ -27,7 +26,8 @@ public class SkillApplier
 
     private void ApplyDamage(Character user, Skill skill, Entity target)
     {
-        /////// TODO: REFACTOR so this method is not polymorphic
+        /////// TODO: REFACTOR so this method is not polymorphic: healing *and* damage.
+        
         ArgumentNullException.ThrowIfNull(target);
         float damage = 0;
         var hitWeakness = false;
@@ -45,7 +45,7 @@ public class SkillApplier
         else if (target is Character)
         {
             // If you're healing, heal for 2x
-            damage = (int)Math.Ceiling(user.Special * skill.DamageMultiplier * 2);
+            damage = (int)Math.Ceiling(user.Special * -skill.DamageMultiplier * 2);
         }
 
         var roundedDamage = (int)damage;

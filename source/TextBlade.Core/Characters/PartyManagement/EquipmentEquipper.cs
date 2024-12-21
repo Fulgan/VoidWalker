@@ -24,7 +24,7 @@ public class EquipmentEquipper
 
         _console.WriteLine("Equip for who? Or press 0 or b to cancel.");
 
-        var input = 0;
+        int input;
         var rawInput = _console.ReadKey();
         if (rawInput == '0' || rawInput == 'b' || !int.TryParse(rawInput.ToString(), out input))
         {

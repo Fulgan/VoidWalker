@@ -2,7 +2,6 @@ using NSubstitute;
 using NUnit.Framework;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Commands;
-using TextBlade.Core.Commands.Display;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
