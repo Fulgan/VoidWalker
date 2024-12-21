@@ -13,7 +13,7 @@ public class ItemUser
         _console = console;
     }
 
-    internal void UseIfRequested(Item itemData, Inventory inventory, List<Character> party)
+    internal bool UseIfRequested(Item itemData, Inventory inventory, List<Character> party)
     {
         Consumable consumable = ValidateArguments(itemData, inventory, party);
         
@@ -35,17 +35,20 @@ public class ItemUser
             _console.WriteLine($"    {i}: {member}");
         }
 
-        _console.WriteLine("Use on who? Or press 0 to cancel.");
+        _console.WriteLine("Use on who? Or press 0 or b to cancel.");
 
         int input;
-        if (!int.TryParse(_console.ReadKey().ToString(), out input))
+        var rawInput = _console.ReadKey();
+        if (rawInput == '0' || rawInput == 'b' || !int.TryParse(rawInput.ToString(), out input))
         {
             _console.WriteLine("Cancelling.");
+            return false;
         }
 
         if (input <= 0 || input > party.Count)
         {
             _console.WriteLine("Invalid number, cancelling.");
+            return false;
         }
 
         var partyMember = party[input - 1];
@@ -55,6 +58,7 @@ public class ItemUser
 
         inventory.Remove(consumable.Name);
         _console.WriteLine("Healed.");
+        return true;
     }
 
     private Consumable ValidateArguments(Item itemData, Inventory inventory, List<Character> party)

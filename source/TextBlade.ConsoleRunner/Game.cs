@@ -83,7 +83,11 @@ public class Game : IGame
                 var command = new InputProcessor(this, _console).PromptForAction(_currentLocation);
                 previousLocation = _currentLocation;
 
-                command.Execute(_saveData);
+                var isExecuted = command.Execute(_saveData);
+                if (!isExecuted)
+                {
+                    continue;
+                }
 
                 /// This area stinks: type-specific things...
                 new BattleResultsApplier(_console).ApplyResultsIfBattle(command, _currentLocation, _saveData);

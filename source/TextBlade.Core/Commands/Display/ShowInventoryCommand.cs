@@ -74,11 +74,9 @@ public class ShowInventoryCommand : ICommand
             case Inv.ItemType.Helmet:
             case Inv.ItemType.Armour:
             case Inv.ItemType.Weapon:
-                _equipper.EquipIfRequested(itemData, inventory, saveData.Party);
-                break;
+                return _equipper.EquipIfRequested(itemData, inventory, saveData.Party);
             case Inv.ItemType.Consumable:
-                _itemUser.UseIfRequested(itemData, inventory, saveData.Party);
-                break;
+                return _itemUser.UseIfRequested(itemData, inventory, saveData.Party);
         }
 
         return true;

@@ -103,7 +103,11 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                     continue;
                 }
 
-                characterTurnProcessor.ProcessTurnFor(character);
+                var isProcessed = false;
+                while (!isProcessed)
+                {
+                    isProcessed = characterTurnProcessor.ProcessTurnFor(character);
+                }
             }
 
             foreach (var monster in _monsters)

@@ -12,7 +12,7 @@ public class EquipmentEquipper
         _console = console;
     }
 
-    internal void EquipIfRequested(Item itemData, Inventory inventory, List<Character> party)
+    internal bool EquipIfRequested(Item itemData, Inventory inventory, List<Character> party)
     {
         Equipment equipment = ValidateArguments(itemData, inventory, party);
 
@@ -22,19 +22,20 @@ public class EquipmentEquipper
             _console.WriteLine(message);
         }
 
-        _console.WriteLine("Equip for who? Or press 0 to cancel.");
+        _console.WriteLine("Equip for who? Or press 0 or b to cancel.");
 
         var input = 0;
-        if (!int.TryParse(_console.ReadKey().ToString(), out input))
+        var rawInput = _console.ReadKey();
+        if (rawInput == '0' || rawInput == 'b' || !int.TryParse(rawInput.ToString(), out input))
         {
             _console.WriteLine("Cancelling.");
-            return;
+            return false;
         }
 
         if (input <= 0 || input > party.Count)
         {
             _console.WriteLine("Invalid number, cancelling.");
-            return;
+            return false;
         }
 
         var partyMember = party[input - 1];
@@ -50,6 +51,7 @@ public class EquipmentEquipper
         partyMember.Equipment[itemData.ItemType] = equipment;
         inventory.Remove(equipment.Name);
         _console.WriteLine(equipMessage);
+        return true;
     }
 
     private Equipment ValidateArguments(Item itemData, Inventory inventory, List<Character> party)

@@ -23,7 +23,7 @@ public class CharacterTurnProcessor
         _monsters = monsters;
     }
 
-    internal void ProcessTurnFor(Character character)
+    internal bool ProcessTurnFor(Character character)
     {
         char input = ' ';
 
@@ -42,24 +42,43 @@ public class CharacterTurnProcessor
         switch(input)
         {
             case 'a':
-                targets = [PickTargetMonster()];
-                new AttackExecutor(_console).Attack(character, targets.First() as Monster);
+                var target = PickTargetMonster();
+                
+                if (target == null)
+                {
+                    return false;
+                }
+                
+                new AttackExecutor(_console).Attack(character, target as Monster);
                 break;
             case 'd':
                 character.Defend(_console);
                 break;
             case 's':
                 var skill = PickSkillFor(character);
+                if (skill == null)
+                {
+                    return false;
+                }
+
                 targets = PickTargetsFor(skill);
+                
+                if (targets == null)
+                {
+                    return false;
+                }
+
                 new SkillApplier(_console).Apply(character, skill, targets);
                 break;
             case 'i':
-                new ShowInventoryCommand(_console, true).Execute(_saveData);
-                break;
+                var command = new ShowInventoryCommand(_console, true);
+                return command.Execute(_saveData);
             default:
                 _console.WriteLine("Invalid input!");
                 break;
         }
+
+        return true;
     }
 
     private IEnumerable<Entity>? PickTargetsFor(Skill skill)
@@ -71,11 +90,13 @@ public class CharacterTurnProcessor
             case "Single":
             case "Enemy":
             case "Monster": // TODO: it's Enemy now, will switch
-                return [PickTargetMonster()];
+                var monster = PickTargetMonster();
+                return monster != null ? [monster] : null;
             case "All":
                 return _monsters.Where(m => m.CurrentHealth > 0);
             case "Character":
-                return [PickTargetCharacter()];
+                var character = PickTargetCharacter();
+                return character != null ? [character] : null;
             case "Party":
                 return _saveData.Party;
             default:
@@ -87,13 +108,13 @@ public class CharacterTurnProcessor
     /// Lets the player pick from any character, dead or alive.
     /// </summary>
     /// <returns></returns>
-    private Character PickTargetCharacter()
+    private Character? PickTargetCharacter()
     {
         var validTargets = _saveData.Party;
         return PickFromList(validTargets);
     }
 
-    private Entity PickTargetMonster()
+    private Entity? PickTargetMonster()
     {
         var validTargets = _monsters.Where(m => m.CurrentHealth > 0);
         if (!validTargets.Any())
@@ -107,7 +128,7 @@ public class CharacterTurnProcessor
 
     private T PickFromList<T>(IEnumerable<T> items)
     {
-        _console.WriteLine("Pick a target:");
+        _console.WriteLine("Pick a target, or 0 or b to cancel:");
 
         for (int i = 0; i < items.Count(); i++)
         {
@@ -115,21 +136,42 @@ public class CharacterTurnProcessor
             _console.WriteLine($"    {i + 1}: {item}");
         }
 
-        int target;
-        while (!int.TryParse(_console.ReadKey().ToString(), out target) || target == 0 || target > items.Count())
-        {
-            _console.WriteLine($"That's not a valid number! Enter a number from 1 to {items.Count()}: ");
+        var target = 0;
+        while (target == 0)
+        {        
+            var rawInput = _console.ReadKey();
+            if (rawInput == '0' || rawInput == 'b')
+            {
+                _console.WriteLine($"[{Colours.Cancel}]Cancelling.[/]");
+                return default;
+            }
+
+            if (!int.TryParse(rawInput.ToString(), out target))
+            {
+                _console.WriteLine("That's not a valid number.");
+            }
+
+            if (target < 1 || target > items.Count())
+            {
+                _console.WriteLine($"Please enter a number between {1} and {items.Count()}.");
+                target = 0;
+             }
         }
 
         return items.ElementAt(target - 1);
     }
 
-    private Skill PickSkillFor(Character character)
+    private Skill? PickSkillFor(Character character)
     {
         _console.WriteLine("Pick a skill: ");
         var skill = PickFromList(character.Skills);
+        if (skill == null)
+        {
+            // Cancelling
+            return null;
+        }
         
-        while (character.CurrentSkillPoints < skill.Cost)
+        while (skill != null && character.CurrentSkillPoints < skill.Cost)
         {
             _console.WriteLine($"{character.Name} has {character.CurrentSkillPoints} skill points, which isn't enough for {skill.Name}.");
             _console.WriteLine("Pick a skill: ");
