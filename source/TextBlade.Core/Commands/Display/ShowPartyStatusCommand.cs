@@ -11,7 +11,7 @@ public class ShowPartyStatusCommand : ICommand
         _console = console;
     }
 
-    public void Execute(SaveData saveData)
+    public bool Execute(SaveData saveData)
     {
         _console.WriteLine("Party status:");
 
@@ -22,5 +22,7 @@ public class ShowPartyStatusCommand : ICommand
             _console.WriteLine($"    {member}");
             _console.WriteLine($"        Equipment: {(string.IsNullOrWhiteSpace(equipment) ? "nothing" : equipment)}");
         }
+
+        return true;
     }
 }

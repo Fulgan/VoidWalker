@@ -6,6 +6,7 @@ public interface ICommand
 {
     /// <summary>
     /// Execute a command. Passes in the latest save data.
+    /// Returns true if executed, false if not (e.g. user cancelled).
     /// </summary>
-    public void Execute(SaveData saveData);
+    public bool Execute(SaveData saveData);
 }

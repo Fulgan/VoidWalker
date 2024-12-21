@@ -24,7 +24,7 @@ public class ShowInventoryCommand : ICommand
         _isInBattle = isInBattle;
     }
 
-    public void Execute(SaveData saveData)
+    public bool Execute(SaveData saveData)
     {
         _console.WriteLine("Inventory:");
 
@@ -52,7 +52,7 @@ public class ShowInventoryCommand : ICommand
             if (rawInput == '0' || rawInput == 'b')
             {
                 _console.WriteLine($"[{Colours.Cancel}]Cancelling.[/]");
-                return;
+                return false;
             }
 
             if (!int.TryParse(rawInput.ToString(), out index))
@@ -80,5 +80,7 @@ public class ShowInventoryCommand : ICommand
                 _itemUser.UseIfRequested(itemData, inventory, saveData.Party);
                 break;
         }
+
+        return true;
     }
 }

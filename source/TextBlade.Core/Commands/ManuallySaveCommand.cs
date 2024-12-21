@@ -1,4 +1,3 @@
-using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands;
@@ -9,8 +8,9 @@ namespace TextBlade.Core.Commands;
 /// </summary>
 public class ManuallySaveCommand : ICommand
 {
-    public void Execute(SaveData saveData)
+    public bool Execute(SaveData saveData)
     {
         // This stinks.
+        return true;
     }
 }

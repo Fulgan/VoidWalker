@@ -11,7 +11,7 @@ public class QuitGameCommand : ICommand
         _console = console;
     }
 
-    public void Execute(SaveData saveData)
+    public bool Execute(SaveData saveData)
     {
         _console.WriteLine($"Quit the game? Are you sure? [{Colours.Command}]y[/]/[{Colours.Command}]n[/]");
         var input = _console.ReadKey();
@@ -19,10 +19,11 @@ public class QuitGameCommand : ICommand
         if (input != 'y')
         {
             _console.WriteLine("Cancelling ...");
-            return;
+            return false;
         }
 
         _console.WriteLine("Bye!");
         Environment.Exit(0);
+        return true; // makes compiler go brrr
     }
 }

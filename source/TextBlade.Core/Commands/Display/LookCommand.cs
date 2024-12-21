@@ -8,8 +8,9 @@ namespace TextBlade.Core.Commands.Display;
 /// </summary>
 public class LookCommand : ICommand
 {
-    public void Execute(SaveData saveData)
+    public bool Execute(SaveData saveData)
     {
         // This stinks.
+        return true;
     }
 }

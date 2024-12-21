@@ -13,12 +13,12 @@ public class SleepAtInnCommand : ICommand
         _innCost = innCost;
     }
 
-    public void Execute(SaveData saveData)
+    public bool Execute(SaveData saveData)
     {
         if (saveData.Gold < _innCost)
         {
             _console.WriteLine("You don't have enough gold!");
-            return;
+            return false;
         }
 
         saveData.Gold -= _innCost;
@@ -29,5 +29,6 @@ public class SleepAtInnCommand : ICommand
         }
 
         _console.WriteLine($"You sleep at the inn. All party members have recovered to [{Colours.Highlight}]full health[/]!");
+        return true;
     }
 }

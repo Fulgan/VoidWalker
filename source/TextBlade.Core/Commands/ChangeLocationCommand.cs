@@ -27,10 +27,11 @@ public class ChangeLocationCommand : ICommand
         _locationPath = locationPath;
     }
 
-    public void Execute(SaveData saveData)
+    public bool Execute(SaveData saveData)
     {
         var locationData = Serializer.Deserialize<Location>(File.ReadAllText(_locationPath));
         locationData.LocationId = _locationId;
         _game.SetLocation(locationData);
+        return true;
     }
 }

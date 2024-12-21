@@ -77,7 +77,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         }
     }
 
-    public void Execute(SaveData saveData)
+    public bool Execute(SaveData saveData)
     {
         var isPartyWipedOut = () => saveData.Party.TrueForAll(p => p.CurrentHealth <= 0);
         var areMonstersDefeated = () => _monsters.TrueForAll(m => m.CurrentHealth <= 0);
@@ -157,5 +157,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         {
             throw new InvalidOperationException("Undeterminable battle status!");
         }
+
+        return true;
     }
 }

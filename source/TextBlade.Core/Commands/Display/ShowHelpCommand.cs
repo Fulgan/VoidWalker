@@ -24,9 +24,9 @@ public class ShowHelpCommand : ICommand
         { "credits", "Shows the credits" },
     };
 
-    public void Execute(SaveData saveData)
+    public bool Execute(SaveData saveData)
     {
-        var toReturn = new List<string>
+        var helpText = new List<string>
         {
             // If you update this, update the huge case statement in InputProcessor for commands.
             $"Each location lists other locations you can visit; use [{Colours.Command}]numbers[/] to indicate where to travel.",
@@ -34,7 +34,7 @@ public class ShowHelpCommand : ICommand
             "The following commands are also available:"
         };
 
-        foreach (var t in toReturn)
+        foreach (var t in helpText)
         {
             _console.WriteLine(t);
         }
@@ -44,5 +44,7 @@ public class ShowHelpCommand : ICommand
             var explanation = _knownCommands[command];
             _console.WriteLine($"    [{Colours.Command}]{command}[/]: {explanation}");
         }
+
+        return true;
     }
 }

@@ -13,7 +13,7 @@ public class ShowCreditsCommand : ICommand
         _console = console;
     }
     
-    public void Execute(SaveData saveData)
+    public bool Execute(SaveData saveData)
     {
         var creditsFilePath = Path.Join("Content", "Credits.txt");
         if (File.Exists(creditsFilePath))
@@ -22,5 +22,6 @@ public class ShowCreditsCommand : ICommand
         }
         
         _console.WriteLine("TextBlade text JRPG engine: programming by NightBlade.");
+        return true;
     }
 }
