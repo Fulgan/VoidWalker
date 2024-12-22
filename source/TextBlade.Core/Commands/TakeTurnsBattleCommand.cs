@@ -127,10 +127,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                     continue;
                 }
                 
-                foreach (var message in e.OnRoundComplete())
-                {
-                    _console.WriteLine(message);
-                }
+                e.OnRoundComplete(_console);
             }
 
             foreach (var e in saveData.Party)
@@ -140,10 +137,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                     continue;
                 }
                 
-                foreach (var message in e.OnRoundComplete())
-                {
-                    _console.WriteLine(message);
-                }
+                e.OnRoundComplete(_console);
             }
         }
 

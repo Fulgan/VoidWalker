@@ -7,6 +7,6 @@ public static class Colours
     public const string Cancel = "#aaa";
 
     // Status effects
-    public const string Poison = "#22e";
+    public const string Poison = "#8f0";
     public const string Fire = "#f80";
 }

@@ -80,10 +80,10 @@ public class Character : Entity
         return null; // nothing equipped
     }
 
-    new internal List<string> OnRoundComplete()
+    public override void OnRoundComplete(IConsole console)
     {
         this.IsDefending = false;
-        return base.OnRoundComplete();
+        base.OnRoundComplete(console);
     }
 
     internal void Defend(IConsole console)

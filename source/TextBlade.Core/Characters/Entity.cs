@@ -1,4 +1,5 @@
 using TextBlade.Core.Battle.Statuses;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Characters;
 
@@ -28,9 +29,9 @@ public abstract class Entity
         CurrentHealth = Math.Max(0, CurrentHealth - amount);
     }
 
-    public List<string> OnRoundComplete()
+    public virtual void OnRoundComplete(IConsole console)
     {
-        return ApplyStatuses();
+        ApplyStatuses(console);
     }
 
     internal void InflictStatus(string status, int stacks)
@@ -43,9 +44,8 @@ public abstract class Entity
         StatusStacks[status] += stacks;
     }
 
-    private List<string> ApplyStatuses()
+    private void ApplyStatuses(IConsole console)
     {
-        var toReturn = new List<string>();
         var finishedStatuses = new List<string>();
 
         foreach (var kvp in StatusStacks)
@@ -55,13 +55,13 @@ public abstract class Entity
             switch (statusName.ToLowerInvariant())
             {
                 case "poison":
-                    toReturn.Add(Poisoner.Poison(this));
+                    new Poisoner(console).Poison(this);
                     break;
                 case "burn":
-                    toReturn.Add(Burner.Burn(this));
+                    new Burner(console).Burn(this);
                     break;
                 default:
-                    throw new InvalidOperationException($"Missing implementation for the status effect {statusName}");
+                    throw new InvalidOperationException($"There's no implementation for the status effect {statusName}");
             }
             
             var stacksLeft = kvp.Value;
@@ -78,7 +78,5 @@ public abstract class Entity
         {
             StatusStacks.Remove(key);
         }
-
-        return toReturn;
     }
 }

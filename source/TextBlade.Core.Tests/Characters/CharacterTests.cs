@@ -181,7 +181,7 @@ public class CharacterTests
         c.Defend(Substitute.For<IConsole>());
 
         // Act
-        c.OnRoundComplete();
+        c.OnRoundComplete(Substitute.For<IConsole>());
 
         // Assert
         Assert.That(c.IsDefending, Is.False);
