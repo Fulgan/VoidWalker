@@ -8,6 +8,16 @@ namespace TextBlade.Core.Tests.Characters.PartyManagement;
 public class EquipmentDifferTests
 {
     [Test]
+    public void GetDiff_ReturnsEmptyDictionary_IfBothArgumentsAreNull()
+    {
+        // Act
+        var actual = EquipmentDiffer.GetDiff(null, null);
+
+        // Assert
+        Assert.That(!actual.Keys.Any());
+    }
+
+    [Test]
     public void GetDiff_ReturnsNewThingStats_IfCurrentThingIsNull()
     {
         // Arrange

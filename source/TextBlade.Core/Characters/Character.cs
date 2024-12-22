@@ -38,7 +38,10 @@ public class Character : Entity
 
     public void Revive()
     {
-        this.CurrentHealth = 1;
+        if (CurrentHealth <= 0)
+        {
+            this.CurrentHealth = 1;
+        }
     }
 
     /// <summary>

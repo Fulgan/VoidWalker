@@ -89,7 +89,12 @@ public class BattleResultsApplierTests
 
         var location = new Location("Steppe Pass", "Lovely");
         var data = CreateSaveData();
-        data.Party.Add(new Core.Characters.Character("Player Two", 100, 100, 100) { CurrentHealth = 0});
+        data.Party.Add(new Core.Characters.Character("Player Two", 100, 100, 100));
+
+        foreach (var p in data.Party)
+        {
+            p.CurrentHealth = 0;
+        }
 
         // Act
         new BattleResultsApplier(Substitute.For<IConsole>()).ApplyResultsIfBattle(command, location, data);
