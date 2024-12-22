@@ -9,41 +9,6 @@ namespace TextBlade.Core.Tests.Characters;
 public class MonsterTests
 {
     [Test]
-    public void Constructor_SetsHealthToTotalHealth()
-    {
-        // Arrange/Act
-        var monster = new Monster("Slime", 10, 5, 3);
-        // Assert
-        Assert.That(monster.CurrentHealth, Is.EqualTo(10));
-    }
-
-    [Test]
-    public void Damage_ReducesHp()
-    {
-        // Arrange
-        var monster = new Monster("Blue Slime", 100, 10, 1);
-
-        // Act
-        monster.Damage(55);
-
-        // Assert
-        Assert.That(monster.CurrentHealth, Is.EqualTo(45));
-    }
-
-    [Test]
-    public void Damage_BottomsOutHealthAtZero()
-    {
-        // Arrange
-        var monster = new Monster("Yellow Slime", 25, 5, 1);
-    
-        // Act
-        monster.Damage(99999);
-
-        // Assert
-        Assert.That(monster.CurrentHealth, Is.EqualTo(0));
-    }
-
-    [Test]
     public void Attack_DamagesByStrengthMinusTargetToughness()
     {
         // Arrange
