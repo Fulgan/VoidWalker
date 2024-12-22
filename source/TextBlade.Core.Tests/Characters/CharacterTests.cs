@@ -130,6 +130,20 @@ public class CharacterTests
     }
 
     [Test]
+    public void GetExperiencePoints_GivesNoXp_IfCharacterIsDead()
+    {
+        // Arrange
+        var deadGuy = new Character("Charlie", 10, 10, 10, 10, 10, 0);
+        deadGuy.CurrentHealth = 0;
+
+        // Act
+        deadGuy.GainExperiencePoints(Substitute.For<IConsole>(), 9999);
+
+        // Assert
+        Assert.That(deadGuy.ExperiencePoints, Is.EqualTo(0));
+    }
+
+    [Test]
     public void EquippedOn_ReturnsItem_IfEquippedOnSlot_ElseReturnsNull()
     {
         // Arrange
