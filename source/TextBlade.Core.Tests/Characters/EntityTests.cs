@@ -52,6 +52,22 @@ public class EntityTests
     }
 
     [Test]
+    public void OnRoundComplete_DecrementsAndRemovesStatuses()
+    {
+        // Arrange
+        var astronaut = new EntityStub();
+        astronaut.InflictStatus("poison", 1);
+        astronaut.InflictStatus("burn", 8);
+
+        // Act
+        astronaut.OnRoundComplete(Substitute.For<IConsole>());
+
+        // Assert
+        Assert.That(astronaut.StatusStacks.ContainsKey("poison"), Is.False);
+        Assert.That(astronaut.StatusStacks["burn"], Is.EqualTo(7));
+    }
+
+    [Test]
     public void InflictStatus_AddsToStacks()
     {
         // Arrange

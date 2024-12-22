@@ -64,10 +64,9 @@ public abstract class Entity
                     throw new InvalidOperationException($"There's no implementation for the status effect {statusName}");
             }
             
-            var stacksLeft = kvp.Value;
-            stacksLeft--;
+            StatusStacks[statusName] = StatusStacks[statusName] - 1;
 
-            if (stacksLeft <= 0)
+            if (StatusStacks[statusName] <= 0)
             {
                 finishedStatuses.Add(kvp.Key);
             }
