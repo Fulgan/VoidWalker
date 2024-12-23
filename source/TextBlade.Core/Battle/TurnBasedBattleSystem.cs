@@ -22,7 +22,7 @@ public class TurnBasedBattleSystem
 
     private readonly List<Monster> _monsters = new();
     private readonly IConsole _console;
-    private readonly SaveData _saveData;
+    private SaveData _saveData; // not available at construction time, but available in Execute
     private readonly Dungeon _dungeon;
 
     private readonly List<string> _loot;
@@ -58,16 +58,14 @@ public class TurnBasedBattleSystem
         }
     }
 
-    public TurnBasedBattleSystem(IConsole console, SaveData saveData, Dungeon dungeon, List<string> monsterNames, List<string> loot)
+    public TurnBasedBattleSystem(IConsole console, Dungeon dungeon, List<string> monsterNames, List<string> loot)
     {
         ArgumentNullException.ThrowIfNull(console);
-        ArgumentNullException.ThrowIfNull(saveData);
         ArgumentNullException.ThrowIfNull(dungeon);
         ArgumentNullException.ThrowIfNull(monsterNames);
         ArgumentNullException.ThrowIfNull(loot);
 
         _console = console;
-        _saveData = saveData;
         _dungeon = dungeon;
         _loot = loot;
 
@@ -95,8 +93,11 @@ public class TurnBasedBattleSystem
         }
     }
 
-    public Spoils Execute()
+    public Spoils Execute(SaveData saveData)
     {
+        ArgumentNullException.ThrowIfNull(saveData);
+        _saveData = saveData;
+        
         var isPartyWipedOut = () => _saveData.Party.TrueForAll(p => p.CurrentHealth <= 0);
         var areMonstersDefeated = () => _monsters.TrueForAll(m => m.CurrentHealth <= 0);
         var isBattleOver = () => isPartyWipedOut() || areMonstersDefeated();

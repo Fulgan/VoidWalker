@@ -136,7 +136,8 @@ public class Dungeon : Location
                 return new DoNothingCommand();
             }
             var loot = FloorLoot.ContainsKey(_currentFloorLootKey) ? FloorLoot[_currentFloorLootKey] : new();
-            return new FightCommand(console, this, currentFloorData, loot);
+            var system = new TurnBasedBattleSystem(console, this, currentFloorData, loot);
+            return new FightCommand(console, system);
         }
         else if (input == "d" || input == "down" || input == "descend" || input == ">")
         {

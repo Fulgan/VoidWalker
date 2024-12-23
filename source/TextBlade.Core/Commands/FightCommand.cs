@@ -1,39 +1,25 @@
 using TextBlade.Core.IO;
-using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Commands;
 
 public class FightCommand : ICommand
 {
     private readonly IConsole _console;
-    private readonly Dungeon? _dungeon;
+    private readonly TurnBasedBattleSystem _system;
 
-    private readonly List<string> _monsterNames;
-    private readonly List<string> _loot;
-
-    public FightCommand(IConsole console, Location currentLocation, List<string> monsterNames, List<string> loot)
+    public FightCommand(IConsole console, TurnBasedBattleSystem system)
     {
         ArgumentNullException.ThrowIfNull(console);
-        ArgumentNullException.ThrowIfNull(currentLocation);
-        currentLocation.ThrowIfNot<Dungeon>();
-        ArgumentNullException.ThrowIfNull(monsterNames);
-        if (!monsterNames.Any())
-        {
-            throw new ArgumentException("Monster list is empty.");  
-        }
-        ArgumentNullException.ThrowIfNull(loot);
+        ArgumentNullException.ThrowIfNull(system);
 
         _console = console;
-        _dungeon = currentLocation as Dungeon;
-        _monsterNames = monsterNames;
-        _loot = loot;
+        _system = system;
     }
     
     public bool Execute(SaveData saveData)
     {
         // Signal to game to begin the fight. Fight! Fight! Fight!
-        var system = new TurnBasedBattleSystem(_console, saveData, _dungeon, _monsterNames, _loot);
-        var spoils = system.Execute();
+        var spoils = _system.Execute(saveData);
 
         // Process results: victory, or defeat?
         if (spoils.IsVictory)
