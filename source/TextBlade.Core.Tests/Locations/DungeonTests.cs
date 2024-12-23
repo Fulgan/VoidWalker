@@ -67,51 +67,10 @@ public class DungeonTests
         var dungeon = CreateDungeon();
 
         // Act
-        dungeon.OnVictory(new Inventory());
+        dungeon.OnVictory();
 
         // Assert
         Assert.That(dungeon.GetMonstersOnFloor(0).Count, Is.EqualTo(0));
-    }
-
-    [Test]
-    public void OnVictory_GrantsLoot_OnLootFloors()
-    {
-        // Arrange
-        var dungeon = CreateDungeon();
-        var expectedLoot = new List<string>
-        {
-            "Iron Sword",
-            "Iron Helmet",
-            "Iron Helmet"
-        };
-
-        dungeon.FloorLoot["B1"] = expectedLoot;
-        var inventory = new Inventory();
-
-        // Act
-        dungeon.OnVictory(inventory);
-
-        // Assert
-        Assert.That(inventory.ItemQuantities.Keys.Count, Is.EqualTo(2));
-        Assert.That(inventory.Has("Iron Sword"));
-        Assert.That(inventory.Has("Iron Helmet"));
-
-        var totalItems = inventory.ItemQuantities.Sum(kvp => kvp.Value);
-        Assert.That(totalItems, Is.EqualTo(3));
-    }
-
-    [Test]
-    public void OnVictory_DoesNotGrantsLoot_OnNonLootFloors()
-    {
-        // Arrange
-        var dungeon = CreateDungeon();
-        var inventory = new Inventory();
-
-        // Act
-        dungeon.OnVictory(inventory);
-
-        // Assert
-        Assert.That(inventory.ItemQuantities.Keys.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -287,7 +246,7 @@ public class DungeonTests
         var actual = dungeon.GetCommandFor(Substitute.For<IConsole>(), command);
 
         // Assert
-        Assert.That(actual, Is.InstanceOf<TakeTurnsBattleCommand>());
+        Assert.That(actual, Is.InstanceOf<FightCommand>());
     }
 
     [Test]
