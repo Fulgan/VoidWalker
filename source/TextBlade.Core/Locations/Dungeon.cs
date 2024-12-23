@@ -131,7 +131,7 @@ public class Dungeon : Location
         if (input == "f" || input == "fight")
         {
             var loot = FloorLoot.ContainsKey(_currentFloorLootKey) ? FloorLoot[_currentFloorLootKey] : new();
-            return new FightCommand(console, currentFloorData, loot);
+            return new FightCommand(console, this, currentFloorData, loot);
         }
         else if (input == "d" || input == "down" || input == "descend" || input == ">")
         {
@@ -199,5 +199,10 @@ public class Dungeon : Location
 
         // Obvious, innit? If the current floor is clear, you auto-grabbed the loot already.
         FloorLoot[_currentFloorLootKey].Clear();
+    }
+
+    public void OnVictory()
+    {
+        _floorMonsters[_currentFloorNumber].Clear();
     }
 }

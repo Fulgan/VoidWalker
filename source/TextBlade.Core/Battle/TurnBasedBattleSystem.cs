@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
+using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Commands;
 
@@ -22,6 +23,8 @@ public class TurnBasedBattleSystem
     private readonly List<Monster> _monsters = new();
     private readonly IConsole _console;
     private readonly SaveData _saveData;
+    private readonly Dungeon _dungeon;
+
     private readonly List<string> _loot;
 
     static TurnBasedBattleSystem()
@@ -55,15 +58,17 @@ public class TurnBasedBattleSystem
         }
     }
 
-    public TurnBasedBattleSystem(IConsole console, SaveData saveData, List<string> monsterNames, List<string> loot)
+    public TurnBasedBattleSystem(IConsole console, SaveData saveData, Dungeon dungeon, List<string> monsterNames, List<string> loot)
     {
         ArgumentNullException.ThrowIfNull(console);
         ArgumentNullException.ThrowIfNull(saveData);
+        ArgumentNullException.ThrowIfNull(dungeon);
         ArgumentNullException.ThrowIfNull(monsterNames);
         ArgumentNullException.ThrowIfNull(loot);
 
         _console = console;
         _saveData = saveData;
+        _dungeon = dungeon;
         _loot = loot;
 
         PopulateMonsters(monsterNames);
@@ -144,6 +149,8 @@ public class TurnBasedBattleSystem
         }
         else if (areMonstersDefeated())
         {
+            _dungeon.OnVictory();
+            
             var spoils = new Spoils()
             {
                 IsVictory = true,
