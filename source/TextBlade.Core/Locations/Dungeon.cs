@@ -96,7 +96,7 @@ public class Dungeon : Location
         var treasureMessage = "";
         if (FloorLoot.ContainsKey(_currentFloorLootKey) && currentFloorData.Any())
         {
-            treasureMessage = "You see something shiny nearby.  ";
+            treasureMessage = "You see something shiny glitter behind the monsters.  ";
         }
 
         return $"You are on floor {_currentFloorNumber + 1}. {treasureMessage}{monstersMessage}";
@@ -126,9 +126,9 @@ public class Dungeon : Location
         var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")
         {
-            return new TakeTurnsBattleCommand(console, currentFloorData);
+            return new FightCommand(console, currentFloorData, FloorLoot[_currentFloorLootKey] ?? new());
         }
-        if (input == "d" || input == "down" || input == "descend" || input == ">")
+        else if (input == "d" || input == "down" || input == "descend" || input == ">")
         {
             if (currentFloorData.Any())
             {
@@ -165,8 +165,13 @@ public class Dungeon : Location
         };
     }
 
-    public override void SetStateBasedOnCustomSaveData(Dictionary<string, object> extraData)
+    public override void SetStateBasedOnCustomSaveData(Dictionary<string, object>? extraData)
     {
+        if (extraData == null)
+        {
+            return;
+        }
+        
         var floorNumber = Convert.ToInt32(extraData["CurrentFloor"]);
         var isClear = (bool)extraData["IsClear"];
         

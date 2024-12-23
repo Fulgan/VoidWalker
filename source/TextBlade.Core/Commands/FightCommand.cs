@@ -6,14 +6,12 @@ namespace TextBlade.Core.Commands;
 
 public class FightCommand : ICommand
 {
-    private readonly IGame _game;
     private readonly IConsole _console;
     private readonly List<string> _monsterNames;
     private readonly List<string> _loot;
 
-    public FightCommand(IGame game, IConsole console, List<string> monsterNames, List<string> loot)
+    public FightCommand(IConsole console, List<string> monsterNames, List<string> loot)
     {
-        _game = game;
         _console = console;
         _monsterNames = monsterNames;
         _loot = loot;
