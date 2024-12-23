@@ -54,6 +54,9 @@ public class FightCommand : ICommand
                 foreach (var itemName in spoils.Loot)
                 {
                     _console.WriteLine($"    {itemName}");
+                    
+                    var item = ItemsData.GetItem(itemName);
+                    saveData.Inventory.Add(item);
                 }
             }
         }
