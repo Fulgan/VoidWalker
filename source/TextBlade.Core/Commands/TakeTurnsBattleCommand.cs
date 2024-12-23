@@ -120,35 +120,17 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                 new BasicMonsterAi(_console, saveData.Party).ProcessTurnFor(monster);
             }
 
-            foreach (var e in _monsters)
-            {
-                if (e.CurrentHealth <= 0)
-                {
-                    continue;
-                }
-                
-                e.OnRoundComplete(_console);
-            }
-
-            foreach (var e in saveData.Party)
-            {
-                if (e.CurrentHealth <= 0)
-                {
-                    continue;
-                }
-                
-                e.OnRoundComplete(_console);
-            }
+            ApplyRoundCompletion(saveData);
         }
 
         if (isPartyWipedOut())
         {
-            this.IsVictory = false;
+            IsVictory = false;
             _console.WriteLine(DefeatMessage);
         }
         else if (areMonstersDefeated())
         {
-            this.IsVictory = true;
+            IsVictory = true;
             _console.WriteLine(string.Format(VictoryMessage, TotalGold, TotalExperiencePoints));
         }
         else
@@ -157,5 +139,28 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         }
 
         return true;
+    }
+
+    private void ApplyRoundCompletion(SaveData saveData)
+    {
+        foreach (var monster in _monsters)
+        {
+            if (monster.CurrentHealth <= 0)
+            {
+                continue;
+            }
+
+            monster.OnRoundComplete(_console);
+        }
+
+        foreach (var e in saveData.Party)
+        {
+            if (e.CurrentHealth <= 0)
+            {
+                continue;
+            }
+
+            e.OnRoundComplete(_console);
+        }
     }
 }
