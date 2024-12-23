@@ -12,8 +12,7 @@ public class Dungeon : Location
     public Dictionary<string, List<string>> FloorLoot { get; set; } = [];
 
     // It's a list, one entry per floor.
-    // Each entry is a list of monsters and other stuff on that floor.
-    // I'm sure I'll put treasure and stuff in here eventually.
+    // Each entry is a list of monsters.
     protected readonly List<List<string>> _floorMonsters = [];
     private int _currentFloorNumber  = 0;
     
@@ -21,6 +20,11 @@ public class Dungeon : Location
 
     public Dungeon(string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null)
     : base(name, description, locationClass)
+    {
+        GenerateMonsters(numFloors, monsters, boss);
+    }
+
+    private void GenerateMonsters(int numFloors, List<string> monsters, string boss)
     {
         if (numFloors <= 0)
         {
