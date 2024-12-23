@@ -126,7 +126,8 @@ public class Dungeon : Location
         var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")
         {
-            return new FightCommand(console, currentFloorData, FloorLoot[_currentFloorLootKey] ?? new());
+            var loot = FloorLoot.ContainsKey(_currentFloorLootKey) ? FloorLoot[_currentFloorLootKey] : new();
+            return new FightCommand(console, currentFloorData, loot);
         }
         else if (input == "d" || input == "down" || input == "descend" || input == ">")
         {
