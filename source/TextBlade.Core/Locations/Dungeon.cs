@@ -1,7 +1,6 @@
 using System.Text;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
-using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Locations;
@@ -79,35 +78,6 @@ public class Dungeon : Location
         }
         finalFloor.Add(boss);
         _floorMonsters.Add(finalFloor);
-    }
-
-    public IList<string> OnVictory(Inventory inventory)
-    {
-        // Clear out all monsters
-        _floorMonsters[_currentFloorNumber].Clear();
-
-        // Grant loot if applicable
-        if (!FloorLoot.ContainsKey(_currentFloorLootKey))
-        {
-            return Array.Empty<string>();
-        }
-
-        var loot = FloorLoot[_currentFloorLootKey];
-
-        foreach (var itemName in loot)
-        {
-            var item = ItemsData.GetItem(itemName);
-
-            if (item == null)
-            {
-                throw new InvalidOperationException($"Can't find item data for {itemName} in Items.json");
-            }
-
-            item.Name = itemName;
-            inventory.Add(item);
-        }
-
-        return loot;
     }
 
     public override string GetExtraDescription()

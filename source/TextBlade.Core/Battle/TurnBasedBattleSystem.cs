@@ -11,7 +11,7 @@ namespace TextBlade.Core.Commands;
 /// <summary>
 /// Unlike most of the other commands, handles all the (fighting) logic and user input/response internally.
 /// </summary>
-public class TakeTurnsBattleCommand : ICommand, IBattleCommand
+public class TurnBasedBattleSystem
 {
     private static JObject s_allMonstersData; // name => stats
  
@@ -19,14 +19,12 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
     public const string DefeatMessage = "Defeat!";
     private const string CommentsInJsonRegex = @"(//.*)";
 
-    public int TotalGold => _monsters.Sum(m => m.Gold);
-    public int TotalExperiencePoints => _monsters.Sum(m => m.ExperiencePoints);
-    public bool IsVictory { get; private set; }
-
     private readonly List<Monster> _monsters = new();
     private readonly IConsole _console;
+    private readonly SaveData _saveData;
+    private readonly List<string> _loot;
 
-    static TakeTurnsBattleCommand()
+    static TurnBasedBattleSystem()
     {
         // By convention for now
         var jsonPath = Path.Join("Content", "Data", "Monsters.json");
@@ -44,20 +42,35 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         }
 
         var jsonContent = commentlessText.ToString();
-        s_allMonstersData = JsonConvert.DeserializeObject(jsonContent) as JObject;
+        var jsonData = JsonConvert.DeserializeObject(jsonContent);
+        if (jsonData == null)
+        {
+            throw new InvalidOperationException($"{jsonPath} failed to deserialize.");
+        }
+
+        s_allMonstersData = jsonData as JObject;
         if (s_allMonstersData == null)
         {
             throw new InvalidOperationException($"{jsonPath} doesn't seem to be valid JSON.");
         }
     }
 
-    public TakeTurnsBattleCommand(IConsole console, List<string> monsterNames)
+    public TurnBasedBattleSystem(IConsole console, SaveData saveData, List<string> monsterNames, List<string> loot)
     {
         ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(saveData);
         ArgumentNullException.ThrowIfNull(monsterNames);
+        ArgumentNullException.ThrowIfNull(loot);
 
         _console = console;
+        _saveData = saveData;
+        _loot = loot;
 
+        PopulateMonsters(monsterNames);
+    }
+
+    private void PopulateMonsters(List<string> monsterNames)
+    {
         foreach (var name in monsterNames)
         {
             var data = s_allMonstersData[name];
@@ -77,21 +90,21 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
         }
     }
 
-    public bool Execute(SaveData saveData)
+    public Spoils Execute()
     {
-        var isPartyWipedOut = () => saveData.Party.TrueForAll(p => p.CurrentHealth <= 0);
+        var isPartyWipedOut = () => _saveData.Party.TrueForAll(p => p.CurrentHealth <= 0);
         var areMonstersDefeated = () => _monsters.TrueForAll(m => m.CurrentHealth <= 0);
         var isBattleOver = () => isPartyWipedOut() || areMonstersDefeated();
-        var characterTurnProcessor = new CharacterTurnProcessor(_console, saveData, _monsters);
+        var characterTurnProcessor = new CharacterTurnProcessor(_console, _saveData, _monsters);
 
         while (!isBattleOver())
         {
             var monstersStatus = string.Join(", ", _monsters.Select(m => $"{m.Name}: {m.CurrentHealth}/{m.TotalHealth} health"));
             _console.WriteLine($"You face: [{Colours.Highlight}]{monstersStatus}[/]");
-            var partyStatus = string.Join(", ", saveData.Party);
+            var partyStatus = string.Join(", ", _saveData.Party);
             _console.WriteLine($"Your party: [{Colours.Highlight}]{partyStatus}[/]");
 
-            foreach (var character in saveData.Party)
+            foreach (var character in _saveData.Party)
             {
                 if (character.CurrentHealth <= 0)
                 {
@@ -117,31 +130,39 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
                     continue;
                 }
 
-                new BasicMonsterAi(_console, saveData.Party).ProcessTurnFor(monster);
+                new BasicMonsterAi(_console, _saveData.Party).ProcessTurnFor(monster);
             }
 
-            ApplyRoundCompletion(saveData);
+            ApplyRoundCompletion();
         }
 
         if (isPartyWipedOut())
         {
-            IsVictory = false;
             _console.WriteLine(DefeatMessage);
+            // No soup for you! Well, I guess we could give partial xp/gold/loot if we wanted to.
+            return new Spoils() { IsVictory = false };
         }
         else if (areMonstersDefeated())
         {
-            IsVictory = true;
-            _console.WriteLine(string.Format(VictoryMessage, TotalGold, TotalExperiencePoints));
+            var spoils = new Spoils()
+            {
+                IsVictory = true,
+                ExperiencePointsGained = _monsters.Sum(m => m.ExperiencePoints),
+                GoldGained = _monsters.Sum(m => m.Gold),
+                Loot = _loot,
+            };
+
+            _console.WriteLine(string.Format(VictoryMessage, spoils.GoldGained, spoils.ExperiencePointsGained));
+
+            return spoils;
         }
         else
         {
             throw new InvalidOperationException("Undeterminable battle status!");
         }
-
-        return true;
     }
 
-    private void ApplyRoundCompletion(SaveData saveData)
+    private void ApplyRoundCompletion()
     {
         foreach (var monster in _monsters)
         {
@@ -153,7 +174,7 @@ public class TakeTurnsBattleCommand : ICommand, IBattleCommand
             monster.OnRoundComplete(_console);
         }
 
-        foreach (var e in saveData.Party)
+        foreach (var e in _saveData.Party)
         {
             if (e.CurrentHealth <= 0)
             {
