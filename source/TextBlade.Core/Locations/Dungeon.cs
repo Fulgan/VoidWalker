@@ -130,6 +130,11 @@ public class Dungeon : Location
         var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")
         {
+            if (!currentFloorData.Any())
+            {
+                console.WriteLine("There are no monsters to fight here!");
+                return new DoNothingCommand();
+            }
             var loot = FloorLoot.ContainsKey(_currentFloorLootKey) ? FloorLoot[_currentFloorLootKey] : new();
             return new FightCommand(console, this, currentFloorData, loot);
         }
