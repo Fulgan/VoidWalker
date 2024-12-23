@@ -1,7 +1,6 @@
 using System.Text;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
-using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Locations;
@@ -13,8 +12,7 @@ public class Dungeon : Location
     public Dictionary<string, List<string>> FloorLoot { get; set; } = [];
 
     // It's a list, one entry per floor.
-    // Each entry is a list of monsters and other stuff on that floor.
-    // I'm sure I'll put treasure and stuff in here eventually.
+    // Each entry is a list of monsters.
     protected readonly List<List<string>> _floorMonsters = [];
     private int _currentFloorNumber  = 0;
     
@@ -22,6 +20,11 @@ public class Dungeon : Location
 
     public Dungeon(string name, string description, int numFloors, List<string> monsters, string boss, string? locationClass = null)
     : base(name, description, locationClass)
+    {
+        GenerateMonsters(numFloors, monsters, boss);
+    }
+
+    private void GenerateMonsters(int numFloors, List<string> monsters, string boss)
     {
         if (numFloors <= 0)
         {
@@ -81,35 +84,6 @@ public class Dungeon : Location
         _floorMonsters.Add(finalFloor);
     }
 
-    public IList<string> OnVictory(Inventory inventory)
-    {
-        // Clear out all monsters
-        _floorMonsters[_currentFloorNumber].Clear();
-
-        // Grant loot if applicable
-        if (!FloorLoot.ContainsKey(_currentFloorLootKey))
-        {
-            return Array.Empty<string>();
-        }
-
-        var loot = FloorLoot[_currentFloorLootKey];
-
-        foreach (var itemName in loot)
-        {
-            var item = ItemsData.GetItem(itemName);
-
-            if (item == null)
-            {
-                throw new InvalidOperationException($"Can't find item data for {itemName} in Items.json");
-            }
-
-            item.Name = itemName;
-            inventory.Add(item);
-        }
-
-        return loot;
-    }
-
     public override string GetExtraDescription()
     {
        var currentFloorData = _floorMonsters[_currentFloorNumber];
@@ -126,7 +100,7 @@ public class Dungeon : Location
         var treasureMessage = "";
         if (FloorLoot.ContainsKey(_currentFloorLootKey) && currentFloorData.Any())
         {
-            treasureMessage = "You see something shiny nearby.  ";
+            treasureMessage = "You see something shiny glitter behind the monsters.  ";
         }
 
         return $"You are on floor {_currentFloorNumber + 1}. {treasureMessage}{monstersMessage}";
@@ -156,9 +130,10 @@ public class Dungeon : Location
         var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")
         {
-            return new TakeTurnsBattleCommand(console, currentFloorData);
+            var loot = FloorLoot.ContainsKey(_currentFloorLootKey) ? FloorLoot[_currentFloorLootKey] : new();
+            return new FightCommand(console, currentFloorData, loot);
         }
-        if (input == "d" || input == "down" || input == "descend" || input == ">")
+        else if (input == "d" || input == "down" || input == "descend" || input == ">")
         {
             if (currentFloorData.Any())
             {
@@ -195,8 +170,13 @@ public class Dungeon : Location
         };
     }
 
-    public override void SetStateBasedOnCustomSaveData(Dictionary<string, object> extraData)
+    public override void SetStateBasedOnCustomSaveData(Dictionary<string, object>? extraData)
     {
+        if (extraData == null)
+        {
+            return;
+        }
+        
         var floorNumber = Convert.ToInt32(extraData["CurrentFloor"]);
         var isClear = (bool)extraData["IsClear"];
         

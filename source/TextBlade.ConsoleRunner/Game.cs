@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TextBlade.ConsoleRunner.IO;
-using TextBlade.Core.Battle;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
 using TextBlade.Core.Game;
@@ -88,17 +87,8 @@ public class Game : IGame
                 {
                     continue;
                 }
-
-                /// This area stinks: type-specific things...
-                new BattleResultsApplier(_console).ApplyResultsIfBattle(command, _currentLocation, _saveData);
-                if (command is IBattleCommand)
-                {
-                    SaveGame();
-
-                    // After battle, tell me the floor status again.
-                    _locationDisplayer.ShowLocation(_currentLocation);
-                }
-                else if (command is ManuallySaveCommand)
+                
+                if (command is ManuallySaveCommand)
                 {
                     SaveGame();
                 }

@@ -24,6 +24,8 @@ public abstract class Entity
         this.Toughness = toughness;
     }
 
+    public bool IsAlive => CurrentHealth > 0;
+
     public void Damage(int amount)
     {
         CurrentHealth = Math.Max(0, CurrentHealth - amount);
