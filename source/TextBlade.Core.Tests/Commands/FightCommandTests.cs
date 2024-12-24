@@ -30,6 +30,7 @@ public class FightCommandTests
 
         system.Execute(saveData).Returns(new Spoils
         {
+            IsVictory = false,
             ExperiencePointsGained = 9999,
             GoldGained = 999999,
             Loot = new List<string> { "Apple", "Banana", "Cobbler", "Dog", "Egg", "Fish" },
@@ -43,6 +44,32 @@ public class FightCommandTests
         Assert.That(saveData.Inventory.ItemQuantities.Count, Is.EqualTo(0));
         Assert.That(saveData.Party.TrueForAll(p => p.ExperiencePoints ==  0));
     }
+
+    [Test]
+    public void Execute_GivesSpoilsAndXp_IfVictory()
+    {
+        // Arrange
+        var system = Substitute.For<IBattleSystem>();
+        var command = new FightCommand(Substitute.For<IConsole>(), system);
+        var saveData = CreateSaveData();
+
+        system.Execute(saveData).Returns(new Spoils
+        {
+            IsVictory = true,
+            ExperiencePointsGained = 9999,
+            GoldGained = 999999,
+            Loot = new List<string> { "Potion-A" },
+        });
+
+        // Act
+        command.Execute(saveData);
+
+        Assert.That(saveData.Gold, Is.GreaterThan(0));
+        Assert.That(saveData.Inventory.ItemQuantities.Count, Is.GreaterThan(0));
+        Assert.That(saveData.Party.TrueForAll(p => p.ExperiencePoints > 0));
+        Assert.That(saveData.Party.TrueForAll(p => p.Level > 1));
+    }
+
 
     private SaveData CreateSaveData()
     {
