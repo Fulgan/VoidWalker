@@ -1,3 +1,4 @@
+using TextBlade.Core.Battle;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands;
@@ -5,9 +6,9 @@ namespace TextBlade.Core.Commands;
 public class FightCommand : ICommand
 {
     private readonly IConsole _console;
-    private readonly TurnBasedBattleSystem _system;
+    private readonly IBattleSystem _system;
 
-    public FightCommand(IConsole console, TurnBasedBattleSystem system)
+    public FightCommand(IConsole console, IBattleSystem system)
     {
         ArgumentNullException.ThrowIfNull(console);
         ArgumentNullException.ThrowIfNull(system);

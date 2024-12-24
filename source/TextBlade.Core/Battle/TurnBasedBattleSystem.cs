@@ -12,7 +12,7 @@ namespace TextBlade.Core.Commands;
 /// <summary>
 /// Unlike most of the other commands, handles all the (fighting) logic and user input/response internally.
 /// </summary>
-public class TurnBasedBattleSystem
+public class TurnBasedBattleSystem : IBattleSystem
 {
     private static JObject s_allMonstersData; // name => stats
  
