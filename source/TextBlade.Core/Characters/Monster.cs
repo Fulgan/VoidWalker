@@ -8,9 +8,9 @@ public class Monster : Entity
     public readonly int Gold;
     public readonly int ExperiencePoints;
 
-    public Dictionary<string, float>? SkillProbabilities { get; }
+    public Dictionary<string, double>? SkillProbabilities { get; }
 
-    public Monster(string name, int health, int strength, int toughness, int gold = 0, int experiencePoints = 0, string weakness = "", List<Skill>? skills = null, Dictionary<string, float>? stringProbabilities = null)
+    public Monster(string name, int health, int strength, int toughness, int gold = 0, int experiencePoints = 0, string weakness = "", List<Skill>? skills = null, Dictionary<string, double>? stringProbabilities = null)
     : base(name, health, strength, toughness)
     {
         this.Weakness = weakness;

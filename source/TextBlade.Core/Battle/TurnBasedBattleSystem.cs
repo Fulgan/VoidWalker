@@ -91,7 +91,7 @@ public class TurnBasedBattleSystem : IBattleSystem
 
             
             var skillNames = data.Value<JArray>("SkillNames");
-            var skillProbabilities = new Dictionary<string, float>();
+            var skillProbabilities = new Dictionary<string, double>();
 
             var skills = new List<Skill>();
             if (skillNames != null)
@@ -100,7 +100,7 @@ public class TurnBasedBattleSystem : IBattleSystem
                 foreach (var token in skillNames)
                 {
                     var skillName = token.Value<string>("Name");
-                    var probability = token.Value<float>("Probability");
+                    var probability = token.Value<double>("Probability");
                     var skill = Skill.GetSkill(skillName.ToString());
                     skills.Add(skill);
                     skillProbabilities[skillName] = probability;
