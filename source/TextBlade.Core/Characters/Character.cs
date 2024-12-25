@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters.PartyManagement;
 using TextBlade.Core.Inv;
@@ -11,7 +12,10 @@ public class Character : Entity
 
     public int TotalSkillPoints { get; set; }
     public int CurrentSkillPoints { get; set; }
+
+    [JsonIgnore]
     public List<Skill> Skills { get; set; } = new(); // NOT populated by JSON
+    
     public List<string> SkillNames { get; set; } = new(); // populated by JSON
     public Dictionary<ItemType, Equipment> Equipment { get; set; } = new(); // Needs to be public for serialization
     public int ExperiencePoints { get; internal set; } = 0;
