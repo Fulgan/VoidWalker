@@ -1,12 +1,14 @@
 {
-    "comment1": "North seaside cave",
     "Goblin":
     {
         "Health": 45,
         "Strength": 15,
         "Toughness": 3,
         "Weakness": "Spear",
-        "Gold": 5
+        "Gold": 5,
+        "Skills": [
+            { "Name": "DoubleStrike", "Probability": 0.6 }
+        ]
     },
     "Spider":
     {
@@ -14,7 +16,10 @@
         "Strength": 15,
         "Toughness": 5,
         "Weakness": "Fire",
-        "Gold": 10
+        "Gold": 10,
+        "Skills": [
+            { "Name": "Web", "Probability": 0.3 }
+        ]
     },
     "Gargoyle":
     {
@@ -22,7 +27,10 @@
         "Strength": 19,
         "Toughness": 7,
         "Weakness": "Ice",
-        "Gold": 25
+        "Gold": 25,
+        "Skills": [
+            { "Name": "Stone Fist", "Probability": 0.25 }
+        ]
     },
     "Troll":
     {
@@ -30,7 +38,10 @@
         "Strength": 23,
         "Toughness": 6,
         "Weakness": "Poison",
-        "Gold": 40
+        "Gold": 40,
+        "Skills": [
+            { "Name": "Whirlwind", "Probability": 0.5 }
+        ]
     },
     "Ogre":
     {
@@ -38,16 +49,22 @@
         "Strength": 30,
         "Toughness": 10,
         "Weakness": "Bleed",
-        "Gold": 75
+        "Gold": 75,
+        "Skills": [
+            { "Name": "Stone Fist", "Probability": 0.4 }
+        ]
     },
     
-    "comment2": "Da Boss of North Seaside Cave",
     "Langosta Prime":
     {
         "Health": 300,
         "Strength": 45,
         "Toughness": 15,
         "Weakness": "Fire",
-        "Gold": 250
+        "Gold": 250,
+        "Skills": [
+            { "Name": "Poison", "Probability": 0.4 },
+            { "Name": "Heal", "Probability": 0.2 }
+        ]
     }
 }

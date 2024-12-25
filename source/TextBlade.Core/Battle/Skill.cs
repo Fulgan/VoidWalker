@@ -9,8 +9,10 @@ public class Skill
     public string Name { get; set; } = string.Empty;
     public float DamageMultiplier { get; set; } = 1.0f;
     public int Cost { get; set; } = 0;
-    // ENUM: Single, All (enemies), Self, Character, Party
-    public string Target { get; set; } = "Single";
+
+    // SingleEnemy, AllEnemies, SingleFriend, AllFriends.
+    // Meaning changes depending on if a character or monster uses it.
+    public string Target { get; set; } = "SingleEnemy";
     public string StatusInflicted { get; set; } = string.Empty;
     public int StatusStacks { get; set; } = 0;
     public string DamageType { get; set; } = "Normal";

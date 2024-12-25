@@ -8,7 +8,7 @@
     {
         "DamageMultiplier": 1.25,
         "Cost": 20,
-        "Target":"All"
+        "Target": "AllEnemy"
     },
     "Fire A":
     {
@@ -28,13 +28,25 @@
     {
         "DamageMultiplier": 0,
         "Cost": 10,
-        "StatusInflicted":"Poison",
+        "StatusInflicted": "Poison",
         "StatusStacks": 5
     },
     "Heal":
     {
         "DamageMultiplier": 1.5,
         "Cost": 5,
-        "Target":"Character"
+        "Target": "SingleFriendly"
+    },
+
+    // Exclusively monster skills. No cost associated with them. Monsters have infinite SP.
+    "Web":
+    {
+        "DamageMultiplier": 0,
+        "StatusInflicted": "Paralyze",
+        "StatusStacks": 3
+    },
+    "StoneFist":
+    {
+        "DamageMultiplier": 1.7
     }
 }
