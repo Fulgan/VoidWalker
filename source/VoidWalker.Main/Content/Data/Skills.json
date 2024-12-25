@@ -1,5 +1,5 @@
 {
-    "DoubleStrike":
+    "Double Strike":
     {
         "DamageMultiplier": 2.0,
         "Cost": 10
@@ -45,7 +45,7 @@
         "StatusInflicted": "Paralyze",
         "StatusStacks": 3
     },
-    "StoneFist":
+    "Stone Fist":
     {
         "DamageMultiplier": 1.7
     }

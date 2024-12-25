@@ -1,3 +1,5 @@
+using TextBlade.Core.Battle;
+
 namespace TextBlade.Core.Characters;
 
 public class Monster : Entity
@@ -5,8 +7,10 @@ public class Monster : Entity
     public readonly string Weakness;
     public readonly int Gold;
     public readonly int ExperiencePoints;
-    
-    public Monster(string name, int health, int strength, int toughness, int gold = 0, int experiencePoints = 0, string weakness = "")
+
+    public Dictionary<string, float>? SkillProbabilities { get; }
+
+    public Monster(string name, int health, int strength, int toughness, int gold = 0, int experiencePoints = 0, string weakness = "", List<Skill>? skills = null, Dictionary<string, float>? stringProbabilities = null)
     : base(name, health, strength, toughness)
     {
         this.Weakness = weakness;
@@ -18,6 +22,9 @@ public class Monster : Entity
             // No legitimate case for this right now; determine it automagically.
             this.ExperiencePoints = strength + toughness;
         }
+
+        this.Skills = skills;
+        this.SkillProbabilities = stringProbabilities;
     }
 
     internal int Attack(Character target)

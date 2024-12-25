@@ -21,12 +21,13 @@ public class BasicMonsterAi
         var validTargets = _party.Where(p => p.CurrentHealth > 0).ToList();
         if (validTargets.Count == 0)
         {
-            // Wiped out, nothing to do
+            // Player party is wiped out, nothing to do
             return;
         }
 
         var target = validTargets[Random.Shared.Next(0, validTargets.Count)];
 
+        // Should we use a skill?
         var damage = monster.Attack(target);
         var message = $"{monster.Name} attacks {target.Name} for [{Colours.Highlight}]{damage}[/] damage! ";
         if (target.CurrentHealth <= 0)

@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+using TextBlade.Core.Battle;
 using TextBlade.Core.Battle.Statuses;
 using TextBlade.Core.IO;
 
@@ -14,6 +16,12 @@ public abstract class Entity
     public int Strength { get; internal set; } 
     public int Toughness { get; internal set; }
     public Dictionary<string, int> StatusStacks { get; private set; } = new();
+    
+    [JsonIgnore]
+    public List<Skill>? Skills { get; set; } = new(); // NOT populated by JSON
+    
+    public List<string>? SkillNames { get; set; } = new(); // populated by JSON
+
 
     protected Entity(string name, int health, int strength, int toughness)
     {

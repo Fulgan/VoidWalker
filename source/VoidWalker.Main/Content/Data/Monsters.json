@@ -5,10 +5,7 @@
         "Strength": 15,
         "Toughness": 3,
         "Weakness": "Spear",
-        "Gold": 5,
-        "Skills": [
-            { "Name": "DoubleStrike", "Probability": 0.6 }
-        ]
+        "Gold": 5
     },
     "Spider":
     {
@@ -17,7 +14,7 @@
         "Toughness": 5,
         "Weakness": "Fire",
         "Gold": 10,
-        "Skills": [
+        "SkillNames": [
             { "Name": "Web", "Probability": 0.3 }
         ]
     },
@@ -28,7 +25,7 @@
         "Toughness": 7,
         "Weakness": "Ice",
         "Gold": 25,
-        "Skills": [
+        "SkillNames": [
             { "Name": "Stone Fist", "Probability": 0.25 }
         ]
     },
@@ -39,7 +36,7 @@
         "Toughness": 6,
         "Weakness": "Poison",
         "Gold": 40,
-        "Skills": [
+        "SkillNames": [
             { "Name": "Whirlwind", "Probability": 0.5 }
         ]
     },
@@ -50,7 +47,7 @@
         "Toughness": 10,
         "Weakness": "Bleed",
         "Gold": 75,
-        "Skills": [
+        "SkillNames": [
             { "Name": "Stone Fist", "Probability": 0.4 }
         ]
     },
@@ -62,7 +59,7 @@
         "Toughness": 15,
         "Weakness": "Fire",
         "Gold": 250,
-        "Skills": [
+        "SkillNames": [
             { "Name": "Poison", "Probability": 0.4 },
             { "Name": "Heal", "Probability": 0.2 }
         ]
