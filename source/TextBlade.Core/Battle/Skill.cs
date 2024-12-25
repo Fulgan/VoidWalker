@@ -15,10 +15,12 @@ public class Skill
     public int StatusStacks { get; set; } = 0;
     public string DamageType { get; set; } = "Normal";
 
+    private const double MaxPrecisionDifference = 0.00001;
+
     public override string ToString()
     {
         var statusText = string.IsNullOrWhiteSpace(StatusInflicted) ? string.Empty : $"inflicts {StatusInflicted} {StatusStacks} times,";
-        if (DamageMultiplier == 0)
+        if (Math.Abs(DamageMultiplier - 0) < MaxPrecisionDifference)
         {
             return $"{Name}: {statusText} costs {Cost} skill points";
         }
