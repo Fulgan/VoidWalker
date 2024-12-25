@@ -8,7 +8,7 @@
     {
         "DamageMultiplier": 1.25,
         "Cost": 20,
-        "Target": "AllEnemy"
+        "Target": "AllEnemies"
     },
     "Fire A":
     {
@@ -35,7 +35,7 @@
     {
         "DamageMultiplier": 1.5,
         "Cost": 5,
-        "Target": "SingleFriendly"
+        "Target": "SingleFriend"
     },
 
     // Exclusively monster skills. No cost associated with them. Monsters have infinite SP.

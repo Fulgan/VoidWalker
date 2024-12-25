@@ -1,3 +1,5 @@
+using TextBlade.Core.IO;
+
 namespace TextBlade.Core.Battle;
 
 /// <summary>
@@ -6,6 +8,9 @@ namespace TextBlade.Core.Battle;
 /// </summary>
 public class Skill
 {
+    private static IDictionary<string, Skill> s_allSkillsData;
+    public static Skill GetSkill(string skillName) => s_allSkillsData[skillName];
+
     public string Name { get; set; } = string.Empty;
     public float DamageMultiplier { get; set; } = 1.0f;
     public int Cost { get; set; } = 0;
@@ -18,6 +23,11 @@ public class Skill
     public string DamageType { get; set; } = "Normal";
 
     private const double MaxPrecisionDifference = 0.00001;
+
+    static Skill()
+    {
+        s_allSkillsData = Serializer.DeserializeSkillsData();
+    }
 
     public override string ToString()
     {

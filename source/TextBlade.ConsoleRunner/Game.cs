@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TextBlade.ConsoleRunner.IO;
+using TextBlade.Core.Battle;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
 using TextBlade.Core.Game;
@@ -159,6 +160,7 @@ public class Game : IGame
         var runner = new NewGameRunner(gameJson);
         _saveData = new();
         _saveData.Party = runner.CreateParty();
+        RefreshSkillsData();
         _saveData.Inventory = new();
 
         var startLocationId = runner.GetStartingLocationId();
@@ -170,6 +172,7 @@ public class Game : IGame
     private void LoadGame()
     {
         _saveData = SaveGameManager.LoadGame(SaveGameManager.CurrentGameSlot);
+
         GameSwitches.Switches = _saveData.Switches;
         new ChangeLocationCommand(this, _saveData.CurrentLocationId).Execute(_saveData);
 
@@ -178,7 +181,22 @@ public class Game : IGame
             _currentLocation.SetStateBasedOnCustomSaveData(_saveData.LocationSpecificData);
         }
 
+        RefreshSkillsData();
+
         _console.WriteLine("Save game loaded. For help, type \"help\"");
+    }
+
+    private void RefreshSkillsData()
+    {
+        foreach (var character in _saveData.Party)
+        {
+            character.Skills = new();
+            foreach (var skillName in character.SkillNames)
+            {
+                var skill = Skill.GetSkill(skillName);
+                character.Skills.Add(skill);
+            }
+        }
     }
 
 
