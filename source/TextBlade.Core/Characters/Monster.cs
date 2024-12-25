@@ -23,8 +23,8 @@ public class Monster : Entity
             this.ExperiencePoints = strength + toughness;
         }
 
-        this.Skills = skills;
-        this.SkillProbabilities = stringProbabilities;
+        this.Skills = skills ?? new();
+        this.SkillProbabilities = stringProbabilities ?? new();
     }
 
     internal int Attack(Character target)
