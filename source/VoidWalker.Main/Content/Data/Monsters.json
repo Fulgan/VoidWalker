@@ -14,6 +14,7 @@
         "Toughness": 5,
         "Weakness": "Fire",
         "Gold": 10,
+        "SkillPoints": 15,
         "SkillNames": [
             { "Name": "Web", "Probability": 0.3 }
         ]

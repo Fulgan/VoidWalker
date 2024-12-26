@@ -37,6 +37,7 @@ public class Monster : Entity
 
     public override string ToString()
     {
-        return $"{this.Name} ({this.CurrentHealth}/{this.TotalHealth} health)";
+        var skillPointsMessage = this.TotalSkillPoints > 0 ? $", {this.CurrentSkillPoints}/{this.TotalSkillPoints} skill points" : "";
+        return $"{this.Name} ({this.CurrentHealth}/{this.TotalHealth} health{skillPointsMessage})";
     }
 }

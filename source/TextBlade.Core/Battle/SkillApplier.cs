@@ -19,10 +19,7 @@ public class SkillApplier
             InflictStatuses(user, skill, target);
         }
 
-        if (user is Character character)
-        {
-            character.CurrentSkillPoints -= skill.Cost;
-        }
+        user.CurrentSkillPoints -= skill.Cost;
     }
 
     private void ApplyDamage(Entity user, Skill skill, Entity target)

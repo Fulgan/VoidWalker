@@ -38,15 +38,17 @@
         "Target": "SingleFriend"
     },
 
-    // Exclusively monster skills. No cost associated with them. Monsters have infinite SP.
+    // Exclusively monster skills.
     "Web":
     {
+        "Cost": 10,
         "DamageMultiplier": 0,
         "StatusInflicted": "Paralyze",
         "StatusStacks": 3
     },
     "Stone Fist":
     {
+        "Cost": 7,
         "DamageMultiplier": 1.7
     }
 }
