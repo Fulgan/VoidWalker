@@ -10,19 +10,12 @@ public class Monster : Entity
 
     public Dictionary<string, double>? SkillProbabilities { get; }
 
-    public Monster(string name, int health, int strength, int toughness, int gold = 0, int experiencePoints = 0, string weakness = "", List<Skill>? skills = null, Dictionary<string, double>? stringProbabilities = null)
-    : base(name, health, strength, toughness)
+    public Monster(string name, int health, int strength, int toughness, int special, int specialDefense, int skillPoints, int experiencePoints, int gold = 0, string weakness = "", List<Skill>? skills = null, Dictionary<string, double>? stringProbabilities = null)
+    : base(name, health, strength, toughness, special, specialDefense, skillPoints)
     {
         this.Weakness = weakness;
         this.Gold = gold;
-
         this.ExperiencePoints = experiencePoints;
-        if (this.ExperiencePoints == 0)
-        {
-            // No legitimate case for this right now; determine it automagically.
-            this.ExperiencePoints = strength + toughness;
-        }
-
         this.Skills = skills ?? new();
         this.SkillProbabilities = stringProbabilities ?? new();
     }

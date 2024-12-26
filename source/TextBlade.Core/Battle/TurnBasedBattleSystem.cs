@@ -85,9 +85,12 @@ public class TurnBasedBattleSystem : IBattleSystem
             var health = data.Value<int>("Health");
             var strength = data.Value<int>("Strength");
             var toughness = data.Value<int>("Toughness");
+            var special = data.Value<int?>("Special") ?? 0;
+            var specialDefense = data.Value<int?>("SpecialDefense") ?? 0;
+            var skillPoints = data.Value<int?>("SkillPoints") ?? 0;
             var weakness = data.Value<string?>("Weakness") ?? string.Empty;
             var gold = data.Value<int>("Gold");
-            var experiencePoints = data.Value<int?>("ExperiencePoints") ?? 0; // 0 = auto calculate
+            var experiencePoints = data.Value<int?>("ExperiencePoints") ?? 0;
 
             
             var skillNames = data.Value<JArray>("SkillNames");
@@ -107,7 +110,7 @@ public class TurnBasedBattleSystem : IBattleSystem
                 }
             }
 
-            var monster = new Monster(name, health, strength, toughness, gold, experiencePoints, weakness, skills, skillProbabilities);
+            var monster = new Monster(name, health, strength, toughness, special, specialDefense, skillPoints, experiencePoints, gold, weakness, skills, skillProbabilities);
             _monsters.Add(monster);
         }
     }

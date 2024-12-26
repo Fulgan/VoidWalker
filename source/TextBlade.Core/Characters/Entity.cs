@@ -15,6 +15,11 @@ public abstract class Entity
     public int CurrentHealth { get; set; } 
     public int Strength { get; internal set; } 
     public int Toughness { get; internal set; }
+    public int Special { get; internal set; } 
+    public int SpecialDefense { get; internal set; }
+    public int TotalSkillPoints { get; set; }
+    public int CurrentSkillPoints { get; set; }
+
     public Dictionary<string, int> StatusStacks { get; private set; } = new();
     
     [JsonIgnore]
@@ -23,13 +28,17 @@ public abstract class Entity
     public List<string>? SkillNames { get; set; } = new(); // populated by JSON
 
 
-    protected Entity(string name, int health, int strength, int toughness)
+    protected Entity(string name, int health, int strength, int toughness, int special, int specialDefense, int skillPoints)
     {
         this.Name = name;
         this.CurrentHealth = health;
         this.TotalHealth = health;
         this.Strength = strength;
         this.Toughness = toughness;
+        this.Special = special;
+        this.SpecialDefense = specialDefense;
+        this.CurrentSkillPoints = skillPoints;
+        this.TotalSkillPoints = skillPoints;
     }
 
     public bool IsAlive => CurrentHealth > 0;
