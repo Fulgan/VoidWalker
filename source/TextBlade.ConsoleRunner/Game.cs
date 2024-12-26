@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TextBlade.ConsoleRunner.IO;
+using TextBlade.Core.Battle;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
 using TextBlade.Core.Game;

@@ -104,9 +104,9 @@ public class TurnBasedBattleSystem : IBattleSystem
                 {
                     var skillName = token.Value<string>("Name");
                     var probability = token.Value<double>("Probability");
-                    var skill = Skill.GetSkill(skillName.ToString());
+                    var skill = Skill.GetSkill(skillName??"");
                     skills.Add(skill);
-                    skillProbabilities[skillName] = probability;
+                    skillProbabilities[skillName ?? ""] = probability;
                 }
             }
 
