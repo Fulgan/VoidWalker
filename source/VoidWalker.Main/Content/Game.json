@@ -6,7 +6,7 @@
             "Name": "Aisha",
             "CurrentHealth": 120, "TotalHealth": 120, "CurrentSkillPoints": 50, "TotalSkillPoints": 50,
             "Strength": 25, "Toughness": 10, "Special": 5, "SpecialDefense": 5,
-            "SkillNames": ["DoubleStrike", "Whirlwind"]
+            "SkillNames": ["Double Strike", "Whirlwind"]
         },
 
         {

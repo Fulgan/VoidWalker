@@ -106,7 +106,7 @@ public class Game : IGame
         }
         catch (Exception ex)
         {
-             string[] crashFiles = [@"SaveData\default.save", "crash.txt"];
+            string[] crashFiles = [@"SaveData\default.save", "crash.txt"];
             _console.WriteLine("[red]Oh no! The game crashed![/]");
             _console.WriteLine("Please reach out to the developers and let them know about this, so that they can look into it.");
             _console.WriteLine($"Send them these files from your game directory, along with a description of what you were doing in-game: [green]{string.Join(", ", crashFiles)}[/]");
@@ -161,11 +161,10 @@ public class Game : IGame
     private void StartNewGame(JObject gameJson)
     {
         var runner = new NewGameRunner(gameJson);
-        _saveData = new()
-        {
-            Party = runner.CreateParty(),
-            Inventory = new()
-        };
+        _saveData = new();
+        _saveData.Party = runner.CreateParty();
+        RefreshSkillsData();
+        _saveData.Inventory = new();
 
         var startLocationId = runner.GetStartingLocationId();
         new ChangeLocationCommand(this, startLocationId).Execute(_saveData);
@@ -176,6 +175,7 @@ public class Game : IGame
     private void LoadGame()
     {
         _saveData = SaveGameManager.LoadGame(SaveGameManager.CurrentGameSlot);
+
         GameSwitches.Switches = _saveData.Switches;
         new ChangeLocationCommand(this, _saveData.CurrentLocationId).Execute(_saveData);
 
@@ -184,7 +184,22 @@ public class Game : IGame
             _currentLocation.SetStateBasedOnCustomSaveData(_saveData.LocationSpecificData);
         }
 
+        RefreshSkillsData();
+
         _console.WriteLine("Save game loaded. For help, type \"help\"");
+    }
+
+    private void RefreshSkillsData()
+    {
+        foreach (var character in _saveData.Party)
+        {
+            character.Skills = new();
+            foreach (var skillName in character.SkillNames)
+            {
+                var skill = Skill.GetSkill(skillName);
+                character.Skills.Add(skill);
+            }
+        }
     }
 
 

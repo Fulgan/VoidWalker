@@ -1,3 +1,5 @@
+using TextBlade.Core.IO;
+
 namespace TextBlade.Core.Battle;
 
 /// <summary>
@@ -6,19 +8,31 @@ namespace TextBlade.Core.Battle;
 /// </summary>
 public class Skill
 {
+    private static IDictionary<string, Skill> s_allSkillsData;
+    public static Skill GetSkill(string skillName) => s_allSkillsData[skillName];
+
     public string Name { get; set; } = string.Empty;
     public float DamageMultiplier { get; set; } = 1.0f;
     public int Cost { get; set; } = 0;
-    // ENUM: Single, All (enemies), Self, Character, Party
-    public string Target { get; set; } = "Single";
+
+    // SingleEnemy, AllEnemies, SingleFriend, AllFriends.
+    // Meaning changes depending on if a character or monster uses it.
+    public string Target { get; set; } = "SingleEnemy";
     public string StatusInflicted { get; set; } = string.Empty;
     public int StatusStacks { get; set; } = 0;
     public string DamageType { get; set; } = "Normal";
 
+    private const double MaxPrecisionDifference = 0.00001;
+
+    static Skill()
+    {
+        s_allSkillsData = Serializer.DeserializeSkillsData();
+    }
+
     public override string ToString()
     {
         var statusText = string.IsNullOrWhiteSpace(StatusInflicted) ? string.Empty : $"inflicts {StatusInflicted} {StatusStacks} times,";
-        if (DamageMultiplier == 0)
+        if (Math.Abs(DamageMultiplier - 0) < MaxPrecisionDifference)
         {
             return $"{Name}: {statusText} costs {Cost} skill points";
         }

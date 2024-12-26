@@ -1,19 +1,17 @@
+using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
-
-namespace TextBlade.Core.Battle;
 
 public class SkillApplier
 {
     private readonly IConsole _console;
-
 
     public SkillApplier(IConsole console)
     {
         _console = console;
     }
     
-    internal void Apply(Character user, Skill skill, IEnumerable<Entity> targets)
+    internal void Apply(Entity user, Skill skill, IEnumerable<Entity> targets)
     {
         foreach (var target in targets)
         {
@@ -24,7 +22,7 @@ public class SkillApplier
         user.CurrentSkillPoints -= skill.Cost;
     }
 
-    private void ApplyDamage(Character user, Skill skill, Entity target)
+    private void ApplyDamage(Entity user, Skill skill, Entity target)
     {
         /////// TODO: REFACTOR so this method is not polymorphic: healing *and* damage.
         
@@ -32,20 +30,22 @@ public class SkillApplier
         float damage = 0;
         var hitWeakness = false;
 
-        if (target is Monster m)
+        if (user.GetType() != target.GetType())
         {
-            damage = (user.TotalStrength - target.Toughness) * skill.DamageMultiplier;
-            if (m.Weakness == skill.DamageType)
+            var totalStrength = user is Character character ? character.TotalStrength : user.Strength;
+            damage = (totalStrength - target.Toughness) * skill.DamageMultiplier;
+            if (target is Monster m && m.Weakness == skill.DamageType)
             {
                 // Targeting their weakness? 2x damage!
                 damage *= 2;
                 hitWeakness = true;
             }
         }
-        else if (target is Character)
+        else if (user.GetType() == target.GetType())
         {
+            var skillPower = user is Character c1 ? c1.Special : user.Strength;
             // If you're healing, heal for 2x
-            damage = (int)Math.Ceiling(user.Special * -skill.DamageMultiplier * 2);
+            damage = (int)Math.Ceiling(skillPower * -skill.DamageMultiplier * 2);
         }
 
         var roundedDamage = (int)damage;
@@ -56,7 +56,7 @@ public class SkillApplier
         _console.WriteLine($"{user.Name} uses {skill.Name} on {target.Name}! {effectiveMessage} {damageMessage}!");
     }
     
-    private void InflictStatuses(Character user, Skill skill, Entity target)
+    private void InflictStatuses(Entity user, Skill skill, Entity target)
     {
         if (string.IsNullOrWhiteSpace(skill.StatusInflicted))
         {

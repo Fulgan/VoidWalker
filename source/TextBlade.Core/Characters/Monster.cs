@@ -1,3 +1,5 @@
+using TextBlade.Core.Battle;
+
 namespace TextBlade.Core.Characters;
 
 public class Monster : Entity
@@ -5,19 +7,17 @@ public class Monster : Entity
     public readonly string Weakness;
     public readonly int Gold;
     public readonly int ExperiencePoints;
-    
-    public Monster(string name, int health, int strength, int toughness, int gold = 0, int experiencePoints = 0, string weakness = "")
-    : base(name, health, strength, toughness)
+
+    public Dictionary<string, double>? SkillProbabilities { get; }
+
+    public Monster(string name, int health, int strength, int toughness, int special, int specialDefense, int skillPoints, int experiencePoints, int gold = 0, string weakness = "", List<Skill>? skills = null, Dictionary<string, double>? stringProbabilities = null)
+    : base(name, health, strength, toughness, special, specialDefense, skillPoints)
     {
         this.Weakness = weakness;
         this.Gold = gold;
-
         this.ExperiencePoints = experiencePoints;
-        if (this.ExperiencePoints == 0)
-        {
-            // No legitimate case for this right now; determine it automagically.
-            this.ExperiencePoints = strength + toughness;
-        }
+        this.Skills = skills ?? new();
+        this.SkillProbabilities = stringProbabilities ?? new();
     }
 
     internal int Attack(Character target)
@@ -37,6 +37,7 @@ public class Monster : Entity
 
     public override string ToString()
     {
-        return $"{this.Name} ({this.CurrentHealth}/{this.TotalHealth} health)";
+        var skillPointsMessage = this.TotalSkillPoints > 0 ? $", {this.CurrentSkillPoints}/{this.TotalSkillPoints} skill points" : "";
+        return $"{this.Name} ({this.CurrentHealth}/{this.TotalHealth} health{skillPointsMessage})";
     }
 }
