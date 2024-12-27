@@ -45,7 +45,7 @@ public class AttackExecutorTests
     {
         // Arrange
         var attacker = new Character("Faris", 100, 10, 1, 0, 0, 0);
-        var defender = new Monster("Slime", 100, 0, 3, 0, 0, 0);
+        var defender = new Monster("Slime", 100, 0, 3, 0, 0, 0, 0);
         
         var knifeStats = new Dictionary<CharacterStats, int>
         {
@@ -77,7 +77,7 @@ public class AttackExecutorTests
     {
         // Arrange
         var attacker = new Character("Faraz", 100, 10, 1, 0, 0, 0, 0);
-        var defender = new Monster("Slime", 100, 0, 3, 0, 0, 0, weakness: "Lightning");
+        var defender = new Monster("Slime", 100, 0, 3, 0, 0, 0, 0, weakness: "Lightning");
         
         var knifeStats = new Dictionary<CharacterStats, int>
         {
@@ -104,7 +104,7 @@ public class AttackExecutorTests
     {
         // Arrange
         var attacker = new Character("Farhan", 100, 999, 1, 0, 0, 0);
-        var defender = new Monster("Slime", 10, 5, 3 , 0, 0, 0);
+        var defender = new Monster("Slime", 10, 5, 3 , 0, 0, 0, 0);
 
         var console = new ConsoleStub();
         var executor = new AttackExecutor(console);

@@ -54,7 +54,7 @@ public class SkillApplierTests
         var applier = new SkillApplier(Substitute.For<IConsole>());
         var user = new Character("Skill User", 1, 20, 1, 1, 0, 0, 0);
         var skill = new Skill() { DamageMultiplier = 1f, DamageType = "Time" };
-        var target = new Monster("Slime", 100, 1, 5, 0, 0, 0, weakness: "Time", 0);
+        var target = new Monster("Slime", 100, 1, 5, 0, 0, 0, 0, weakness: "Time");
         int expectedDamage = (user.TotalStrength - target.Toughness) * 2; // x2 = weakness
 
         // Act
