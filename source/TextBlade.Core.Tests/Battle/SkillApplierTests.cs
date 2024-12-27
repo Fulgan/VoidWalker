@@ -10,7 +10,7 @@ namespace TextBlade.Core.Tests.Battle;
 public class SkillApplierTests
 {
     [Test]
-    public void Apply_AppliesDamage_IfTargetIsMonster()
+    public void Apply_AppliesDamage_IfUserIsCharacterAndTargetIsMonster()
     {
         // Arrange
         var applier = new SkillApplier(Substitute.For<IConsole>());
@@ -28,8 +28,27 @@ public class SkillApplierTests
         Assert.That(actualDamage, Is.EqualTo(expectedDamage));
     }
 
+        [Test]
+    public void Apply_AppliesDamage_IfUserIsMonsterAndTargetIsCharacter()
+    {
+        // Arrange
+        var applier = new SkillApplier(Substitute.For<IConsole>());
+        // Skills use Strength right now (total strength), not Special
+        var user = new Monster("Slime", 100, 1, 5, 0, 0, 0, 0);
+        var target = new Character("Skill User", 1, 20, 1, 1, 0, 0);
+        var skill = new Skill() { DamageMultiplier = 1.5f };
+        int expectedDamage = (int)((target.TotalStrength - user.Toughness) * skill.DamageMultiplier);
+
+        // Act
+        applier.Apply(target, skill, [user]);
+
+        // Assert
+        var actualDamage = user.TotalHealth - user.CurrentHealth;
+        Assert.That(actualDamage, Is.EqualTo(expectedDamage));
+    }
+
     [Test]
-    public void Apply_Heals_IfTargetIsCharacter()
+    public void Apply_HealsCharacter_IfUserAndTargetAreCharacters()
     {
         // Arrange
         var applier = new SkillApplier(Substitute.For<IConsole>());
@@ -48,7 +67,26 @@ public class SkillApplierTests
     }
 
     [Test]
-    public void Apply_DoublesDamage_IfTargetWeaknessMatchesSkillDamageType()
+    public void Apply_HealsCharacter_IfUserAndTargetAreMonsters()
+    {
+        // Arrange
+        var applier = new SkillApplier(Substitute.For<IConsole>());
+        // Healing uses Special
+        var user = new Monster("Slime Priest", 1, 1, 1, 20, 0, 0, 0);
+        var skill = new Skill() { DamageMultiplier = 1.5f };
+        var target = new Character("Nearly Dead Slime", 100, 1, 5, 0, 0, 0) { CurrentHealth = 1 };
+        int expectedHealing = (int)(user.Special * skill.DamageMultiplier * 2);
+
+        // Act
+        applier.Apply(user, skill, [target]);
+
+        // Assert
+        var actualHealing = target.CurrentHealth;
+        Assert.That(actualHealing, Is.GreaterThan(1));
+    }
+
+    [Test]
+    public void Apply_DoublesDamageToMonsters_IfTargetWeaknessMatchesSkillDamageType()
     {
         // Arrange
         var applier = new SkillApplier(Substitute.For<IConsole>());
