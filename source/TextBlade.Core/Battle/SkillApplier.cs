@@ -43,7 +43,7 @@ public class SkillApplier
         }
         else if (user.GetType() == target.GetType())
         {
-            var skillPower = user is Character c1 ? c1.Special : user.Strength;
+            var skillPower = user.Special;
             // If you're healing, heal for 2x
             damage = (int)Math.Ceiling(skillPower * -skill.DamageMultiplier * 2);
         }

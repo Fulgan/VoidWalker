@@ -37,10 +37,10 @@ public class SkillApplierTests
         var user = new Monster("Slime", 100, 1, 5, 0, 0, 0, 0);
         var target = new Character("Skill User", 1, 20, 1, 1, 0, 0);
         var skill = new Skill() { DamageMultiplier = 1.5f };
-        int expectedDamage = (int)((target.TotalStrength - user.Toughness) * skill.DamageMultiplier);
+        int expectedDamage = (int)((user.Strength - target.Toughness) * skill.DamageMultiplier);
 
         // Act
-        applier.Apply(target, skill, [user]);
+        applier.Apply(user, skill, [target]);
 
         // Assert
         var actualDamage = user.TotalHealth - user.CurrentHealth;
@@ -67,14 +67,14 @@ public class SkillApplierTests
     }
 
     [Test]
-    public void Apply_HealsCharacter_IfUserAndTargetAreMonsters()
+    public void Apply_HealsTarget_IfUserAndTargetAreMonsters()
     {
         // Arrange
         var applier = new SkillApplier(Substitute.For<IConsole>());
         // Healing uses Special
-        var user = new Monster("Slime Priest", 1, 1, 1, 20, 0, 0, 0);
+        var user = new Monster("Slime Priest", 1, 1, 1, 30, 0, 0, 0);
         var skill = new Skill() { DamageMultiplier = 1.5f };
-        var target = new Character("Nearly Dead Slime", 100, 1, 5, 0, 0, 0) { CurrentHealth = 1 };
+        var target = new Monster("Nearly Dead Slime", 100, 1, 5, 0, 0, 0, 0) { CurrentHealth = 0 };
         int expectedHealing = (int)(user.Special * skill.DamageMultiplier * 2);
 
         // Act
@@ -82,7 +82,7 @@ public class SkillApplierTests
 
         // Assert
         var actualHealing = target.CurrentHealth;
-        Assert.That(actualHealing, Is.GreaterThan(1));
+        Assert.That(actualHealing, Is.EqualTo(expectedHealing));
     }
 
     [Test]
