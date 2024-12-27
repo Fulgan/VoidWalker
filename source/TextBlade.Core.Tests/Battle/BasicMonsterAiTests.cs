@@ -25,7 +25,7 @@ public class BasicMonsterAiTests
         // Act.
         for (int i = 0; i < 10; i++)
         {
-            ai.ProcessTurnFor(new Monster("Attacker-Sama", 100, 15, 0, 0, 0, 0));
+            ai.ProcessTurnFor(new Monster("Attacker-Sama", 100, 15, 0, 0, 0, 0, 0));
         }
 
         // Assert
@@ -48,7 +48,7 @@ public class BasicMonsterAiTests
 
         var console = new ConsoleStub();
         var ai = new BasicMonsterAi(console, party);
-        var attacker = new Monster("Attacker-Sama", 100, 15, 0, 0, 0, 0);
+        var attacker = new Monster("Attacker-Sama", 100, 15, 0, 0, 0, 0, 0);
 
         // Act. Do it a few times. Because random is random.
         for (int i = 0; i < 10; i++)
@@ -75,7 +75,7 @@ public class BasicMonsterAiTests
 
         var console = new ConsoleStub();
         var ai = new BasicMonsterAi(console, party);
-        var attacker = new Monster("Stone Monster", 100, 999, 999, 0, 0, 0);
+        var attacker = new Monster("Stone Monster", 100, 999, 999, 0, 0, 0, 0);
 
         // Act
         ai.ProcessTurnFor(attacker);

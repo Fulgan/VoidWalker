@@ -17,7 +17,7 @@ public class SkillApplierTests
         // Skills use Strength right now (total strength), not Special
         var user = new Character("Skill User", 1, 20, 1, 1, 0, 0, 0);
         var skill = new Skill() { DamageMultiplier = 1.5f };
-        var target = new Monster("Slime", 100, 1, 5, 0, 0, 0);
+        var target = new Monster("Slime", 100, 1, 5, 0, 0, 0, 0);
         int expectedDamage = (int)((user.TotalStrength - target.Toughness) * skill.DamageMultiplier);
 
         // Act
@@ -54,7 +54,7 @@ public class SkillApplierTests
         var applier = new SkillApplier(Substitute.For<IConsole>());
         var user = new Character("Skill User", 1, 20, 1, 1, 0, 0, 0);
         var skill = new Skill() { DamageMultiplier = 1f, DamageType = "Time" };
-        var target = new Monster("Slime", 100, 1, 5, 0, 0, 0, weakness: "Time");
+        var target = new Monster("Slime", 100, 1, 5, 0, 0, 0, weakness: "Time", 0);
         int expectedDamage = (user.TotalStrength - target.Toughness) * 2; // x2 = weakness
 
         // Act
@@ -73,7 +73,7 @@ public class SkillApplierTests
         // Skills use Strength right now (total strength), not Special
         var user = new Character("Skill User", 1, 1, 1, 1, 0, 0, 0);
         var skill = new Skill() { StatusInflicted = "Anxiety", StatusStacks = 4 };
-        var target = new Monster("Slime", 1, 1, 1, 0, 0, 0);
+        var target = new Monster("Slime", 1, 1, 1, 0, 0, 0, 0);
 
         // Act
         applier.Apply(user, skill, [target]);
@@ -91,7 +91,7 @@ public class SkillApplierTests
         // Skills use Strength right now (total strength), not Special
         var user = new Character("Skill User", 1, 1, 1, 1, 0, 0, 0) { TotalSkillPoints = 77, CurrentSkillPoints = 66 };
         var skill = new Skill() { Cost = 7 };
-        var target = new Monster("Slime", 1, 1, 1, 0, 0, 0);
+        var target = new Monster("Slime", 1, 1, 1, 0, 0, 0, 0);
 
         // Act
         applier.Apply(user, skill, [target]);

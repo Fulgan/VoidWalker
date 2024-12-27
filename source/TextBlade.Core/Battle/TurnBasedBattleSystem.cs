@@ -102,11 +102,11 @@ public class TurnBasedBattleSystem : IBattleSystem
                 skills = new();
                 foreach (var token in skillNames)
                 {
-                    var skillName = token.Value<string>("Name");
+                    var skillName = token.Value<string>("Name") ?? throw new InvalidOperationException("Skill has no 'Name' key");
                     var probability = token.Value<double>("Probability");
-                    var skill = Skill.GetSkill(skillName??"");
+                    var skill = Skill.GetSkill(skillName);
                     skills.Add(skill);
-                    skillProbabilities[skillName ?? ""] = probability;
+                    skillProbabilities[skillName] = probability;
                 }
             }
 

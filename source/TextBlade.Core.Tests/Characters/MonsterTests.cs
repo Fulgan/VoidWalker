@@ -12,7 +12,7 @@ public class MonsterTests
     public void Attack_DamagesByStrengthMinusTargetToughness()
     {
         // Arrange
-        var monster = new Monster("Green Slime", 100, 10, 5, 0, 0, 0);
+        var monster = new Monster("Green Slime", 100, 10, 5, 0, 0, 0, 0);
         var target = new Character("Asad", 100, 100, toughness: 7, 0, 0, 0);
         var expectedDamage = monster.Strength - target.Toughness;
 
@@ -27,7 +27,7 @@ public class MonsterTests
     public void Attack_DamagesByLessThanStrengthMinusTargetToughness_IfTargetIsBlocking()
     {
         // Arrange
-        var monster = new Monster("Green Slime", 100, 10, 5, 0, 0, 0);
+        var monster = new Monster("Green Slime", 100, 10, 5, 0, 0, 0, 0);
         var target = new Character("Asad", 100, 100, toughness: 3, 0, 0, 0);
         target.Defend(Substitute.For<IConsole>());
 
@@ -48,7 +48,7 @@ public class MonsterTests
     public void Attack_DoesNoDamage_IfDamageIsZeroOrNegative(int strength)
     {
         // Arrange
-        var monster = new Monster("Orange Slime", 100, strength, 5, 0, 0, 0);
+        var monster = new Monster("Orange Slime", 100, strength, 5, 0, 0, 0, 0);
         var target = new Character("Ahmed", 100, 100, toughness: 9999, 0, 0, 0);
 
         // Act
@@ -65,7 +65,7 @@ public class MonsterTests
     public void Attack_SetsTargetHealthToZero_IfTargetDies(int strength)
     {
         // Arrange
-        var monster = new Monster("Orange Slime", 1000, strength, 5, 0, 0, 0);
+        var monster = new Monster("Orange Slime", 1000, strength, 5, 0, 0, 0, 0);
         var target = new Character("Ahmed", 100, 100, 0, 0, 0, 0);
 
         // Act

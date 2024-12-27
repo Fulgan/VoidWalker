@@ -10,7 +10,7 @@ public class Monster : Entity
 
     public Dictionary<string, double>? SkillProbabilities { get; }
 
-    public Monster(string name, int health, int strength, int toughness, int special, int specialDefense, int skillPoints, int experiencePoints = 0, int gold = 0, string weakness = "", List<Skill>? skills = null, Dictionary<string, double>? stringProbabilities = null)
+    public Monster(string name, int health, int strength, int toughness, int special, int specialDefense, int skillPoints, int experiencePoints, int gold = 0, string weakness = "", List<Skill>? skills = null, Dictionary<string, double>? stringProbabilities = null)
     : base(name, health, strength, toughness, special, specialDefense, skillPoints)
     {
         this.Weakness = weakness;

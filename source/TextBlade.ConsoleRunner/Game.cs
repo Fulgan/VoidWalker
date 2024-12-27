@@ -68,7 +68,9 @@ public class Game : IGame
         try {
             LoadGameOrStartNewGame();
             if (_currentLocation is null)
-                throw new InvalidOperationException("Game has not been set up");
+            {
+                throw new InvalidOperationException("No location has been configured for game start");
+            }
 
             // Don't execute code if we stay in the same location, e.g. press enter or "help" - only execute code
             // if the location changed. Fixes a bug where spamming enter keeps adding the same location over and over ...
@@ -122,7 +124,7 @@ public class Game : IGame
     protected void SaveGame()
     {
         if (_currentLocation == null)
-            return; // Game has not been started yet
+            throw new InvalidOperationException("Game has not been started yet"); 
         // Save location-specific data, favouring the current location's specific data. e.g. if you have save data from dungeon A, but are now in dungeon B,
         // you save dungeon B's data.  But if the current location data is null, albeit previously saved, preserve that data. (e.g. if you're now in town,
         // which saves nothing, but were previously in a dungeon, preserve that dungeon's data.)
