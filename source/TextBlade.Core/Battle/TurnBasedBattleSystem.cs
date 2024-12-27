@@ -144,6 +144,12 @@ public class TurnBasedBattleSystem : IBattleSystem
                     continue;
                 }
 
+                if (character.StatusStacks.ContainsKey("Paralyze"))
+                {
+                    _console.WriteLine($"[{Colours.Paralyze}]{character.Name} is paralyzed[/] and can't move!");
+                    continue;
+                }
+
                 var isProcessed = false;
                 while (!isProcessed)
                 {

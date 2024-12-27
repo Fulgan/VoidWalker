@@ -9,4 +9,5 @@ public static class Colours
     // Status effects
     public const string Poison = "#8f0";
     public const string Fire = "#f80";
+    public const string Paralyze = "#faa";
 }

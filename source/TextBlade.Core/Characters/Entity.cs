@@ -79,6 +79,8 @@ public abstract class Entity
                 case "burn":
                     new Burner(console).Burn(this);
                     break;
+                case "paralyze":
+                    break; // Implemented in turn-based system
                 default:
                     throw new InvalidOperationException($"There's no implementation for the status effect {statusName}");
             }
