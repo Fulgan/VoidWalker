@@ -27,7 +27,6 @@ public abstract class Entity
     
     public List<string>? SkillNames { get; set; } = new(); // populated by JSON
 
-
     protected Entity(string name, int health, int strength, int toughness, int special, int specialDefense, int skillPoints)
     {
         this.Name = name;

@@ -49,7 +49,7 @@ public class BasicMonsterAi
         new SkillApplier(_console).Apply(monster, skill, targets);
     }   
 
-    public void Attack(Monster monster, Character target)
+    private void Attack(Monster monster, Character target)
     {
         // Nah, nah, just attack.
         var damage = monster.Attack(target);

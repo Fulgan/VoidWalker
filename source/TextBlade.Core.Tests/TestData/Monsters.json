@@ -1,0 +1,68 @@
+{
+    "Goblin":
+    {
+        "Health": 45,
+        "Strength": 15,
+        "Toughness": 3,
+        "Weakness": "Spear",
+        "Gold": 5
+    },
+    "Spider":
+    {
+        "Health": 55,
+        "Strength": 15,
+        "Toughness": 5,
+        "Weakness": "Fire",
+        "Gold": 10,
+        "SkillPoints": 15,
+        "SkillNames": [
+            { "Name": "Web", "Probability": 0.3 }
+        ]
+    },
+    "Gargoyle":
+    {
+        "Health": 75,
+        "Strength": 19,
+        "Toughness": 7,
+        "Weakness": "Ice",
+        "Gold": 25,
+        "SkillNames": [
+            { "Name": "Stone Fist", "Probability": 0.25 }
+        ]
+    },
+    "Troll":
+    {
+        "Health": 120,
+        "Strength": 23,
+        "Toughness": 6,
+        "Weakness": "Poison",
+        "Gold": 40,
+        "SkillNames": [
+            { "Name": "Whirlwind", "Probability": 0.5 }
+        ]
+    },
+    "Ogre":
+    {
+        "Health": 175,
+        "Strength": 30,
+        "Toughness": 10,
+        "Weakness": "Bleed",
+        "Gold": 75,
+        "SkillNames": [
+            { "Name": "Stone Fist", "Probability": 0.4 }
+        ]
+    },
+    
+    "Langosta Prime":
+    {
+        "Health": 300,
+        "Strength": 45,
+        "Toughness": 15,
+        "Weakness": "Fire",
+        "Gold": 250,
+        "SkillNames": [
+            { "Name": "Poison", "Probability": 0.4 },
+            { "Name": "Heal", "Probability": 0.2 }
+        ]
+    }
+}
