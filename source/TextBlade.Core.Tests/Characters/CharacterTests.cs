@@ -14,7 +14,7 @@ public class CharacterTests
     public void FullyHeal_FullyHealsHealthAndSkillPoints()
     {
         // Arrange
-        var c = new Character("Mohammed", 200, 1, 1)
+        var c = new Character("Mohammed", 200, 1, 1, 0, 0, 0)
         { 
             CurrentHealth = 0,
             CurrentSkillPoints = 0,
@@ -33,7 +33,7 @@ public class CharacterTests
     public void Revive_SetsHealthToOne_IfHealthIsZero()
     {
         // Arrange
-        var c = new Character("Moe", 200, 1, 1)
+        var c = new Character("Moe", 200, 1, 1, 0, 0, 0)
         { 
             CurrentHealth = 0,
         };
@@ -53,7 +53,7 @@ public class CharacterTests
     public void Revive_DoesNotChangeHealth_IfHealthIsPositive(int expectedHealth)
     {
         // Arrange
-        var c = new Character("Moses", 2000, 1, 1)
+        var c = new Character("Moses", 2000, 1, 1, 0, 0, 0)
         { 
             CurrentHealth = expectedHealth,
         };
@@ -69,7 +69,7 @@ public class CharacterTests
     public void TotalStrength_IncludesAllEquipment()
     {
         // Arrange
-        var paladin = new Character("Ahmed the Wise", 100, 5, 0);
+        var paladin = new Character("Ahmed the Wise", 100, 5, 0, 0, 0, 0);
         paladin.Equipment[ItemType.Weapon] = new ("Sword of +7", ItemType.Weapon.ToString(), new Dictionary<CharacterStats, int>
         {
             { CharacterStats.Strength, 7 },
@@ -94,7 +94,7 @@ public class CharacterTests
     public void TotalToughness_IncludesAllEquipment()
     {
         // Arrange
-        var paladin = new Character("Ahmed the Wise", 100, 5, 7);
+        var paladin = new Character("Ahmed the Wise", 100, 5, 7, 0, 0, 0);
         paladin.Equipment[ItemType.Helmet] = new ("Helm of +3", ItemType.Helmet.ToString(), new Dictionary<CharacterStats, int>
         {
             { CharacterStats.Toughness, 3 },
@@ -147,7 +147,7 @@ public class CharacterTests
     public void EquippedOn_ReturnsItem_IfEquippedOnSlot_ElseReturnsNull()
     {
         // Arrange
-        var paladin = new Character("Ahmed the Great", 100, 5, 7);
+        var paladin = new Character("Ahmed the Great", 100, 5, 7, 0, 0, 0);
         var helmet = new Equipment("Helm of +3", ItemType.Helmet.ToString(), new Dictionary<CharacterStats, int>
         {
             { CharacterStats.Toughness, 3 },
@@ -164,7 +164,7 @@ public class CharacterTests
     public void Defend_SetsIsDefendingToTrue()
     {
         // Arrange
-        var c = new Character("Muhammad", 100, 10, 3);
+        var c = new Character("Muhammad", 100, 10, 3, 0, 0, 0);
 
         // Act
         c.Defend(Substitute.For<IConsole>());
@@ -177,7 +177,7 @@ public class CharacterTests
     public void OnRoundComplete_SetsIsDefendingToFalse()
     {
         // Arrange
-        var c = new Character("Mohammad", 100, 10, 3);
+        var c = new Character("Mohammad", 100, 10, 3, 0, 0, 0);
         c.Defend(Substitute.For<IConsole>());
 
         // Act

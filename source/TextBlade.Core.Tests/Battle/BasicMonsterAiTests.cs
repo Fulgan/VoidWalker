@@ -16,8 +16,8 @@ public class BasicMonsterAiTests
         // Arrange
         var party = new List<Character>
         {
-            new Character("Target A", 0, 100, toughness: 10),
-            new Character("Target B", 0, 100, toughness: 7),
+            new Character("Target A", 0, 100, 10, 0, 0, 0),
+            new Character("Target B", 0, 100, 7, 0, 0, 0, 0),
         };
 
         var ai = new BasicMonsterAi(Substitute.For<IConsole>(), party);
@@ -25,7 +25,7 @@ public class BasicMonsterAiTests
         // Act.
         for (int i = 0; i < 10; i++)
         {
-            ai.ProcessTurnFor(new Monster("Attacker-Sama", 100, 15, 0));
+            ai.ProcessTurnFor(new Monster("Attacker-Sama", 100, 15, 0, 0, 0, 0, 0));
         }
 
         // Assert
@@ -39,16 +39,16 @@ public class BasicMonsterAiTests
         // Arrange
         var party = new List<Character>
         {
-            new Character("Target A", 100, 100, toughness: 10),
-            new Character("Target B", 100, 100, toughness: 7),
-            new Character("Dead Duck", 100, 100, toughness: 7) { CurrentHealth = 0 },
-            new Character("Dead Duck 2", 100, 100, toughness: 7) { CurrentHealth = 0 },
-            new Character("Dead Duck 3", 100, 100, toughness: 7) { CurrentHealth = 0 },
+            new Character("Target A", 100, 100, 10, 0, 0, 0, 0),
+            new Character("Target B", 100, 100, 7, 0, 0, 0, 0),
+            new Character("Dead Duck", 100, 100, 7, 0, 0, 0, 0) { CurrentHealth = 0 },
+            new Character("Dead Duck 2", 100, 100, 7, 0, 0, 0, 0) { CurrentHealth = 0 },
+            new Character("Dead Duck 3", 100, 100, 7, 0, 0, 0, 0) { CurrentHealth = 0 },
         };
 
         var console = new ConsoleStub();
         var ai = new BasicMonsterAi(console, party);
-        var attacker = new Monster("Attacker-Sama", 100, 15, 0);
+        var attacker = new Monster("Attacker-Sama", 100, 15, 0, 0, 0, 0, 0);
 
         // Act. Do it a few times. Because random is random.
         for (int i = 0; i < 10; i++)
@@ -70,12 +70,12 @@ public class BasicMonsterAiTests
         var targetName = "Glass Boi";
         var party = new List<Character>
         {
-            new Character(targetName, 1, 1, toughness: 7),
+            new Character(targetName, 1, 1, 7, 0, 0, 0, 0),
         };
 
         var console = new ConsoleStub();
         var ai = new BasicMonsterAi(console, party);
-        var attacker = new Monster("Stone Monster", 100, 999, 999);
+        var attacker = new Monster("Stone Monster", 100, 999, 999, 0, 0, 0, 0);
 
         // Act
         ai.ProcessTurnFor(attacker);

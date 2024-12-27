@@ -86,7 +86,7 @@ public class EntityTests
 
     class EntityStub : Entity
     {
-        public EntityStub() : base("Practice Dummy", 100, 5, 3)
+        public EntityStub() : base("Practice Dummy", 100, 5, 3, 0, 0, 0)
         {
         }
     }

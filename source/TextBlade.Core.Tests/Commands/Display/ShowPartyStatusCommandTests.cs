@@ -15,8 +15,8 @@ public class ShowPartyStatusCommandTests
         // Arrange
         var party = new List<Character>
         {
-            new Character("Bilal", 25, 0, 0) { CurrentHealth = 10 },
-            new Character("Aisha", 110, 0, 0) { CurrentHealth = 103 },
+            new Character("Bilal", 25, 0, 0, 0, 0, 0) { CurrentHealth = 10 },
+            new Character("Aisha", 110, 0, 0, 0, 0, 0) { CurrentHealth = 103 },
         };
 
         var console = new ConsoleStub();

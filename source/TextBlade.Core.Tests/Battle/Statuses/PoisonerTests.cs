@@ -13,7 +13,7 @@ public class PoisonerTests
     public void Poison_CausesDamageUpToTotalHealth()
     {
         // Arrange
-        var e = new Monster("TestMon", 1000, 1, 1) { CurrentHealth = 3 };
+        var e = new Monster("TestMon", 1000, 1, 1, 1, 1, 1, 1) { CurrentHealth = 3 };
         var console = new ConsoleStub();
 
         // Act
