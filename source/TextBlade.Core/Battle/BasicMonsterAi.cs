@@ -4,6 +4,10 @@ using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Battle;
 
+/// <summary>
+/// A "basic" monster AI. Attacks a random target, or uses a random skill on a random target.
+/// Not very intelligent, but will suffice for many games.
+/// </summary>
 public class BasicMonsterAi
 {
     private readonly IConsole _console;

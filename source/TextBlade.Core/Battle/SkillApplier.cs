@@ -53,7 +53,7 @@ public class SkillApplier
         // TODO: DRY the 2x damage part with CharacterTurnProcessor
         var damageMessage = damage > 0 ? $"{roundedDamage} damage" : $"healed for [green]{-roundedDamage}[/]";
         var effectiveMessage = hitWeakness ? "[#f80]Super effective![/]" : "";
-        _console.WriteLine($"{user.Name} uses {skill.Name} on {target.Name}! {effectiveMessage} {damageMessage}!");
+        _console.WriteLine($"{user.Name} uses [#faa]{skill.Name} on {target.Name}[/]! {effectiveMessage} {damageMessage}!");
     }
     
     private void InflictStatuses(Entity user, Skill skill, Entity target)
