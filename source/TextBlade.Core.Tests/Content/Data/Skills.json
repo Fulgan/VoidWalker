@@ -3,5 +3,10 @@
     {
         "DamageMultiplier": 2.0,
         "Cost": 10
+    },
+    "Bite":
+    {
+        "DamageMultiplier": 1.7,
+        "Cost": 7
     }
 }

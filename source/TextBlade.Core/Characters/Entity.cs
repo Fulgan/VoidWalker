@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Battle.Statuses;
 using TextBlade.Core.IO;
