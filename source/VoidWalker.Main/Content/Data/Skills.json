@@ -1,7 +1,54 @@
 {
-    "Web":
+    "Double Strike":
     {
         "DamageMultiplier": 2.0,
         "Cost": 10
+    },
+    "Whirlwind":
+    {
+        "DamageMultiplier": 1.25,
+        "Cost": 20,
+        "Target": "AllEnemies"
+    },
+    "Fire A":
+    {
+        "DamageMultiplier": 1.1,
+        "Cost": 7,
+        "DamageType":"Fire",
+        "StatusInflicted": "Burn",
+        "StatusStacks": 5
+    },
+    "Ice A":
+    {
+        "DamageMultiplier": 1.5,
+        "Cost": 7,
+        "DamageType":"Ice"
+    },
+    "Poison":
+    {
+        "DamageMultiplier": 0,
+        "Cost": 10,
+        "StatusInflicted": "Poison",
+        "StatusStacks": 5
+    },
+    "Heal":
+    {
+        "DamageMultiplier": 1.5,
+        "Cost": 5,
+        "Target": "SingleFriend"
+    },
+
+    // Exclusively monster skills.
+    "Web":
+    {
+        "Cost": 10,
+        "DamageMultiplier": 0,
+        "StatusInflicted": "Paralyze",
+        "StatusStacks": 3
+    },
+    "Stone Fist":
+    {
+        "Cost": 7,
+        "DamageMultiplier": 1.7
     }
 }
