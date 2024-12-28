@@ -5,16 +5,18 @@
         "Strength": 15,
         "Toughness": 3,
         "Weakness": "Spear",
-        "Gold": 5
+        "Gold": 5,
+        "ExperiencePoints": 10
     },
     "Spider":
     {
         "Health": 55,
+        "SkillPoints": 15,
         "Strength": 15,
         "Toughness": 5,
         "Weakness": "Fire",
         "Gold": 10,
-        "SkillPoints": 15,
+        "ExperiencePoints": 20,
         "SkillNames": [
             { "Name": "Web", "Probability": 0.3 }
         ]
@@ -26,6 +28,7 @@
         "Toughness": 7,
         "Weakness": "Ice",
         "Gold": 25,
+        "ExperiencePoints": 40,
         "SkillNames": [
             { "Name": "Stone Fist", "Probability": 0.25 }
         ]
@@ -37,6 +40,7 @@
         "Toughness": 6,
         "Weakness": "Poison",
         "Gold": 40,
+        "ExperiencePoints": 97,
         "SkillNames": [
             { "Name": "Whirlwind", "Probability": 0.5 }
         ]
@@ -48,6 +52,7 @@
         "Toughness": 10,
         "Weakness": "Bleed",
         "Gold": 75,
+        "ExperiencePoints": 125,
         "SkillNames": [
             { "Name": "Stone Fist", "Probability": 0.4 }
         ]
@@ -60,6 +65,7 @@
         "Toughness": 15,
         "Weakness": "Fire",
         "Gold": 250,
+        "ExperiencePoints": 500,
         "SkillNames": [
             { "Name": "Poison", "Probability": 0.4 },
             { "Name": "Heal", "Probability": 0.2 }
