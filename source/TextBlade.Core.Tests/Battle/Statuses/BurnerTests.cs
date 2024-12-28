@@ -13,7 +13,7 @@ public class BurnerTests
     public void Burn_CausesDamageUpToCurrentHealth()
     {
         // Arrange
-        var e = new Monster("TestMon", 1000, 1, 1);
+        var e = new Monster("TestMon", 1000, 1, 1, 0, 0, 0, 0);
         var console = new ConsoleStub();
 
         // Act

@@ -9,11 +9,11 @@ namespace TextBlade.ConsoleRunner;
 /// </summary>
 public class NewGameRunner(JObject gameJson)
 {
-    private JObject? _gameJson = gameJson;
+    private JObject _gameJson = gameJson;
 
     public List<Character> CreateParty()
     {
-         if (!_gameJson.TryGetValue("StartingLocationId", out var locationIdToken))
+        if (!_gameJson.TryGetValue("StartingLocationId", out var locationIdToken))
         {
             throw new InvalidOperationException("Your game.json doesn't have a StartingLocationId attribute!");
         }

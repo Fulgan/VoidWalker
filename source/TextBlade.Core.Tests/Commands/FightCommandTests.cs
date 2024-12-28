@@ -78,8 +78,8 @@ public class FightCommandTests
             Inventory = new(),
             Party = new List<Character>
             {
-                new Character("Ahmed", 10, 10, 10),
-                new Character("Bilal", 10, 100, 1000),
+                new Character("Ahmed", 10, 10, 10,  0, 0, 0),
+                new Character("Bilal", 10, 100, 1000,  0, 0, 0),
             },
         };
     }

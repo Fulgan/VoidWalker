@@ -17,7 +17,7 @@ public class AttackExecutorTests
     {
         // Arrange
         var executor = new AttackExecutor(Substitute.For<IConsole>());
-        var monster = new Monster("Bunny", 10, 5, 3);
+        var monster = new Monster("Bunny", 10, 5, 3, 5, 5, 0, 0);
 
         // Act
         var ex = Assert.Throws<ArgumentNullException>(() => executor.Attack(null, monster));
@@ -31,7 +31,7 @@ public class AttackExecutorTests
     {
         // Arrange
         var executor = new AttackExecutor(Substitute.For<IConsole>());
-        var character = new Character("Bonnie", 10, 5, 3);
+        var character = new Character("Bonnie", 10, 5, 3, 0, 0, 0);
 
         // Act
         var ex = Assert.Throws<ArgumentNullException>(() => executor.Attack(character, null));
@@ -44,8 +44,8 @@ public class AttackExecutorTests
     public void Attack_UsesWeaponStrengthForDamage()
     {
         // Arrange
-        var attacker = new Character("Faris", 100, 10, 1, 0);
-        var defender = new Monster("Slime", 100, 0, 3);
+        var attacker = new Character("Faris", 100, 10, 1, 0, 0, 0);
+        var defender = new Monster("Slime", 100, 0, 3, 0, 0, 0, 0);
         
         var knifeStats = new Dictionary<CharacterStats, int>
         {
@@ -76,8 +76,8 @@ public class AttackExecutorTests
     public void Attack_DoesDoubleDamageAndMentionsIt_IfCharacterWeaponIsMonsterWeakness()
     {
         // Arrange
-        var attacker = new Character("Faraz", 100, 10, 1, 0);
-        var defender = new Monster("Slime", 100, 0, 3, weakness: "Lightning");
+        var attacker = new Character("Faraz", 100, 10, 1, 0, 0, 0, 0);
+        var defender = new Monster("Slime", 100, 0, 3, 0, 0, 0, 0, weakness: "Lightning");
         
         var knifeStats = new Dictionary<CharacterStats, int>
         {
@@ -103,8 +103,8 @@ public class AttackExecutorTests
     public void Attack_MentionsIfMonsterDies()
     {
         // Arrange
-        var attacker = new Character("Farhan", 100, 999, 1, 0);
-        var defender = new Monster("Slime", 10, 5, 3);
+        var attacker = new Character("Farhan", 100, 999, 1, 0, 0, 0);
+        var defender = new Monster("Slime", 10, 5, 3 , 0, 0, 0, 0);
 
         var console = new ConsoleStub();
         var executor = new AttackExecutor(console);

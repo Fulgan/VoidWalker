@@ -21,8 +21,8 @@ public class Game : IGame
     public static IGame Current { get; private set; } = null!;
     private const int AutoSaveIntervalMinutes = 1;
 
-    protected SaveData _saveData;
-    protected Location _currentLocation = null!;
+    protected SaveData _saveData = new();
+    protected Location? _currentLocation;
 
     private readonly bool _isRunning = true;
     private readonly LocationDisplayer _locationDisplayer;
@@ -67,6 +67,10 @@ public class Game : IGame
     {
         try {
             LoadGameOrStartNewGame();
+            if (_currentLocation is null)
+            {
+                throw new InvalidOperationException("No location has been configured for game start");
+            }
 
             // Don't execute code if we stay in the same location, e.g. press enter or "help" - only execute code
             // if the location changed. Fixes a bug where spamming enter keeps adding the same location over and over ...
@@ -89,17 +93,17 @@ public class Game : IGame
                     continue;
                 }
                 
-                if (command is ManuallySaveCommand)
+                switch (command)
                 {
-                    SaveGame();
-                }
-                else if (command is LookCommand)
-                {
-                    _locationDisplayer.ShowLocation(_currentLocation);
-                }
-                else
-                {
-                    AutoSaveIfItsBeenAWhile();
+                    case ManuallySaveCommand:
+                        SaveGame();
+                        break;
+                    case LookCommand:
+                        _locationDisplayer.ShowLocation(_currentLocation);
+                        break;
+                    default:
+                        AutoSaveIfItsBeenAWhile();
+                        break;
                 }
             }
         }
@@ -119,6 +123,8 @@ public class Game : IGame
 
     protected void SaveGame()
     {
+        if (_currentLocation == null)
+            throw new InvalidOperationException("Game has not been started yet"); 
         // Save location-specific data, favouring the current location's specific data. e.g. if you have save data from dungeon A, but are now in dungeon B,
         // you save dungeon B's data.  But if the current location data is null, albeit previously saved, preserve that data. (e.g. if you're now in town,
         // which saves nothing, but were previously in a dungeon, preserve that dungeon's data.)
@@ -176,7 +182,7 @@ public class Game : IGame
         GameSwitches.Switches = _saveData.Switches;
         new ChangeLocationCommand(this, _saveData.CurrentLocationId).Execute(_saveData);
 
-        if (_saveData.LocationSpecificDataLocationId == _currentLocation.LocationId)
+        if (_saveData.LocationSpecificDataLocationId == _currentLocation?.LocationId)
         {
             _currentLocation.SetStateBasedOnCustomSaveData(_saveData.LocationSpecificData);
         }
@@ -226,7 +232,7 @@ public class Game : IGame
     private void PlayBackgroundAudio()
     {
         _backgroundAudioPlayer.Stop();
-        if (string.IsNullOrWhiteSpace(_currentLocation.BackgroundAudio))
+        if (string.IsNullOrWhiteSpace(_currentLocation?.BackgroundAudio))
         {
             return;
         }

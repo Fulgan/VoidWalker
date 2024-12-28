@@ -13,7 +13,7 @@ public class SleepAtInnCommandTests
     public void Execute_ReturnsFalse_IfYouCantAffordIt()
     {
         // Arrange
-        var protagonist = new Character("Cecil", 100, 50, 30);
+        var protagonist = new Character("Cecil", 100, 50, 30, 0, 0, 0);
         protagonist.CurrentHealth = 1;
         var cost = 100;
         var command = new SleepAtInnCommand(Substitute.For<IConsole>(), cost);
@@ -36,9 +36,9 @@ public class SleepAtInnCommandTests
     public void Execute_ReturnsTrueAndHealsParty_IfYouCanAffordIt()
     {
         // Arrange
-        var protagonist = new Character("Cecil", 100, 50, 30);
+        var protagonist = new Character("Cecil", 100, 50, 30, 0, 0, 0);
         protagonist.CurrentHealth = 1;
-        var duotagonist = new Character("Kain", 50, 100, 100);
+        var duotagonist = new Character("Kain", 50, 100, 100, 0, 0, 0);
         duotagonist.CurrentHealth = 0;
 
         var cost = 100;

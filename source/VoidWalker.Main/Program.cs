@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using TextBlade.ConsoleRunner;
 using TextBlade.Core.Game;
 
@@ -9,10 +10,13 @@ internal class Program
 {
     public static void Main(string[] args)
     {
-        var services = new ServiceCollection();
-        ConfigureServices(services);
-        var serviceProvider = services.BuildServiceProvider();
-        serviceProvider.GetRequiredService<IGame>().Run();
+        using var host = Host.CreateDefaultBuilder(args)
+            .ConfigureServices((_, services) =>
+            {
+                ConfigureServices(services);
+            })
+            .Build();
+        host.Services.GetRequiredService<IGame>().Run();
     }
     private static void ConfigureServices(IServiceCollection services)
     {

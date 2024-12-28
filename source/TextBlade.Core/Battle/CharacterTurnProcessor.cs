@@ -37,7 +37,7 @@ public class CharacterTurnProcessor
             input = _console.ReadKey();
         }
 
-        IEnumerable<Entity> targets; 
+        IEnumerable<Entity>? targets; 
 
         switch(input)
         {
@@ -123,7 +123,7 @@ public class CharacterTurnProcessor
         return PickFromList(validTargets);
     }
 
-    private T PickFromList<T>(IEnumerable<T> items)
+    private T? PickFromList<T>(IEnumerable<T> items)
     {
         _console.WriteLine("Pick a target, or 0 or b to cancel:");
 
@@ -152,7 +152,7 @@ public class CharacterTurnProcessor
             {
                 _console.WriteLine($"Please enter a number between {1} and {items.Count()}.");
                 target = 0;
-             }
+            }
         }
 
         return items.ElementAt(target - 1);
