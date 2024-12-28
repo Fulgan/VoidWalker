@@ -43,7 +43,7 @@ public class SkillApplier
         }
         else if (user.GetType() == target.GetType())
         {
-            var skillPower = user is Character c1 ? c1.Special : user.Strength;
+            var skillPower = user.Special;
             // If you're healing, heal for 2x
             damage = (int)Math.Ceiling(skillPower * -skill.DamageMultiplier * 2);
         }
@@ -53,7 +53,7 @@ public class SkillApplier
         // TODO: DRY the 2x damage part with CharacterTurnProcessor
         var damageMessage = damage > 0 ? $"{roundedDamage} damage" : $"healed for [green]{-roundedDamage}[/]";
         var effectiveMessage = hitWeakness ? "[#f80]Super effective![/]" : "";
-        _console.WriteLine($"{user.Name} uses {skill.Name} on {target.Name}! {effectiveMessage} {damageMessage}!");
+        _console.WriteLine($"{user.Name} uses [#faa]{skill.Name} on {target.Name}[/]! {effectiveMessage} {damageMessage}!");
     }
     
     private void InflictStatuses(Entity user, Skill skill, Entity target)

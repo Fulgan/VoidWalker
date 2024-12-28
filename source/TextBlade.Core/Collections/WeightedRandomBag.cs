@@ -23,12 +23,6 @@ class WeightedRandomBag<T>
         }
     }
 
-    public void AddEntry(T item, double weight)
-    {
-        _accumulatedWeight += weight;
-        _entries.Add(new Entry { Item = item, AccumulatedWeight = _accumulatedWeight });
-    }
-
     public T GetRandom()
     {
         double r = Random.Shared.NextDouble() * _accumulatedWeight;
@@ -42,6 +36,12 @@ class WeightedRandomBag<T>
         }
         
         return default(T); // should only happen when there are no entries
+    }
+
+    private void AddEntry(T item, double weight)
+    {
+        _accumulatedWeight += weight;
+        _entries.Add(new Entry { Item = item, AccumulatedWeight = _accumulatedWeight });
     }
 }
 

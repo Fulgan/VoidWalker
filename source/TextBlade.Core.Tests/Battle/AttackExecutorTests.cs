@@ -31,7 +31,7 @@ public class AttackExecutorTests
     {
         // Arrange
         var executor = new AttackExecutor(Substitute.For<IConsole>());
-        var character = new Character("Bonnie", 10, 5, 3, 0, 0, 0);
+        var character = new Character("Bonnie", 10, 5, 3, 0, 0, 0, 0);
 
         // Act
         var ex = Assert.Throws<ArgumentNullException>(() => executor.Attack(character, null));
@@ -104,7 +104,7 @@ public class AttackExecutorTests
     {
         // Arrange
         var attacker = new Character("Farhan", 100, 999, 1, 0, 0, 0);
-        var defender = new Monster("Slime", 10, 5, 3 , 0, 0, 0, 0);
+        var defender = new Monster("Slime", 10, 5, 3, 0, 0, 0, 0);
 
         var console = new ConsoleStub();
         var executor = new AttackExecutor(console);

@@ -16,8 +16,8 @@ public class BasicMonsterAiTests
         // Arrange
         var party = new List<Character>
         {
-            new Character("Target A", 0, 100, toughness: 10,  0, 0, 0),
-            new Character("Target B", 0, 100, toughness: 7,  0, 0, 0),
+            new Character("Target A", 0, 100, 10, 0, 0, 0),
+            new Character("Target B", 0, 100, 7, 0, 0, 0, 0),
         };
 
         var ai = new BasicMonsterAi(Substitute.For<IConsole>(), party);
@@ -39,11 +39,11 @@ public class BasicMonsterAiTests
         // Arrange
         var party = new List<Character>
         {
-            new Character("Target A", 100, 100, toughness: 10,  0, 0, 0),
-            new Character("Target B", 100, 100, toughness: 7,  0, 0, 0),
-            new Character("Dead Duck", 100, 100, toughness: 7,  0, 0, 0) { CurrentHealth = 0 },
-            new Character("Dead Duck 2", 100, 100, toughness: 7,  0, 0, 0) { CurrentHealth = 0 },
-            new Character("Dead Duck 3", 100, 100, toughness: 7,  0, 0, 0) { CurrentHealth = 0 },
+            new Character("Target A", 100, 100, 10, 0, 0, 0, 0),
+            new Character("Target B", 100, 100, 7, 0, 0, 0, 0),
+            new Character("Dead Duck", 100, 100, 7, 0, 0, 0, 0) { CurrentHealth = 0 },
+            new Character("Dead Duck 2", 100, 100, 7, 0, 0, 0, 0) { CurrentHealth = 0 },
+            new Character("Dead Duck 3", 100, 100, 7, 0, 0, 0, 0) { CurrentHealth = 0 },
         };
 
         var console = new ConsoleStub();
@@ -70,7 +70,7 @@ public class BasicMonsterAiTests
         var targetName = "Glass Boi";
         var party = new List<Character>
         {
-            new Character(targetName, 1, 1, toughness: 7,  0, 0, 0),
+            new Character(targetName, 1, 1, 7, 0, 0, 0, 0),
         };
 
         var console = new ConsoleStub();
@@ -82,5 +82,37 @@ public class BasicMonsterAiTests
 
         // Assert
         Assert.That(console.LastMessage, Does.Contain($"DIES"));
+    }
+
+    [Test]
+    public void ProcessTurnFor_UsesSkillsSometimes_IfMonsterHasEnoughSkillPoints()
+    {
+        // Arrange
+        var target = new Character("Infinite Test Dummy", 999999999, 0, 999999, 0, 0, 0);
+        var attacker = new Monster("Spider", 100, 100, 100, 100, 100, 100, 100);
+        var skillName = "Web"; // Make sure it's in Skills.json
+        
+        // Not sure how this is usually set up. Herp derp...
+        attacker.SkillNames.Add(skillName);
+        attacker.Skills.Add(new Skill()
+        {
+            Cost = 10,
+            DamageMultiplier = 2.0f,
+            DamageType = "Bizarre",
+            Name = skillName,
+        });
+        attacker.SkillProbabilities[skillName] = 0.8;
+
+        var console = new ConsoleStub();
+
+        // Act
+        for (int i = 0; i < 10; i++)
+        {
+            new BasicMonsterAi(console, [target]).ProcessTurnFor(attacker);
+        }
+
+        // Assert
+        Assert.That(console.Messages.Any(m => m.Contains($"uses [#faa]{skillName} on {target.Name}[/]")));
+        Assert.That(console.Messages.Any(m => m.Contains($"attacks {target.Name}"))); // Didn't skill ALL the time. Not enough skill points for that.
     }
 }

@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Battle.Statuses;
 using TextBlade.Core.IO;
@@ -26,7 +26,6 @@ public abstract class Entity
     public List<Skill>? Skills { get; set; } = new(); // NOT populated by JSON
     
     public List<string>? SkillNames { get; set; } = new(); // populated by JSON
-
 
     protected Entity(string name, int health, int strength, int toughness, int special, int specialDefense, int skillPoints)
     {
@@ -79,6 +78,8 @@ public abstract class Entity
                 case "burn":
                     new Burner(console).Burn(this);
                     break;
+                case "paralyze":
+                    break; // Implemented in turn-based system
                 default:
                     throw new InvalidOperationException($"There's no implementation for the status effect {statusName}");
             }

@@ -1,11 +1,9 @@
-using System;
 using NSubstitute;
 using NUnit.Framework;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
 using TextBlade.Core.IO;
-using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Tests.Commands;
 
