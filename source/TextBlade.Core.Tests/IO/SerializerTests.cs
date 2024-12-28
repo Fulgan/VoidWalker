@@ -1,5 +1,7 @@
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using TextBlade.Core.Battle;
+using TextBlade.Core.Characters;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
@@ -22,6 +24,23 @@ public class SerializerTests
         Assert.That(actual, Is.Not.Null);
         Assert.That(actual, Does.Contain("\"$type\":"));
         Assert.That(actual, Does.Contain("TextBlade.Core.Locations.Location, TextBlade.Core"));
+    }
+
+    [Test]
+    public void Serialize_DoesntIncludeSkills_ForCharacters()
+    {
+        // Arrange
+        var kid = new Character("Kidd", 100, 10, 5, 3, 1, 0);
+        var skill = CreateSkill("Knife Stab");
+        kid.Skills.Add(skill);
+        
+        // Act
+        var actual = Serializer.Serialize(kid);
+
+        // Assert. Just a few random property checks.
+        Assert.That(!actual.Contains(skill.Name));
+        Assert.That(!actual.Contains(skill.DamageType));
+        Assert.That(!actual.Contains(skill.Target));
     }
 
     [Test]
@@ -189,5 +208,32 @@ public class SerializerTests
         Assert.That(actualInventory.NameToData["Iron Sword"], Is.InstanceOf<Equipment>());
         Assert.That(actualInventory.NameToData["Iron Helmet"], Is.InstanceOf<Equipment>());
         Assert.That(actualInventory.NameToData["Iron Armour"], Is.InstanceOf<Equipment>());
+    }
+
+    [Test]
+    public void DeserializeSkillsData_DeserializesAllSkills()
+    {
+        // Arrange: see Skills.json
+        // Act
+        var actual = Serializer.DeserializeSkillsData();
+
+        // Assert
+        Assert.That(actual.Count, Is.EqualTo(2));
+        Assert.That(actual.Any(a => a.Key == "Bite"));
+        Assert.That(actual.Any(a => a.Key == "Web"));
+    }
+
+    private Skill CreateSkill(string name)
+    {
+        return new Skill
+        {
+            Name = name,
+            Cost = 10,
+            DamageMultiplier = 1.5f,
+            DamageType = "Stabby",
+            StatusInflicted = "Bleed",
+            StatusStacks = 100,
+            Target = "SingleEnemy"
+        };
     }
 }

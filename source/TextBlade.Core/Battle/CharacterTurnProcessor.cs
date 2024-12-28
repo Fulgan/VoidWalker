@@ -86,18 +86,15 @@ public class CharacterTurnProcessor
         switch (skill.Target)
         {
             case null:
-            case "":
-            case "Single":
-            case "Enemy":
-            case "Monster": // TODO: it's Enemy now, will switch
+            case "SingleEnemy":
                 var monster = PickTargetMonster();
                 return monster != null ? [monster] : null;
-            case "All":
+            case "AllEnemies":
                 return _monsters.Where(m => m.CurrentHealth > 0);
-            case "Character":
+            case "SingleFriend":
                 var character = PickTargetCharacter();
                 return character != null ? [character] : null;
-            case "Party":
+            case "AllFriends":
                 return _saveData.Party;
             default:
                 throw new InvalidOperationException($"TextBlade doesn't know how to pick a target of type: {skill.Target ?? "(null)"}");

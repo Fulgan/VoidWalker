@@ -85,10 +85,32 @@ public class TurnBasedBattleSystem : IBattleSystem
             var health = data.Value<int>("Health");
             var strength = data.Value<int>("Strength");
             var toughness = data.Value<int>("Toughness");
+            var special = data.Value<int?>("Special") ?? 0;
+            var specialDefense = data.Value<int?>("SpecialDefense") ?? 0;
+            var skillPoints = data.Value<int?>("SkillPoints") ?? 0;
             var weakness = data.Value<string?>("Weakness") ?? string.Empty;
             var gold = data.Value<int>("Gold");
-            var experiencePoints = data.Value<int?>("ExperiencePoints") ?? 0; // 0 = auto calculate
-            var monster = new Monster(name, health, strength, toughness, gold, experiencePoints, weakness);
+            var experiencePoints = data.Value<int?>("ExperiencePoints") ?? 0;
+
+            
+            var skillNames = data.Value<JArray>("SkillNames");
+            var skillProbabilities = new Dictionary<string, double>();
+
+            var skills = new List<Skill>();
+            if (skillNames != null)
+            {
+                skills = new();
+                foreach (var token in skillNames)
+                {
+                    var skillName = token.Value<string>("Name");
+                    var probability = token.Value<double>("Probability");
+                    var skill = Skill.GetSkill(skillName.ToString());
+                    skills.Add(skill);
+                    skillProbabilities[skillName] = probability;
+                }
+            }
+
+            var monster = new Monster(name, health, strength, toughness, special, specialDefense, skillPoints, experiencePoints, gold, weakness, skills, skillProbabilities);
             _monsters.Add(monster);
         }
     }
@@ -119,6 +141,12 @@ public class TurnBasedBattleSystem : IBattleSystem
 
                 if (_monsters.All(m => m.CurrentHealth <= 0))
                 {
+                    continue;
+                }
+
+                if (character.StatusStacks.ContainsKey("Paralyze"))
+                {
+                    _console.WriteLine($"[{Colours.Paralyze}]{character.Name} is paralyzed[/] and can't move!");
                     continue;
                 }
 

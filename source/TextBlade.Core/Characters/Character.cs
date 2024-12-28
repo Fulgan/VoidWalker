@@ -1,4 +1,3 @@
-using TextBlade.Core.Battle;
 using TextBlade.Core.Characters.PartyManagement;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
@@ -8,22 +7,14 @@ namespace TextBlade.Core.Characters;
 public class Character : Entity
 {
     public const int EquipmentStrengthMultiplier = 2; // 2 => equipment strength adds 2x to damage 
-
-    public int TotalSkillPoints { get; set; }
-    public int CurrentSkillPoints { get; set; }
-    public List<Skill> Skills { get; set; } = new(); // NOT populated by JSON
-    public List<string> SkillNames { get; set; } = new(); // populated by JSON
     public Dictionary<ItemType, Equipment> Equipment { get; set; } = new(); // Needs to be public for serialization
     public int ExperiencePoints { get; internal set; } = 0;
     public int Level { get; set; } = 1;
 
-    public int Special { get; internal set; } 
-    public int SpecialDefense { get; internal set; }
-
     internal bool IsDefending { get; private set; }
 
-    public Character(string name, int health, int strength, int toughness, int special = 0, int specialDefense = 0, int experiencePoints = 0)
-    : base(name, health, strength, toughness)
+    public Character(string name, int health, int strength, int toughness, int special, int specialDefense, int skillPoints, int experiencePoints = 0)
+    : base(name, health, strength, toughness, special, specialDefense, skillPoints)
     {
         this.Special = special;
         this.SpecialDefense = specialDefense;
