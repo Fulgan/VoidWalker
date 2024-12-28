@@ -6,13 +6,21 @@
             "Name": "Aisha",
             "CurrentHealth": 120, "TotalHealth": 120, "CurrentSkillPoints": 50, "TotalSkillPoints": 50,
             "Strength": 25, "Toughness": 10, "Special": 5, "SpecialDefense": 5,
-            "SkillNames": ["Double Strike", "Whirlwind"]
+            "SkillsLearnedAtLevel": [
+                {"Item1": "Double Strike", "Item2": 2},
+                {"Item1": "Whirlwind", "Item2": 4}
+            ]
         },
-
         {
             "Name": "Nusaybah",
             "CurrentHealth": 75, "TotalHealth": 75, "CurrentSkillPoints": 150, "TotalSkillPoints": 150,
             "Strength": 35, "Toughness": 8, "Special": 10, "SpecialDefense": 10,
-            "SkillNames": ["Fire A", "Ice A", "Poison", "Heal"] }
+            "SkillsLearnedAtLevel": [
+                {"Item1": "Fire A", "Item2": 2},
+                {"Item1": "Ice A", "Item2": 3},
+                {"Item1": "Poison", "Item2": 5},
+                {"Item1": "Heal", "Item2": 10}
+            ]
+        }
     ]
 }

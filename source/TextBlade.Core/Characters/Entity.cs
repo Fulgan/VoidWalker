@@ -23,10 +23,8 @@ public abstract class Entity
     public Dictionary<string, int> StatusStacks { get; private set; } = new();
     
     [JsonIgnore]
-    public List<Skill>? Skills { get; set; } = new(); // NOT populated by JSON
+    public List<Skill> Skills { get; set; } = new(); // NOT populated by JSON
     
-    public List<string>? SkillNames { get; set; } = new(); // populated by JSON
-
     protected Entity(string name, int health, int strength, int toughness, int special, int specialDefense, int skillPoints)
     {
         this.Name = name;

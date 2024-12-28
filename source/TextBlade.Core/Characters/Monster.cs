@@ -4,6 +4,8 @@ namespace TextBlade.Core.Characters;
 
 public class Monster : Entity
 {
+    public List<string>? SkillNames { get; set; } = new(); // populated by JSON
+
     public readonly string Weakness;
     public readonly int Gold;
     public readonly int ExperiencePoints;

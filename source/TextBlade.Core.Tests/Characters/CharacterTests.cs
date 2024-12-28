@@ -3,6 +3,7 @@ using NUnit.Framework;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
+using TextBlade.Core.Tests.Stubs;
 
 namespace TextBlade.Core.Tests.Characters;
 
@@ -185,5 +186,46 @@ public class CharacterTests
 
         // Assert
         Assert.That(c.IsDefending, Is.False);
+    }
+
+    [Test]
+    public void GainExperiencePoints_GivesNewSkills_AtAppropriateLevels()
+    {
+        // Arrange
+        var character = new Character("Aisha", 99, 99, 99, 99, 99, 99);
+        character.SkillsLearnedAtLevel = new List<Tuple<string, int>>
+        {
+            new Tuple<string, int>("Fire A", 2),
+            new Tuple<string, int>("Ice A", 4)
+        };
+
+        // Act and assert clusters!
+        LevelUpTo(character, 2);
+
+        // Assert: new skill
+        Assert.That(character.Skills.Count, Is.EqualTo(1));
+        Assert.That(character.Skills.ElementAt(0).Name, Is.EqualTo("Fire A"));
+
+        // Act
+        LevelUpTo(character, 3);
+
+        // Assert: no new skills
+        Assert.That(character.Skills.Count, Is.EqualTo(1));
+
+        // Act
+        LevelUpTo(character, 4);
+        // Assert: new skill
+        Assert.That(character.Skills.Count, Is.EqualTo(2));
+        Assert.That(character.Skills.ElementAt(1).Name, Is.EqualTo("Ice A"));
+    }
+
+    public void LevelUpTo(Character character, int targetLevel)
+    {
+        var console = new ConsoleStub();
+        var experiencePoints = 50;
+        while (character.Level < targetLevel)
+        {
+            character.GainExperiencePoints(console, experiencePoints);
+        }
     }
 }

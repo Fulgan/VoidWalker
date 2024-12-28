@@ -197,14 +197,18 @@ public class Game : IGame
         foreach (var character in _saveData.Party)
         {
             character.Skills = new();
-            foreach (var skillName in character.SkillNames)
+            foreach (var tuple in character.SkillsLearnedAtLevel)
             {
-                var skill = Skill.GetSkill(skillName);
-                character.Skills.Add(skill);
+                var skillName = tuple.Item1;
+                var levelLearned = tuple.Item2;
+                if (character.Level >= levelLearned)
+                {
+                    var skill = Skill.GetSkill(skillName);
+                    character.Skills.Add(skill);
+                }
             }
         }
     }
-
 
     private JObject ShowGameIntro()
     {

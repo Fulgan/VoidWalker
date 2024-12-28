@@ -1,3 +1,4 @@
+using TextBlade.Core.Battle;
 using TextBlade.Core.Characters.PartyManagement;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
@@ -10,6 +11,7 @@ public class Character : Entity
     public Dictionary<ItemType, Equipment> Equipment { get; set; } = new(); // Needs to be public for serialization
     public int ExperiencePoints { get; internal set; } = 0;
     public int Level { get; set; } = 1;
+    public List<Tuple<string, int>> SkillsLearnedAtLevel { get; set; } = new();
 
     internal bool IsDefending { get; private set; }
 
@@ -54,9 +56,28 @@ public class Character : Entity
 
         var manager = new LevelManager(console);
         this.ExperiencePoints += experiencePoints;
+
         if (manager.CanLevelUp(this))
         {
             manager.LevelUp(this);
+        }
+
+        // It's a small list, it's fast to iterate, it's not a big deal that it's redundant. I hope.
+        foreach (var tuple in SkillsLearnedAtLevel)
+        {
+            var skillName = tuple.Item1;
+            
+            if (Skills.Any(s => s.Name.ToUpperInvariant() == skillName.ToUpperInvariant()))
+            {
+                continue;
+            }
+
+            var learnedAtLevel = tuple.Item2;
+            if (learnedAtLevel <= Level)
+            {
+                this.Skills.Add(Skill.GetSkill(skillName));
+                console.WriteLine($"{Name} learned the skill [{Colours.Highlight}]{skillName}[/]!");
+            }
         }
     }
 
