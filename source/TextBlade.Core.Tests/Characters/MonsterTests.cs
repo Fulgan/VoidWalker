@@ -65,8 +65,8 @@ public class MonsterTests
     public void Attack_SetsTargetHealthToZero_IfTargetDies(int strength)
     {
         // Arrange
-        var monster = new Monster("Orange Slime", 1000, 5, 0, 0, 0, 0, 0);
-        var target = new Character("Ahmed", 100, 100, 0, 0, 0, 0);
+        var monster = new Monster("Orange Slime", 1000, 1000, 0, 0, 0, 0, 0);
+        var target = new Character("Ahmed", 100, 0, 0, 0, 0, 0);
 
         // Act
         monster.Attack(target);

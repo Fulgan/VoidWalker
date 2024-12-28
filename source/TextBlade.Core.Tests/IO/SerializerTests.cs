@@ -218,9 +218,11 @@ public class SerializerTests
         var actual = Serializer.DeserializeSkillsData();
 
         // Assert
-        Assert.That(actual.Count, Is.EqualTo(2));
+        Assert.That(actual.Count, Is.EqualTo(4));
         Assert.That(actual.Any(a => a.Key == "Bite"));
         Assert.That(actual.Any(a => a.Key == "Web"));
+        Assert.That(actual.Any(a => a.Key == "Fire A"));
+        Assert.That(actual.Any(a => a.Key == "Ice A"));
     }
 
     private Skill CreateSkill(string name)
