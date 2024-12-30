@@ -1,6 +1,7 @@
-using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
+
+namespace TextBlade.Core.Battle;
 
 public class SkillApplier
 {
