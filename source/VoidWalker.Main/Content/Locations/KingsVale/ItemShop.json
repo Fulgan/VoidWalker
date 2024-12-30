@@ -2,7 +2,7 @@
     "$type": "TextBlade.Core.Locations.ItemShop, TextBlade.Core",
     "Name": "Potions R Us",
     "Description": "A small room that smells like herbs and sounds like bubbles.",
-    "BackgroundAudio": "bubbling",
+    "BackgroundAudio": "bgse/bubbling",
     "LinkedLocations": [
         {"Id": "Locations/KingsVale/KingsVale", "Description": "Back to King's Vale"}
     ],
