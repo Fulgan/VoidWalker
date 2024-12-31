@@ -16,7 +16,7 @@ namespace TextBlade.ConsoleRunner
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 // windows-specific services
-                services.TryAddSingleton<ISoundPlayer, SonicBoomSoundPlayer>(); // Sound player
+                services.TryAddSingleton<ISoundPlayer, NAudioSoundPlayer>(); // Sound player
             }
             else
             {

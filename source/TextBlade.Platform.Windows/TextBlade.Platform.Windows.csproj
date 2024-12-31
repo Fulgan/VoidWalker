@@ -12,7 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="SonicBoom" />
+      <PackageReference Include="NAudio" />
+      <PackageReference Include="NAudio.Vorbis" />
       <PackageReference Include="Spectre.Console" />
     </ItemGroup>
 
