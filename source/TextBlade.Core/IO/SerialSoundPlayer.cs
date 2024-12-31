@@ -34,6 +34,7 @@ public class SerialSoundPlayer : IDisposable
             return;
         }
 
+        _soundPlayer.Stop();
         _soundPlayer.Load(_audiosToPlay[_currentAudioId]);
         _soundPlayer.Play();
     }

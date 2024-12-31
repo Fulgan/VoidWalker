@@ -9,11 +9,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TextBlade.Core\TextBlade.Core.csproj" />
+      <ProjectReference Include="..\..\..\SonicBoom\SonicBoom\SonicBoom.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="NAudio" />
-      <PackageReference Include="NAudio.Vorbis" />
       <PackageReference Include="Spectre.Console" />
     </ItemGroup>
 

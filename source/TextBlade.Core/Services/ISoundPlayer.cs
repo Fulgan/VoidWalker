@@ -2,7 +2,8 @@
 
 public interface ISoundPlayer : IDisposable
 {
-    public event Action? OnPlaybackComplete;
+    public Action? OnPlaybackComplete { get; set; }
+    public bool LoopPlayback { get; set; }
     void Load(string audioFile);
     void Play();
     void Stop();
