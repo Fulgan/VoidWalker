@@ -18,26 +18,12 @@ public class SonicBoomSoundPlayer : ISoundPlayer
         _audioPlayer = new AudioPlayer();
         _audioPlayer.Load($"{audioFile}.{SupportedAudioExtension}");
         _audioPlayer.Volume = VolumeMultiplier;
-
-        _audioPlayer.OnPlaybackComplete += () =>
-        {
-            if (!ShouldLoopPlayback)
-            {
-                OnPlaybackComplete?.Invoke();
-                return;
-            }
-
-            // Loop playback
-            _audioPlayer.Load($"{audioFile}.{SupportedAudioExtension}");
-            _audioPlayer?.Play();
-        };
+        _audioPlayer.LoopPlayback = true;
     }
 
     public void Play() => _audioPlayer?.Play();
     public void Stop() =>_audioPlayer?.Stop();
     
-    private bool ShouldLoopPlayback => OnPlaybackComplete == null;
-
     protected virtual void Dispose(bool disposing)
     {
         if (!_disposedValue)
