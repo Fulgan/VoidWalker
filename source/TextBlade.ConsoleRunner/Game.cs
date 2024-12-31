@@ -235,15 +235,6 @@ public class Game : IGame
 
     private void PlayBackgroundAudio()
     {
-        _backgroundAudioPlayer.Load("Content/Audio/bgse/bubbling");
-        _backgroundAudioPlayer.Play();
-        _backgroundAudioPlayer.OnPlaybackDone += () => {
-            _backgroundAudioPlayer.Load("Content/Audio/bgse/hammering");
-            _backgroundAudioPlayer.Play();
-        };
-
-        return;
-
         _backgroundAudioPlayer.Stop();
         if (string.IsNullOrWhiteSpace(_currentLocation?.BackgroundAudio))
         {

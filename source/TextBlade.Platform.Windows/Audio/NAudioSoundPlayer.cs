@@ -6,7 +6,7 @@ namespace TextBlade.Platform.Windows.Audio;
 
 public class NAudioSoundPlayer : ISoundPlayer
 {
-    public event Action? OnPlaybackDone;
+    public event Action? OnPlaybackComplete;
 
     private const string SupportedAudioExtension = "ogg";
     private const float VolumeMultiplier = 0.5f;
@@ -25,7 +25,7 @@ public class NAudioSoundPlayer : ISoundPlayer
         {
             if (!ShouldLoopPlayback)
             {
-                OnPlaybackDone?.Invoke();
+                OnPlaybackComplete?.Invoke();
                 return;
             }
 
@@ -39,7 +39,7 @@ public class NAudioSoundPlayer : ISoundPlayer
     public void Play() => _waveOut?.Play();
     public void Stop() =>_waveOut?.Stop();
     
-    private bool ShouldLoopPlayback => OnPlaybackDone == null;
+    private bool ShouldLoopPlayback => OnPlaybackComplete == null;
 
     protected virtual void Dispose(bool disposing)
     {

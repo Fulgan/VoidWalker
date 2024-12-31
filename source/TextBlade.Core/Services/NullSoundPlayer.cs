@@ -3,7 +3,7 @@ namespace TextBlade.Core.Services
 {
     public sealed class NullSoundPlayer : ISoundPlayer
     {
-        public event Action? OnPlaybackDone;
+        public event Action? OnPlaybackComplete;
 
         public void Dispose()
         {
