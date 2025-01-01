@@ -106,7 +106,7 @@ public class BasicMonsterAiTests
         var console = new ConsoleStub();
 
         // Act
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 20; i++)
         {
             new BasicMonsterAi(console, [target]).ProcessTurnFor(attacker);
         }
