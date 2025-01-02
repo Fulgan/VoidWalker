@@ -1,7 +1,7 @@
 using Spectre.Console;
 using TextBlade.Core.IO;
 
-namespace TextBlade.Platform.Windows.IO;
+namespace TextBlade.ConsoleRunner.IO;
 
 public class TextConsole : IConsole
 {

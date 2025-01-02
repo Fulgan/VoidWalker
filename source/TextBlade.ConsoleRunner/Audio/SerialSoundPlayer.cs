@@ -1,18 +1,17 @@
-using TextBlade.Core.Services;
+using SonicBoom;
 
-namespace TextBlade.Core.IO;
+namespace TextBlade.ConsoleRunner.Audio;
 
 public class SerialSoundPlayer : IDisposable
 {
-    private readonly ISoundPlayer _soundPlayer;
+    private readonly AudioPlayer _audioPlayer = new();
     private int _currentAudioId = 0;
     private IList<string>? _audiosToPlay;
     private bool _disposedValue;
 
-    public SerialSoundPlayer(ISoundPlayer soundPlayer)
+    public SerialSoundPlayer()
     {
-        _soundPlayer = soundPlayer;
-        _soundPlayer.OnPlaybackComplete += PlayNext;
+        _audioPlayer.OnPlaybackComplete += PlayNext;
     }
 
     public void Play(params string[] audios)
@@ -30,13 +29,13 @@ public class SerialSoundPlayer : IDisposable
             // We're done!
             _currentAudioId = 0;
             _audiosToPlay = Array.Empty<string>();
-            _soundPlayer.Dispose();
+            _audioPlayer.Dispose();
             return;
         }
 
-        _soundPlayer.Stop();
-        _soundPlayer.Load(_audiosToPlay[_currentAudioId]);
-        _soundPlayer.Play();
+        _audioPlayer.Stop();
+        _audioPlayer.Load(_audiosToPlay[_currentAudioId]);
+        _audioPlayer.Play();
     }
 
     protected virtual void Dispose(bool disposing)
@@ -45,7 +44,7 @@ public class SerialSoundPlayer : IDisposable
         {
             if (disposing)
             {
-                _soundPlayer.Dispose();
+                _audioPlayer.Dispose();
             }
 
             _disposedValue = true;

@@ -2,10 +2,8 @@ using Newtonsoft.Json;
 using NSubstitute;
 using NUnit.Framework;
 using TextBlade.ConsoleRunner.Tests.Stubs;
-using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
-using TextBlade.Core.Services;
 
 namespace TextBlade.ConsoleRunner.Tests;
 
@@ -66,6 +64,6 @@ public class GameTests
 
     public GameStub CreateGameStub()
     {
-        return new GameStub(Substitute.For<IConsole>(), Substitute.For<ISoundPlayer>());
+        return new GameStub(Substitute.For<IConsole>());
     }
 }

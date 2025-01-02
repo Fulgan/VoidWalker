@@ -1,4 +1,3 @@
-using Spectre.Console;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 

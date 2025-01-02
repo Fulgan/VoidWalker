@@ -1,12 +1,11 @@
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
-using TextBlade.Core.Services;
 
 namespace TextBlade.ConsoleRunner.Tests.Stubs;
 
 public class GameStub : Game
 {
-    public GameStub(IConsole console, ISoundPlayer soundPlayer) : base(console, soundPlayer)
+    public GameStub(IConsole console) : base(console)
     {
         _saveData = new();
     }

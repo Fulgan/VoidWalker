@@ -8,7 +8,6 @@ using TextBlade.Core.Commands.Display;
 using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
-using TextBlade.Core.Services;
 
 namespace TextBlade.ConsoleRunner;
 
@@ -249,13 +248,18 @@ public class Game : IGame
         if (!string.IsNullOrWhiteSpace(_currentLocation?.BackgroundAudio))
         {
             PlayAudioFor(_currentLocation.BackgroundAudio);
-            return;
         }
 
         // Array of audios.
         foreach (var audio in _currentLocation?.BackgroundAudios)
         {
             PlayAudioFor(audio);
+        }
+
+        // Make them repeat.
+        foreach (var audio in _audioPlayers)
+        {
+            audio.LoopPlayback = true;
         }
     }
 
