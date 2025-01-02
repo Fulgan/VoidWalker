@@ -237,7 +237,6 @@ public class Game : IGame
         foreach (var audioPlayer in _audioPlayers)
         {
             audioPlayer.Stop();
-            audioPlayer.Dispose();
         }
 
         if (string.IsNullOrWhiteSpace(_currentLocation?.BackgroundAudio) && _currentLocation?.BackgroundAudios.Count() == 0)
