@@ -16,7 +16,10 @@ public class Location
 
     public string Name { get; set; }
     public string Description { get; set; }
+
+    // Polymorphic? for simplicity. One audio for convencience, or an array if you like.
     public string BackgroundAudio { get; set; } = string.Empty;
+    public string[] BackgroundAudios { get; set; } = [];
 
     /// <summary>
     /// For custom code, this is the class name of the code-behind class for this location.

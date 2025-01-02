@@ -2,7 +2,10 @@
     "$type": "TextBlade.Core.Locations.Dungeon, TextBlade.Core",
     "Name": "North Seaside Cave",
     "Description": "You stand in a small, dark cave that smells heavily of salt.",
-    "BackgroundAudios": ["bgse/cave", "bgse/bat-wings"],
+    "BackgroundAudios": [
+        "bgse/cave",
+        "bgse/bat-wings"
+    ],
     "LinkedLocations": [
         {"Id": "Locations/KingsVale/KingsVale", "Description": "Back to King's Vale"}
     ],

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SonicBoom;
 using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Commands;
@@ -29,12 +30,11 @@ public class Game : IGame
     private DateTime _lastSaveOn = DateTime.UtcNow;
 
     private readonly IConsole _console;
-    private readonly ISoundPlayer _backgroundAudioPlayer; 
+    private readonly List<AudioPlayer> _audioPlayers = []; 
 
-    public Game(IConsole console, ISoundPlayer soundPlayer)
+    public Game(IConsole console)
     {
         _console = console;
-        _backgroundAudioPlayer = soundPlayer;
         _locationDisplayer = new(_console);
 
         Current = this;
@@ -235,14 +235,36 @@ public class Game : IGame
 
     private void PlayBackgroundAudio()
     {
-        _backgroundAudioPlayer.Stop();
-        if (string.IsNullOrWhiteSpace(_currentLocation?.BackgroundAudio))
+        foreach (var audioPlayer in _audioPlayers)
+        {
+            audioPlayer.Stop();
+            audioPlayer.Dispose();
+        }
+
+        if (string.IsNullOrWhiteSpace(_currentLocation?.BackgroundAudio) && _currentLocation?.BackgroundAudios.Count() == 0)
         {
             return;
         }
 
-        _backgroundAudioPlayer.Load(Path.Join("Content", "Audio", _currentLocation.BackgroundAudio));
-        _backgroundAudioPlayer.Play();
+        if (!string.IsNullOrWhiteSpace(_currentLocation?.BackgroundAudio))
+        {
+            PlayAudioFor(_currentLocation.BackgroundAudio);
+            return;
+        }
+
+        // Array of audios.
+        foreach (var audio in _currentLocation?.BackgroundAudios)
+        {
+            PlayAudioFor(audio);
+        }
+    }
+
+    private void PlayAudioFor(string audioFile)
+    {
+        var audioPlayer = new AudioPlayer();
+        audioPlayer.Load(Path.Join("Content", "Audio", $"{audioFile}.ogg"));
+        _audioPlayers.Add(audioPlayer);
+        audioPlayer.Play();
     }
 
     private void AutoSaveIfItsBeenAWhile()
