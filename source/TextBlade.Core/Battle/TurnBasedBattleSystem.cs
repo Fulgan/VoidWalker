@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TextBlade.Core.Audio;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
@@ -20,6 +21,7 @@ public class TurnBasedBattleSystem : IBattleSystem
     public const string DefeatMessage = "Defeat!";
     private const string CommentsInJsonRegex = @"(//.*)";
 
+    private readonly ISoundPlayer _soundPlayer;
     private readonly List<Monster> _monsters = new();
     private readonly IConsole _console;
     private SaveData _saveData; // not available at construction time, but available in Execute
@@ -58,14 +60,16 @@ public class TurnBasedBattleSystem : IBattleSystem
         }
     }
 
-    public TurnBasedBattleSystem(IConsole console, Dungeon dungeon, List<string> monsterNames, List<string> loot)
+    public TurnBasedBattleSystem(IConsole console, ISoundPlayer soundPlayer, Dungeon dungeon, List<string> monsterNames, List<string> loot)
     {
         ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(soundPlayer);
         ArgumentNullException.ThrowIfNull(dungeon);
         ArgumentNullException.ThrowIfNull(monsterNames);
         ArgumentNullException.ThrowIfNull(loot);
 
         _console = console;
+        _soundPlayer = soundPlayer;
         _dungeon = dungeon;
         _loot = loot;
 
@@ -123,7 +127,7 @@ public class TurnBasedBattleSystem : IBattleSystem
         var isPartyWipedOut = () => _saveData.Party.TrueForAll(p => p.CurrentHealth <= 0);
         var areMonstersDefeated = () => _monsters.TrueForAll(m => m.CurrentHealth <= 0);
         var isBattleOver = () => isPartyWipedOut() || areMonstersDefeated();
-        var characterTurnProcessor = new CharacterTurnProcessor(_console, _saveData, _monsters);
+        var characterTurnProcessor = new CharacterTurnProcessor(_console, _soundPlayer, _saveData, _monsters);
 
         while (!isBattleOver())
         {

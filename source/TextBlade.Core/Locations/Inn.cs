@@ -1,3 +1,4 @@
+using TextBlade.Core.Audio;
 using TextBlade.Core.Commands;
 using TextBlade.Core.IO;
 
@@ -14,7 +15,7 @@ public class Inn : Location
     {
     }
 
-    public override ICommand GetCommandFor(IConsole console, string input)
+    public override ICommand GetCommandFor(IConsole console, ISoundPlayer soundPlayer, string input)
     {
         if (input.ToLower() == "s")
         {

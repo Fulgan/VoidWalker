@@ -1,3 +1,4 @@
+using TextBlade.Core.Audio;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands.Display;
 using TextBlade.Core.IO;
@@ -9,16 +10,19 @@ public class CharacterTurnProcessor
     private readonly List<Monster> _monsters;
     private readonly SaveData _saveData;
     private readonly IConsole _console;
+    private readonly ISoundPlayer _soundPlayer;
 
     private readonly char[] validInputs = ['a', 'i', 's', 'd'];
 
-    public CharacterTurnProcessor(IConsole console, SaveData saveData, List<Monster> monsters)
+    public CharacterTurnProcessor(IConsole console, ISoundPlayer soundPlayer, SaveData saveData, List<Monster> monsters)
     {
         ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(soundPlayer);
         ArgumentNullException.ThrowIfNull(saveData);
         ArgumentNullException.ThrowIfNull(monsters);
         
         _console = console;
+        _soundPlayer = soundPlayer;
         _saveData = saveData;
         _monsters = monsters;
     }
@@ -69,6 +73,11 @@ public class CharacterTurnProcessor
                 }
 
                 new SkillApplier(_console).Apply(character, skill, targets);
+                var skillAudioFile = skill.GetAudioFileName();
+                if (!string.IsNullOrWhiteSpace(skillAudioFile))
+                {
+                    _soundPlayer.Play(skillAudioFile);
+                }
                 break;
             case 'i':
                 var command = new ShowInventoryCommand(_console, true);

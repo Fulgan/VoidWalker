@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using SonicBoom;
 using TextBlade.ConsoleRunner.IO;
+using TextBlade.Core.Audio;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
@@ -29,11 +30,17 @@ public class Game : IGame
     private DateTime _lastSaveOn = DateTime.UtcNow;
 
     private readonly IConsole _console;
-    private readonly List<AudioPlayer> _audioPlayers = []; 
 
-    public Game(IConsole console)
+    private readonly ISoundPlayer _skillSoundPlayer;
+    private readonly List<AudioPlayer> _backgroundAudiosPlayers = []; 
+
+    public Game(IConsole console, ISoundPlayer soundPlayer)
     {
+        ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(soundPlayer);
+
         _console = console;
+        _skillSoundPlayer = soundPlayer;
         _locationDisplayer = new(_console);
 
         Current = this;
@@ -83,7 +90,7 @@ public class Game : IGame
                     _locationDisplayer.ShowLocation(_currentLocation);
                 }
 
-                var command = new InputProcessor(this, _console).PromptForAction(_currentLocation);
+                var command = new InputProcessor(this, _console, _skillSoundPlayer).PromptForAction(_currentLocation);
                 previousLocation = _currentLocation;
 
                 var isExecuted = command.Execute(_saveData);
@@ -234,7 +241,7 @@ public class Game : IGame
 
     private void PlayBackgroundAudio()
     {
-        foreach (var audioPlayer in _audioPlayers)
+        foreach (var audioPlayer in _backgroundAudiosPlayers)
         {
             audioPlayer.Stop();
         }
@@ -256,7 +263,7 @@ public class Game : IGame
         }
 
         // Make them repeat.
-        foreach (var audio in _audioPlayers)
+        foreach (var audio in _backgroundAudiosPlayers)
         {
             audio.LoopPlayback = true;
         }
@@ -266,7 +273,7 @@ public class Game : IGame
     {
         var audioPlayer = new AudioPlayer();
         audioPlayer.Load(Path.Join("Content", "Audio", $"{audioFile}.ogg"));
-        _audioPlayers.Add(audioPlayer);
+        _backgroundAudiosPlayers.Add(audioPlayer);
         audioPlayer.Play();
     }
 

@@ -40,4 +40,16 @@ public class Skill
         var dealsOrHeals = DamageMultiplier > 0 ? $"Deals {DamageMultiplier}" : $"Heals {-DamageMultiplier}";
         return $"{Name}: {dealsOrHeals}x {DamageType}-type damage against {Target}, {statusText} costs {Cost} skill points";
     }
+
+    /// <summary>
+    /// Returns the audio file name, if the file exists.
+    /// Otherwise, returns empty string.
+    /// Assumes a lot of things...
+    /// </summary>
+    internal string GetAudioFileName()
+    {
+        // Assumes too much.
+        var toReturn = Path.Join("Content", "Audio", "sfx", $"{Name.ToLower().Replace(' ', '-')}.ogg");
+        return File.Exists(toReturn) ? toReturn : string.Empty;
+    }
 }
