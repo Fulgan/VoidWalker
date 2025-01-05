@@ -1,3 +1,4 @@
+using TextBlade.Core.Audio;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters.PartyManagement;
 using TextBlade.Core.IO;
@@ -7,19 +8,23 @@ namespace TextBlade.Core.Commands.Display;
 public class ShowInventoryCommand : ICommand
 {
     private readonly IConsole _console;
+    private readonly ISoundPlayer _soundPlayer;
 
     private readonly EquipmentEquipper _equipper;
     private readonly ItemUser _itemUser;
 
     private bool _isInBattle = false;
 
-    public ShowInventoryCommand(IConsole console, bool isInBattle = false)
+    public ShowInventoryCommand(IConsole console, ISoundPlayer soundPlayer, bool isInBattle = false)
     {
         ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(soundPlayer);
 
         _console = console;
+        _soundPlayer = soundPlayer;
+
         _equipper = new(console);
-        _itemUser = new(console);
+        _itemUser = new(console, soundPlayer);
 
         _isInBattle = isInBattle;
     }

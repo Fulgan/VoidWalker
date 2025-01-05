@@ -62,7 +62,7 @@ public class InputProcessor
             case "i":
             case "inv":
             case "inventory":
-                return new ShowInventoryCommand(_console);
+                return new ShowInventoryCommand(_console, _soundPlayer);
             case "p":
             case "party":
             case "status":

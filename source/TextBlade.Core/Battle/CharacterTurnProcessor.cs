@@ -80,7 +80,7 @@ public class CharacterTurnProcessor
                 }
                 break;
             case 'i':
-                var command = new ShowInventoryCommand(_console, true);
+                var command = new ShowInventoryCommand(_console, _soundPlayer, true);
                 return command.Execute(_saveData);
             default:
                 _console.WriteLine("Invalid input!");

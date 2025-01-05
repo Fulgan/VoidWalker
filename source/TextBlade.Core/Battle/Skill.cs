@@ -49,7 +49,7 @@ public class Skill
     internal string GetAudioFileName()
     {
         // Assumes too much.
-        var toReturn = Path.Join("Content", "Audio", "sfx", $"{Name.ToLower().Replace(' ', '-')}.ogg");
+        var toReturn = Path.Join("Content", "Audio", "sfx", "skills", $"{Name.ToLower().Replace(' ', '-')}.wav");
         return File.Exists(toReturn) ? toReturn : string.Empty;
     }
 }

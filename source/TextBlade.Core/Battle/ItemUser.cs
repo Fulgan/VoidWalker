@@ -1,3 +1,4 @@
+using TextBlade.Core.Audio;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Inv;
 using TextBlade.Core.IO;
@@ -7,10 +8,12 @@ namespace TextBlade.Core.Battle;
 public class ItemUser
 {
     private readonly IConsole _console;
+    private readonly ISoundPlayer _soundPlayer;
 
-    public ItemUser(IConsole console)
+    public ItemUser(IConsole console, ISoundPlayer soundPlayer)
     {
         _console = console;
+        _soundPlayer = soundPlayer;
     }
 
     internal bool UseIfRequested(Item itemData, Inventory inventory, List<Character> party)
@@ -57,6 +60,13 @@ public class ItemUser
         partyMember.CurrentSkillPoints = Math.Min(partyMember.CurrentSkillPoints + consumable.RestoreSkillPoints, partyMember.TotalSkillPoints);
 
         inventory.Remove(consumable.Name);
+
+        var itemAudioFile = itemData.GetAudioFileName();
+        if (!string.IsNullOrWhiteSpace(itemAudioFile))
+        {
+            _soundPlayer.Play(itemAudioFile);
+        }
+        
         _console.WriteLine("Healed.");
         return true;
     }
