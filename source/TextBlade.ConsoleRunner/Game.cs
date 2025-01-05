@@ -33,7 +33,7 @@ public class Game : IGame
     private readonly IConsole _console;
 
     private readonly ISoundPlayer _oneShotBattleSoundsPlayer = new AudioPlayerWrapper();
-    private readonly ISoundPlayer _battleBgmSoundPlayer = new AudioPlayerWrapper();
+    private readonly ISoundPlayer _battleThemeSoundPlayer = new AudioPlayerWrapper(true);
     private readonly List<AudioPlayer> _backgroundAudiosPlayers = []; 
 
     public Game(IConsole console, ISoundPlayer soundPlayer)
@@ -73,7 +73,8 @@ public class Game : IGame
 
     public void Run()
     {
-        try {
+        try
+        {
             LoadGameOrStartNewGame();
             if (_currentLocation is null)
             {
@@ -95,12 +96,20 @@ public class Game : IGame
                 var command = new InputProcessor(this, _console, _oneShotBattleSoundsPlayer).PromptForAction(_currentLocation);
                 previousLocation = _currentLocation;
 
+                // Special case for battles
+                if (command is FightCommand)
+                {
+                    FadeOutAudios();
+                    _battleThemeSoundPlayer.Play(Path.Combine("Content", "Audio", "bgm", "battle.ogg"));
+                }
+
                 var isExecuted = command.Execute(_saveData);
                 if (!isExecuted)
                 {
                     continue;
                 }
                 
+                // Command processing is done, e.g. battle is over.
                 switch (command)
                 {
                     case ManuallySaveCommand:
@@ -108,6 +117,10 @@ public class Game : IGame
                         break;
                     case LookCommand:
                         _locationDisplayer.ShowLocation(_currentLocation);
+                        break;
+                    case FightCommand:
+                        _battleThemeSoundPlayer.Stop(); // TODO: fade out
+                        FadeInAudios();
                         break;
                     default:
                         AutoSaveIfItsBeenAWhile();
@@ -161,6 +174,15 @@ public class Game : IGame
         foreach (var audio in _backgroundAudiosPlayers)
         {
             audio.Stop();
+        }
+    }
+
+    private void FadeInAudios()
+    {
+        // One day...
+        foreach (var audio in _backgroundAudiosPlayers)
+        {
+            audio.Play();
         }
     }
 
@@ -254,8 +276,11 @@ public class Game : IGame
     {
         foreach (var audioPlayer in _backgroundAudiosPlayers)
         {
+            // Fade out and stop
             audioPlayer.Stop();
         }
+        
+        _backgroundAudiosPlayers.Clear();
 
         if (string.IsNullOrWhiteSpace(_currentLocation?.BackgroundAudio) && _currentLocation?.BackgroundAudios.Count() == 0)
         {
@@ -265,13 +290,11 @@ public class Game : IGame
         if (!string.IsNullOrWhiteSpace(_currentLocation?.BackgroundAudio))
         {
             PlayAudioFor(_currentLocation.BackgroundAudio);
+            return;
         }
 
         // Array of audios.
-        foreach (var audio in _currentLocation?.BackgroundAudios)
-        {
-            PlayAudioFor(audio);
-        }
+        PlayAudiosFor(_currentLocation?.BackgroundAudios);
 
         // Make them repeat.
         foreach (var audio in _backgroundAudiosPlayers)
@@ -280,8 +303,21 @@ public class Game : IGame
         }
     }
 
-    private void PlayAudioFor(string audioFile)
+    private void PlayAudiosFor(string[] audios)
     {
+        // Fade out
+        // OnFadeOutComplete () =>
+        {
+            _backgroundAudiosPlayers.Clear();
+            foreach (var audio in audios)
+            {
+                PlayAudioFor(audio);
+            }
+        }        
+    }
+
+    private void PlayAudioFor(string audioFile)
+    {   
         var audioPlayer = new AudioPlayer();
         audioPlayer.Load(Path.Join("Content", "Audio", $"{audioFile}.ogg"));
         _backgroundAudiosPlayers.Add(audioPlayer);
