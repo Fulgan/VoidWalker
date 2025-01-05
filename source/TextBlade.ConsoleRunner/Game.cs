@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SonicBoom;
+using TextBlade.ConsoleRunner.Audio;
 using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Audio;
 using TextBlade.Core.Battle;
@@ -31,7 +32,8 @@ public class Game : IGame
 
     private readonly IConsole _console;
 
-    private readonly ISoundPlayer _skillSoundPlayer;
+    private readonly ISoundPlayer _oneShotBattleSoundsPlayer = new AudioPlayerWrapper();
+    private readonly ISoundPlayer _battleBgmSoundPlayer = new AudioPlayerWrapper();
     private readonly List<AudioPlayer> _backgroundAudiosPlayers = []; 
 
     public Game(IConsole console, ISoundPlayer soundPlayer)
@@ -40,7 +42,7 @@ public class Game : IGame
         ArgumentNullException.ThrowIfNull(soundPlayer);
 
         _console = console;
-        _skillSoundPlayer = soundPlayer;
+        _oneShotBattleSoundsPlayer = soundPlayer;
         _locationDisplayer = new(_console);
 
         Current = this;
@@ -90,7 +92,7 @@ public class Game : IGame
                     _locationDisplayer.ShowLocation(_currentLocation);
                 }
 
-                var command = new InputProcessor(this, _console, _skillSoundPlayer).PromptForAction(_currentLocation);
+                var command = new InputProcessor(this, _console, _oneShotBattleSoundsPlayer).PromptForAction(_currentLocation);
                 previousLocation = _currentLocation;
 
                 var isExecuted = command.Execute(_saveData);
@@ -127,7 +129,7 @@ public class Game : IGame
         }
     }
 
-    protected void SaveGame()
+    private void SaveGame()
     {
         if (_currentLocation == null)
             throw new InvalidOperationException("Game has not been started yet"); 
@@ -151,6 +153,15 @@ public class Game : IGame
         _lastSaveOn = DateTime.UtcNow;
 
         _console.WriteLine("[green]Game saved.[/]");
+    }
+
+    private void FadeOutAudios()
+    {
+        // One day, perhaps I will figure out how to fade out.
+        foreach (var audio in _backgroundAudiosPlayers)
+        {
+            audio.Stop();
+        }
     }
 
     private void LoadGameOrStartNewGame()
