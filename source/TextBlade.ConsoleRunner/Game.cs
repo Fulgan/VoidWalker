@@ -21,7 +21,9 @@ namespace TextBlade.ConsoleRunner;
 public class Game : IGame
 {
     public static IGame Current { get; private set; } = null!;
+
     private const int AutoSaveIntervalMinutes = 1;
+    private const float BackgroundAudioVolume = 0.35f;
 
     protected SaveData _saveData = new();
     protected Location? _currentLocation;
@@ -323,6 +325,7 @@ public class Game : IGame
     {   
         var audioPlayer = new AudioPlayer();
         audioPlayer.Load(Path.Join("Content", "Audio", $"{audioFile}.ogg"));
+        audioPlayer.Volume = BackgroundAudioVolume;
         _backgroundAudiosPlayers.Add(audioPlayer);
         audioPlayer.Play();
     }
