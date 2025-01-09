@@ -165,6 +165,7 @@ public class TurnBasedBattleSystem : IBattleSystem
 
             // If they're not done by here, stop and clear the queue.
             _serialSoundPlayer.Stop();
+            var anyMonstersActed = false;
 
             foreach (var monster in _monsters)
             {
@@ -174,9 +175,14 @@ public class TurnBasedBattleSystem : IBattleSystem
                 }
 
                 new BasicMonsterAi(_console, _serialSoundPlayer, _saveData.Party).ProcessTurnFor(monster);
+                anyMonstersActed = true;
             }
 
-            _serialSoundPlayer.Play();
+            if (anyMonstersActed)
+            {
+                _serialSoundPlayer.Play();
+            }
+            
             ApplyRoundCompletion();
         }
 

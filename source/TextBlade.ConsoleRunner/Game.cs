@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SonicBoom;
-using TextBlade.ConsoleRunner.Audio;
+using TestBlade.ConsoleRunner.Audio;
 using TextBlade.ConsoleRunner.IO;
 using TextBlade.Core.Audio;
 using TextBlade.Core.Battle;
@@ -35,8 +34,8 @@ public class Game : IGame
     private readonly IConsole _console;
 
     private readonly ISerialSoundPlayer _serialSoundPlayer;
-    private readonly ISoundPlayer _oneShotBattleSoundsPlayer = new AudioPlayerWrapper();
-    private readonly ISoundPlayer _battleThemeSoundPlayer = new AudioPlayerWrapper(true);
+    private readonly ISoundPlayer _oneShotBattleSoundsPlayer = new AudioPlayer();
+    private readonly ISoundPlayer _battleThemeSoundPlayer = new AudioPlayer(true);
     private readonly List<AudioPlayer> _backgroundAudiosPlayers = []; 
 
     public Game(IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer)
@@ -105,7 +104,8 @@ public class Game : IGame
                 if (command is FightCommand)
                 {
                     FadeOutAudios();
-                    _battleThemeSoundPlayer.Play(Path.Combine("Content", "Audio", "bgm", "battle.ogg"));
+                    _battleThemeSoundPlayer.Load(Path.Combine("Content", "Audio", "bgm", "battle.ogg"));
+                    _battleThemeSoundPlayer.Play();
                 }
 
                 var isExecuted = command.Execute(_saveData);

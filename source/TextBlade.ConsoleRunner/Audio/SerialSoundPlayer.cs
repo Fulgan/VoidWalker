@@ -1,4 +1,4 @@
-using SonicBoom;
+using TestBlade.ConsoleRunner.Audio;
 using TextBlade.Core.Audio;
 
 namespace TextBlade.ConsoleRunner.Audio;
