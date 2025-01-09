@@ -32,16 +32,19 @@ public class Game : IGame
 
     private readonly IConsole _console;
 
+    private readonly ISerialSoundPlayer _serialSoundPlayer;
     private readonly ISoundPlayer _oneShotBattleSoundsPlayer = new AudioPlayerWrapper();
     private readonly ISoundPlayer _battleThemeSoundPlayer = new AudioPlayerWrapper(true);
     private readonly List<AudioPlayer> _backgroundAudiosPlayers = []; 
 
-    public Game(IConsole console, ISoundPlayer soundPlayer)
+    public Game(IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer)
     {
         ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(serialSoundPlayer);
         ArgumentNullException.ThrowIfNull(soundPlayer);
 
         _console = console;
+        _serialSoundPlayer = serialSoundPlayer;
         _oneShotBattleSoundsPlayer = soundPlayer;
         _locationDisplayer = new(_console);
 
@@ -93,7 +96,7 @@ public class Game : IGame
                     _locationDisplayer.ShowLocation(_currentLocation);
                 }
 
-                var command = new InputProcessor(this, _console, _oneShotBattleSoundsPlayer).PromptForAction(_currentLocation);
+                var command = new InputProcessor(this, _console, _serialSoundPlayer, _oneShotBattleSoundsPlayer).PromptForAction(_currentLocation);
                 previousLocation = _currentLocation;
 
                 // Special case for battles

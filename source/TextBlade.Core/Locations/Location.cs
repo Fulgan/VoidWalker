@@ -37,7 +37,7 @@ public class Location
         this.LocationClass = locationClass;
     }
 
-    public virtual ICommand GetCommandFor(IConsole console, ISoundPlayer soundPlayer, string input)
+    public virtual ICommand GetCommandFor(IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer, string input)
     {
         // Leave it up to sub-types, like inn, to handle their own input and return a command.
         return new DoNothingCommand();

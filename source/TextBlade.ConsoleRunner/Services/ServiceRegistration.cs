@@ -14,6 +14,7 @@ namespace TextBlade.ConsoleRunner
         {            
             services.TryAddSingleton<IConsole, TextConsole>(); // Keyboard input and coloured output
             services.TryAddSingleton<ISoundPlayer, AudioPlayerWrapper>();
+            services.TryAddSingleton<ISerialSoundPlayer, SerialSoundPlayer>();
             services.TryAddSingleton<IGame, Game>();
             services.TryAddSingleton<NewGameRunner>();
             return services;

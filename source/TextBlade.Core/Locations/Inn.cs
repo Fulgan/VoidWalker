@@ -15,7 +15,7 @@ public class Inn : Location
     {
     }
 
-    public override ICommand GetCommandFor(IConsole console, ISoundPlayer soundPlayer, string input)
+    public override ICommand GetCommandFor(IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer, string input)
     {
         if (input.ToLower() == "s")
         {

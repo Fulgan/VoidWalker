@@ -10,17 +10,20 @@ namespace TextBlade.ConsoleRunner.IO;
 public class InputProcessor
 {
     private readonly IConsole _console;
+    private readonly ISerialSoundPlayer _serialSoundPlayer;
     private readonly ISoundPlayer _soundPlayer;
     private readonly IGame _game;
 
-    public InputProcessor(IGame game, IConsole console, ISoundPlayer soundPlayer)
+    public InputProcessor(IGame game, IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer)
     {
         ArgumentNullException.ThrowIfNull(game);
         ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(serialSoundPlayer);
         ArgumentNullException.ThrowIfNull(soundPlayer);
 
         _game = game;
         _console = console;
+        _serialSoundPlayer = serialSoundPlayer;
         _soundPlayer = soundPlayer;
     }
 
@@ -30,7 +33,7 @@ public class InputProcessor
         var rawResponse = _console.ReadLine();
         
         // It's some special command that the location handles. That doesn't change location.
-        var command = currentLocation.GetCommandFor(_console, _soundPlayer, rawResponse);
+        var command = currentLocation.GetCommandFor(_console, _serialSoundPlayer, _soundPlayer, rawResponse);
 
         if (!(command is DoNothingCommand))
         {

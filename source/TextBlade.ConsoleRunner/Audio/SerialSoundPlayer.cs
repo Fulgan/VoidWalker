@@ -1,12 +1,13 @@
 using SonicBoom;
+using TextBlade.Core.Audio;
 
 namespace TextBlade.ConsoleRunner.Audio;
 
-public class SerialSoundPlayer : IDisposable
+public class SerialSoundPlayer : ISerialSoundPlayer, IDisposable
 {
     private readonly AudioPlayer _audioPlayer = new();
     private int _currentAudioId = 0;
-    private IList<string>? _audiosToPlay;
+    private List<string> _audiosToPlay = new();
     private bool _disposedValue;
 
     public SerialSoundPlayer()
@@ -14,11 +15,27 @@ public class SerialSoundPlayer : IDisposable
         _audioPlayer.OnPlaybackComplete += PlayNext;
     }
 
-    public void Play(params string[] audios)
+    public void Play()
     {
-        _audiosToPlay = audios;
+        if (!_audiosToPlay.Any())
+        {
+            throw new InvalidOperationException("No audios are queued.");
+        }
+
         _currentAudioId = -1;
         PlayNext();
+    }
+
+    public void Stop()
+    {
+        _audioPlayer.Stop();
+        _currentAudioId = -1;
+        _audiosToPlay.Clear();
+    }
+
+    public void Queue(string audioFile)
+    {
+        _audiosToPlay.Add(audioFile);
     }
 
     private void PlayNext()
@@ -27,9 +44,7 @@ public class SerialSoundPlayer : IDisposable
         if (_currentAudioId >= _audiosToPlay.Count)
         {
             // We're done!
-            _currentAudioId = 0;
-            _audiosToPlay = Array.Empty<string>();
-            _audioPlayer.Dispose();
+            Stop();
             return;
         }
 

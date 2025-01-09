@@ -49,7 +49,7 @@ public class ItemShop : Location
         return "Type \"B item number\" to buy that item.";
     }
 
-    public override ICommand GetCommandFor(IConsole console, ISoundPlayer soundPlayer, string input)
+    public override ICommand GetCommandFor(IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer, string input)
     {
         input = input.ToLower();
         if (!input.StartsWith("b "))

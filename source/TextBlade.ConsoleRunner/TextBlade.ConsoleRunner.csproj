@@ -18,13 +18,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="SonicBoom" />
     <PackageReference Include="Spectre.Console" />
     <PackageReference Include="System.Windows.Extensions" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TextBlade.Core\TextBlade.Core.csproj" />
+    <ProjectReference Include="..\..\..\SonicBoom\SonicBoom\SonicBoom.csproj" />
   </ItemGroup> 
 
 </Project>

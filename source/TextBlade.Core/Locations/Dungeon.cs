@@ -126,7 +126,7 @@ public class Dungeon : Location
         return message.ToString();
     }
 
-    override public ICommand GetCommandFor(IConsole console, ISoundPlayer soundPlayer, string input)
+    override public ICommand GetCommandFor(IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer, string input)
     {
         var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")
@@ -137,7 +137,7 @@ public class Dungeon : Location
                 return new DoNothingCommand();
             }
             var loot = FloorLoot.ContainsKey(_currentFloorLootKey) ? FloorLoot[_currentFloorLootKey] : new();
-            var system = new TurnBasedBattleSystem(console, soundPlayer, this, currentFloorData, loot);
+            var system = new TurnBasedBattleSystem(console, serialSoundPlayer, soundPlayer, this, currentFloorData, loot);
             return new FightCommand(console, system);
         }
         else if (input == "d" || input == "down" || input == "descend" || input == ">")

@@ -1,3 +1,4 @@
+using TextBlade.Core.Audio;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Collections;
 using TextBlade.Core.IO;
@@ -11,13 +12,17 @@ namespace TextBlade.Core.Battle;
 public class BasicMonsterAi
 {
     private readonly IConsole _console;
+    private readonly ISerialSoundPlayer _serialSoundPlayer;
     private readonly List<Character> _party;
 
-    public BasicMonsterAi(IConsole console, List<Character> party)
+    public BasicMonsterAi(IConsole console, ISerialSoundPlayer serialSoundPlayer, List<Character> party)
     {
         ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(serialSoundPlayer);
+        ArgumentNullException.ThrowIfNull(party);
         
         _console = console;
+        _serialSoundPlayer = serialSoundPlayer;
         _party = party;
     }
     
@@ -32,6 +37,11 @@ public class BasicMonsterAi
 
         var target = validTargets[Random.Shared.Next(0, validTargets.Count)];
         var usableSkills = monster.SkillProbabilities.Where(kvp => Skill.GetSkill(kvp.Key).Cost <= monster.CurrentSkillPoints);
+
+        // Monster will attack or use skill. We're cool from here to play the sound.
+        // For now: Assume the sound is always there.
+        var sfxFile = Path.Join("Content", "Audio", "sfx", "monsters", $"{monster.Name.Replace(' ', '-').ToLower()}.wav");
+        _serialSoundPlayer.Queue(sfxFile);
 
         // Should we use a skill?
         var attackProbability = 1.0 - monster.SkillProbabilities?.Sum(s => s.Value);

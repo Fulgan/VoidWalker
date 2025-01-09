@@ -21,6 +21,7 @@ public class TurnBasedBattleSystem : IBattleSystem
     public const string DefeatMessage = "Defeat!";
     private const string CommentsInJsonRegex = @"(//.*)";
 
+    private readonly ISerialSoundPlayer _serialSoundPlayer;
     private readonly ISoundPlayer _soundPlayer;
     private readonly List<Monster> _monsters = new();
     private readonly IConsole _console;
@@ -60,15 +61,17 @@ public class TurnBasedBattleSystem : IBattleSystem
         }
     }
 
-    public TurnBasedBattleSystem(IConsole console, ISoundPlayer soundPlayer, Dungeon dungeon, List<string> monsterNames, List<string> loot)
+    public TurnBasedBattleSystem(IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer, Dungeon dungeon, List<string> monsterNames, List<string> loot)
     {
         ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(serialSoundPlayer);
         ArgumentNullException.ThrowIfNull(soundPlayer);
         ArgumentNullException.ThrowIfNull(dungeon);
         ArgumentNullException.ThrowIfNull(monsterNames);
         ArgumentNullException.ThrowIfNull(loot);
 
         _console = console;
+        _serialSoundPlayer = serialSoundPlayer;
         _soundPlayer = soundPlayer;
         _dungeon = dungeon;
         _loot = loot;
@@ -95,7 +98,6 @@ public class TurnBasedBattleSystem : IBattleSystem
             var weakness = data.Value<string?>("Weakness") ?? string.Empty;
             var gold = data.Value<int>("Gold");
             var experiencePoints = data.Value<int?>("ExperiencePoints") ?? 0;
-
             
             var skillNames = data.Value<JArray>("SkillNames");
             var skillProbabilities = new Dictionary<string, double>();
@@ -161,6 +163,9 @@ public class TurnBasedBattleSystem : IBattleSystem
                 }
             }
 
+            // If they're not done by here, stop and clear the queue.
+            _serialSoundPlayer.Stop();
+
             foreach (var monster in _monsters)
             {
                 if (monster.CurrentHealth <= 0)
@@ -168,9 +173,10 @@ public class TurnBasedBattleSystem : IBattleSystem
                     continue;
                 }
 
-                new BasicMonsterAi(_console, _saveData.Party).ProcessTurnFor(monster);
+                new BasicMonsterAi(_console, _serialSoundPlayer, _saveData.Party).ProcessTurnFor(monster);
             }
 
+            _serialSoundPlayer.Play();
             ApplyRoundCompletion();
         }
 
