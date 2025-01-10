@@ -72,9 +72,6 @@ public class AudioPlayer : ISoundPlayer, IDisposable
 
             Play();
         };
-
-        Console.WriteLine($"Playing {fileName}!");
-        Play();
     }
 
     /// <summary>
