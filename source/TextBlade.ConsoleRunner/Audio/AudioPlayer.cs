@@ -15,15 +15,15 @@ public class AudioPlayer : ISoundPlayer, IDisposable
     /// Does not fire if you call Stop or Pause.
     /// If LoopPlayback is true, this fires on every loop.
     /// </summary>
-    public event Action OnPlaybackComplete;
+    public event Action? OnPlaybackComplete;
 
     /// <summary>
     /// Set to true to loop playback.
     /// </summary>
     public bool LoopPlayback { get; set; }
     
-    private WaveOutEvent _waveOut;
-    private WaveStream _reader;
+    private WaveOutEvent? _waveOut;
+    private WaveStream? _reader;
 
     public AudioPlayer(bool loopPlayback = false)
     {
@@ -73,6 +73,7 @@ public class AudioPlayer : ISoundPlayer, IDisposable
             Play();
         };
 
+        Console.WriteLine($"Playing {fileName}!");
         Play();
     }
 

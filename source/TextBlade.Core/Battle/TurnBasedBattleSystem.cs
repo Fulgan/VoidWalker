@@ -180,6 +180,8 @@ public class TurnBasedBattleSystem : IBattleSystem
 
             if (anyMonstersActed)
             {
+                // Wait for any skill sounds to finish, then play monster sounds, so there's no overlap.
+                Thread.Sleep(500);
                 _serialSoundPlayer.Play();
             }
             

@@ -8,7 +8,6 @@ public class SerialSoundPlayer : ISerialSoundPlayer, IDisposable
     private readonly AudioPlayer _audioPlayer = new();
     private int _currentAudioId = 0;
     private List<string> _audiosToPlay = new();
-    private bool _disposedValue;
 
     public SerialSoundPlayer()
     {
@@ -53,22 +52,8 @@ public class SerialSoundPlayer : ISerialSoundPlayer, IDisposable
         _audioPlayer.Play();
     }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposedValue)
-        {
-            if (disposing)
-            {
-                _audioPlayer.Dispose();
-            }
-
-            _disposedValue = true;
-        }
-    }
-
     public void Dispose()
     {
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
+        _audioPlayer.Dispose();
     }
 }
