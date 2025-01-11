@@ -1,6 +1,4 @@
-using TextBlade.Core.Audio;
 using TextBlade.Core.Commands;
-using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Locations;
 
@@ -15,11 +13,11 @@ public class Inn : Location
     {
     }
 
-    public override ICommand GetCommandFor(IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer, string input)
+    public override ICommand GetCommandFor(string input)
     {
         if (input.ToLower() == "s")
         {
-            return new SleepAtInnCommand(console, this.InnCost);
+            return new SleepAtInnCommand(this.InnCost);
         }
 
         return new DoNothingCommand();

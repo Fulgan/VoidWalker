@@ -108,7 +108,7 @@ public class Game : IGame
                     _battleThemeSoundPlayer.Play();
                 }
 
-                var isExecuted = command.Execute(_saveData);
+                var isExecuted = command.Execute(_console, _saveData);
                 if (!isExecuted)
                 {
                     continue;

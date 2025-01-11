@@ -126,7 +126,7 @@ public class Dungeon : Location
         return message.ToString();
     }
 
-    override public ICommand GetCommandFor(IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer, string input)
+    override public ICommand GetCommandFor(string input)
     {
         var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")

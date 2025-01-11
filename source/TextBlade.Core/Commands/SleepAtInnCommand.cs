@@ -4,20 +4,18 @@ namespace TextBlade.Core.Commands;
 
 public class SleepAtInnCommand : ICommand
 {
-    private readonly IConsole _console;
     private readonly int _innCost;
 
-    public SleepAtInnCommand(IConsole console, int innCost)
+    public SleepAtInnCommand(int innCost)
     {
-        _console = console;
         _innCost = innCost;
     }
 
-    public bool Execute(SaveData saveData)
+    public bool Execute(IConsole console, SaveData saveData)
     {
         if (saveData.Gold < _innCost)
         {
-            _console.WriteLine("You don't have enough gold!");
+            console.WriteLine("You don't have enough gold!");
             return false;
         }
 
@@ -28,7 +26,7 @@ public class SleepAtInnCommand : ICommand
             character.FullyHeal();
         }
 
-        _console.WriteLine($"You sleep at the inn. All party members have recovered to [{Colours.Highlight}]full health[/]!");
+        console.WriteLine($"You sleep at the inn. All party members have recovered to [{Colours.Highlight}]full health[/]!");
         return true;
     }
 }

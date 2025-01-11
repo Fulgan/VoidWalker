@@ -9,12 +9,6 @@ namespace TextBlade.Core.Locations;
 /// </summary>
 public class Location
 {
-    /// <summary>
-    /// Used by Game to pass along the current save data.
-    /// Could be DI constructor injected, too.
-    /// </summary>
-    public static SaveData CurrentSaveData { set; protected get; } = null!;
-
     public string Name { get; set; }
     public string Description { get; set; }
 
@@ -37,7 +31,7 @@ public class Location
         this.LocationClass = locationClass;
     }
 
-    public virtual ICommand GetCommandFor(IConsole console, ISerialSoundPlayer serialSoundPlayer, ISoundPlayer soundPlayer, string input)
+    public virtual ICommand GetCommandFor(string input)
     {
         // Leave it up to sub-types, like inn, to handle their own input and return a command.
         return new DoNothingCommand();
