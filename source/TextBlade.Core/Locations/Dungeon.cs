@@ -131,6 +131,7 @@ public class Dungeon : Location
         var currentFloorData = _floorMonsters[_currentFloorNumber];
         if (input == "f" || input == "fight")
         {
+            // Return new TryToFightCommand. BUT! Command.Execute returns new FightCommand? HMM. 
             if (!currentFloorData.Any())
             {
                 console.WriteLine("There are no monsters to fight here!");
@@ -142,6 +143,7 @@ public class Dungeon : Location
         }
         else if (input == "d" || input == "down" || input == "descend" || input == ">")
         {
+            // Return new TryToDescend command. Easy peasy.
             if (currentFloorData.Any())
             {
                 console.WriteLine("You can't descend while monsters are around!");
