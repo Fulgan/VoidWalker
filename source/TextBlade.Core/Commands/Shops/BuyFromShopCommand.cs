@@ -37,7 +37,7 @@ public class BuyFromShopCommand : ICommand
                 return false;
             }
 
-            if (number <= 1 || number > _items.Count())
+            if (number < 1 || number >= _items.Count())
             {
                 console.WriteLine("There's no item with that number!");
                 continue;
