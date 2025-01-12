@@ -57,8 +57,6 @@ public class Game : IGame
     /// </summary>
     public void SetLocation(Location location)
     {
-        Location.CurrentSaveData = _saveData;
-
         if (location.LocationId == _saveData.LocationSpecificDataLocationId)
         {
             location.SetStateBasedOnCustomSaveData(_saveData.LocationSpecificData);
@@ -214,7 +212,7 @@ public class Game : IGame
         _saveData.Inventory = new();
 
         var startLocationId = runner.GetStartingLocationId();
-        new ChangeLocationCommand(this, startLocationId).Execute(_saveData);
+        new ChangeLocationCommand(this, startLocationId).Execute(_console, _saveData);
         _console.WriteLine("New game started. For help, type \"help\"");
     }
 
@@ -224,7 +222,7 @@ public class Game : IGame
         _saveData = SaveGameManager.LoadGame(SaveGameManager.CurrentGameSlot);
 
         GameSwitches.Switches = _saveData.Switches;
-        new ChangeLocationCommand(this, _saveData.CurrentLocationId).Execute(_saveData);
+        new ChangeLocationCommand(this, _saveData.CurrentLocationId).Execute(_console, _saveData);
 
         if (_saveData.LocationSpecificDataLocationId == _currentLocation?.LocationId)
         {

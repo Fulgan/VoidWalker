@@ -5,22 +5,15 @@ namespace TextBlade.Core.Commands;
 
 public class FightCommand : ICommand
 {
-    private readonly IConsole _console;
-    private readonly IBattleSystem _system;
+    public IBattleSystem System { get; set; }
 
-    public FightCommand(IConsole console, IBattleSystem system)
+    public bool Execute(IConsole console, SaveData saveData)
     {
         ArgumentNullException.ThrowIfNull(console);
-        ArgumentNullException.ThrowIfNull(system);
+        ArgumentNullException.ThrowIfNull(System);
 
-        _console = console;
-        _system = system;
-    }
-    
-    public bool Execute(SaveData saveData)
-    {
         // Signal to game to begin the fight. Fight! Fight! Fight!
-        var spoils = _system.Execute(saveData);
+        var spoils = System.Execute(saveData);
 
         // Process results: victory, or defeat?
         if (spoils.IsVictory)
@@ -31,16 +24,16 @@ public class FightCommand : ICommand
             {
                 if (character.IsAlive)
                 {
-                    character.GainExperiencePoints(_console, spoils.ExperiencePointsGained);
+                    character.GainExperiencePoints(console, spoils.ExperiencePointsGained);
                 }
             }
 
             if (spoils.Loot.Any())
             {
-                _console.WriteLine("Your party spies a treasure chest. You hurry over and open it. Within it, you find: ");
+                Console.WriteLine("Your party spies a treasure chest. You hurry over and open it. Within it, you find: ");
                 foreach (var itemName in spoils.Loot)
                 {
-                    _console.WriteLine($"    {itemName}");
+                    Console.WriteLine($"    {itemName}");
                     
                     var item = ItemsData.GetItem(itemName);
                     saveData.Inventory.Add(item);

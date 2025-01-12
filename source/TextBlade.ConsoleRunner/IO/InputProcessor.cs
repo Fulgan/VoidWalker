@@ -33,7 +33,17 @@ public class InputProcessor
         var rawResponse = _console.ReadLine();
         
         // It's some special command that the location handles. That doesn't change location.
-        var command = currentLocation.GetCommandFor(_console, _serialSoundPlayer, _soundPlayer, rawResponse);
+        var command = currentLocation.GetCommandFor(rawResponse);
+
+        // Weird corner case for FightCommand, which requires a TurnBasedCombatSystem, which requires lots of dependencies
+        if (command is FightCommand fight)
+        {
+            var dungeon = currentLocation as Dungeon;
+            var currentFloorData = dungeon.GetCurrentFloorData();
+            var loot = dungeon.GetCurrentFloorLoot();
+            var system = new TurnBasedBattleSystem(_console, _serialSoundPlayer, _soundPlayer, dungeon, currentFloorData, loot);
+            fight.System = system;
+        }
 
         if (!(command is DoNothingCommand))
         {

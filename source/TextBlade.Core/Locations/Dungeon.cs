@@ -1,20 +1,19 @@
 using System.Text;
-using TextBlade.Core.Audio;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
-using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Locations;
 
 public class Dungeon : Location
 {
-    // Simple but complex. Can be "Iron Shield," can be listed twice to give me two, can be "100 Gold," etc.
+    // Simple but complex. Can be "Iron Shield," can be listed twice to give me two.
+    // Public because of serialization.
     // Floor (e.g. B2) => list of lootz
     public Dictionary<string, List<string>> FloorLoot { get; set; } = [];
 
     // It's a list, one entry per floor.
     // Each entry is a list of monsters.
-    protected readonly List<List<string>> _floorMonsters = [];
+    private readonly List<List<string>> _floorMonsters = [];
     private int _currentFloorNumber  = 0;
     
     private string _currentFloorLootKey => $"B{_currentFloorNumber + 1}";
@@ -129,37 +128,17 @@ public class Dungeon : Location
     override public ICommand GetCommandFor(string input)
     {
         var currentFloorData = _floorMonsters[_currentFloorNumber];
-        if (input == "f" || input == "fight")
+        if ((input == "f" || input == "fight") && currentFloorData.Any())
         {
-            // Return new TryToFightCommand. BUT! Command.Execute returns new FightCommand? HMM. 
-            if (!currentFloorData.Any())
-            {
-                console.WriteLine("There are no monsters to fight here!");
-                return new DoNothingCommand();
-            }
-            var loot = FloorLoot.ContainsKey(_currentFloorLootKey) ? FloorLoot[_currentFloorLootKey] : new();
-            var system = new TurnBasedBattleSystem(console, serialSoundPlayer, soundPlayer, this, currentFloorData, loot);
-            return new FightCommand(console, system);
+            return new FightCommand();
         }
-        else if (input == "d" || input == "down" || input == "descend" || input == ">")
+        // Type d, down, descend, or >; current floor has no monsters; we're not at the bottom. 
+        else if ((input == "d" || input == "down" || input == "descend" || input == ">") &&
+        !currentFloorData.Any() && _currentFloorNumber < _floorMonsters.Count - 1)
         {
-            // Return new TryToDescend command. Easy peasy.
-            if (currentFloorData.Any())
-            {
-                console.WriteLine("You can't descend while monsters are around!");
-                return new DoNothingCommand();
-            }
-            else if (_currentFloorNumber == _floorMonsters.Count - 1)
-            {
-                console.WriteLine("You're already at the bottom of the dungeon!");
-                return new DoNothingCommand();
-            }
-            else
-            {
-                // Valid descent
-                _currentFloorNumber++;
-                return new LookCommand();
-            }
+            // Valid descent
+            _currentFloorNumber++;
+            return new LookCommand();
         }
 
         return new DoNothingCommand();
@@ -213,5 +192,15 @@ public class Dungeon : Location
     public void OnVictory()
     {
         _floorMonsters[_currentFloorNumber].Clear();
+    }
+
+    public List<string> GetCurrentFloorData()
+    {
+        return _floorMonsters[_currentFloorNumber] ?? new();
+    }
+
+    public List<string> GetCurrentFloorLoot()
+    {
+        return FloorLoot.ContainsKey(_currentFloorLootKey) ? FloorLoot[_currentFloorLootKey] : new();
     }
 }
