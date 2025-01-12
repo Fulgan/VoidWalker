@@ -6,6 +6,9 @@ namespace TextBlade.Core.IO;
 
 public class SaveData
 {
+    // Singleton-ish
+    public static SaveData Current { get; private set; }
+
     public List<Character> Party { get; set; }
     public GameSwitches Switches { get; set; }
     public int Gold { get; set; }
@@ -18,4 +21,9 @@ public class SaveData
 
     // For user code, i.e. game-specific things
     public Dictionary<string, object>? GameSpecificData { get; set; }
+
+    public SaveData()
+    {
+        SaveData.Current = this;
+    }
 }
