@@ -8,7 +8,7 @@ namespace TextBlade.Core.Commands;
 /// </summary>
 public class ManuallySaveCommand : ICommand
 {
-    public bool Execute(SaveData saveData)
+    public bool Execute(IConsole console, SaveData saveData)
     {
         // This stinks.
         return true;

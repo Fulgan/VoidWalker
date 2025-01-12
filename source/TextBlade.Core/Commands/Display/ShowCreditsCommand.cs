@@ -13,7 +13,7 @@ public class ShowCreditsCommand : ICommand
         _console = console;
     }
     
-    public bool Execute(SaveData saveData)
+    public bool Execute(IConsole console, SaveData saveData)
     {
         var creditsFilePath = Path.Join("Content", "Credits.txt");
         if (File.Exists(creditsFilePath))

@@ -24,7 +24,7 @@ public class ShowHelpCommand : ICommand
         { "credits", "Shows the credits" },
     };
 
-    public bool Execute(SaveData saveData)
+    public bool Execute(IConsole console, SaveData saveData)
     {
         var helpText = new List<string>
         {

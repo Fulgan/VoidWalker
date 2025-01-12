@@ -4,7 +4,7 @@ namespace TextBlade.Core.Commands;
 
 public class DoNothingCommand : ICommand
 {
-    public bool Execute(SaveData saveData)
+    public bool Execute(IConsole console, SaveData saveData)
     {
         return true;
     }

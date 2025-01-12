@@ -11,7 +11,7 @@ public class ShowPartyStatusCommand : ICommand
         _console = console;
     }
 
-    public bool Execute(SaveData saveData)
+    public bool Execute(IConsole console, SaveData saveData)
     {
         _console.WriteLine("Party status:");
 

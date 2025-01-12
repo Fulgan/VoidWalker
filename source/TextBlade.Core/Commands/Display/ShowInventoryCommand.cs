@@ -29,7 +29,7 @@ public class ShowInventoryCommand : ICommand
         _isInBattle = isInBattle;
     }
 
-    public bool Execute(SaveData saveData)
+    public bool Execute(IConsole console, SaveData saveData)
     {
         _console.WriteLine("Inventory:");
 
