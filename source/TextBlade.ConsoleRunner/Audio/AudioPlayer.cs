@@ -35,7 +35,7 @@ public class AudioPlayer : ISoundPlayer, IDisposable
     /// <summary>
     /// Create a new audio player, and preload the audio file specified.
     /// </summary>
-    public void Load(string fileName)
+    public void Play(string fileName)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(fileName);
 
@@ -53,6 +53,8 @@ public class AudioPlayer : ISoundPlayer, IDisposable
                 });
             }
         };
+
+        _player.Play(_media);
     }
 
     /// <summary>
@@ -63,12 +65,7 @@ public class AudioPlayer : ISoundPlayer, IDisposable
         get { return _player.Volume; }
         set { _player.Volume = value; }
     }
-
-    /// <summary>
-    /// Plays the audio file.
-    /// </summary>
-    public void Play() =>  _player.Play(_media);
-
+    
     /// <summary>
     /// Stops audio playback.
     /// </summary>

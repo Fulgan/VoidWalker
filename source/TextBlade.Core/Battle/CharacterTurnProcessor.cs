@@ -76,8 +76,7 @@ public class CharacterTurnProcessor
                 var skillAudioFile = skill.GetAudioFileName();
                 if (!string.IsNullOrWhiteSpace(skillAudioFile))
                 {
-                    _soundPlayer.Load(skillAudioFile);
-                    _soundPlayer.Play();
+                    _soundPlayer.Play(skillAudioFile);
                 }
                 break;
             case 'i':

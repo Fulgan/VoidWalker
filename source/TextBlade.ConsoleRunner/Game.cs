@@ -102,8 +102,7 @@ public class Game : IGame
                 if (command is FightCommand)
                 {
                     FadeOutAudios();
-                    _battleThemeSoundPlayer.Load(Path.Combine("Content", "Audio", "bgm", "battle.ogg"));
-                    _battleThemeSoundPlayer.Play();
+                    _battleThemeSoundPlayer.Play(Path.Combine("Content", "Audio", "bgm", "battle.ogg"));
                 }
 
                 var isExecuted = command.Execute(_console, _saveData);
@@ -185,7 +184,12 @@ public class Game : IGame
         // One day...
         foreach (var audio in _backgroundAudiosPlayers)
         {
-            audio.Play();
+            audio.Dispose();
+        }
+
+        foreach (var sound in _currentLocation.BackgroundAudios)
+        {
+            PlayAudioFor(sound);
         }
     }
 
@@ -322,10 +326,9 @@ public class Game : IGame
     private void PlayAudioFor(string audioFile)
     {   
         var audioPlayer = new AudioPlayer();
-        audioPlayer.Load(Path.Join("Content", "Audio", $"{audioFile}.ogg"));
+        audioPlayer.Play(Path.Join("Content", "Audio", $"{audioFile}.ogg"));
         audioPlayer.Volume = BackgroundAudioVolume;
         _backgroundAudiosPlayers.Add(audioPlayer);
-        audioPlayer.Play();
     }
 
     private void AutoSaveIfItsBeenAWhile()

@@ -57,8 +57,7 @@ public class SerialSoundPlayer : ISerialSoundPlayer, IDisposable
         {
             _audioPlayer.Stop();
         }
-        _audioPlayer.Load(_audiosToPlay[_currentAudioId]);
-        _audioPlayer.Play();
+        _audioPlayer.Play(_audiosToPlay[_currentAudioId]);
     }
 
     public void Dispose()

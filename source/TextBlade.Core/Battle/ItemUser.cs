@@ -64,8 +64,7 @@ public class ItemUser
         var itemAudioFile = itemData.GetAudioFileName();
         if (!string.IsNullOrWhiteSpace(itemAudioFile))
         {
-            _soundPlayer.Load(itemAudioFile);
-            _soundPlayer.Play();
+            _soundPlayer.Play(itemAudioFile);
         }
         
         _console.WriteLine("Healed.");
