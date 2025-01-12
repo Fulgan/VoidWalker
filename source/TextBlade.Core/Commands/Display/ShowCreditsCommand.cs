@@ -1,27 +1,18 @@
-using TextBlade.Core.Characters;
-using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands.Display;
 
 public class ShowCreditsCommand : ICommand
 {
-    private readonly IConsole _console;
-
-    public ShowCreditsCommand(IConsole console)
-    {
-        _console = console;
-    }
-    
     public bool Execute(IConsole console, SaveData saveData)
     {
         var creditsFilePath = Path.Join("Content", "Credits.txt");
         if (File.Exists(creditsFilePath))
         {
-            _console.WriteLine(File.ReadAllText(creditsFilePath));
+            console.WriteLine(File.ReadAllText(creditsFilePath));
         }
         
-        _console.WriteLine("TextBlade text JRPG engine: programming by NightBlade.");
+        console.WriteLine("TextBlade text JRPG engine: programming by NightBlade.");
         return true;
     }
 }

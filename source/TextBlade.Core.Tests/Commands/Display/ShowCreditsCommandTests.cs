@@ -12,10 +12,10 @@ public class ShowCreditsCommandTests
     {
         // Arrange
         var console = new ConsoleStub();
-        var command = new ShowCreditsCommand(console);
+        var command = new ShowCreditsCommand();
         
         // Act
-        command.Execute(null);
+        command.Execute(console, null);
         var actual = console.LastMessage;
 
         // Assert

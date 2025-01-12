@@ -1,18 +1,9 @@
-using TextBlade.Core.Characters;
-using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Commands.Display;
 
 public class ShowHelpCommand : ICommand
 {
-    private readonly IConsole _console;
-
-    public ShowHelpCommand(IConsole console)
-    {
-        _console = console;
-    }
-
     private readonly Dictionary<string, string> _knownCommands = new()
     {
         { "help", "Shows this detailed help text"},
@@ -36,13 +27,13 @@ public class ShowHelpCommand : ICommand
 
         foreach (var t in helpText)
         {
-            _console.WriteLine(t);
+            console.WriteLine(t);
         }
 
         foreach (var command in _knownCommands.Keys)
         {
             var explanation = _knownCommands[command];
-            _console.WriteLine($"    [{Colours.Command}]{command}[/]: {explanation}");
+            console.WriteLine($"    [{Colours.Command}]{command}[/]: {explanation}");
         }
 
         return true;

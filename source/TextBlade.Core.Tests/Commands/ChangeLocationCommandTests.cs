@@ -1,3 +1,4 @@
+using NSubstitute;
 using NUnit.Framework;
 using TextBlade.Core.Commands;
 using TextBlade.Core.IO;
@@ -17,7 +18,7 @@ public class ChangeLocationCommandTests
         var command = new ChangeLocationCommand(game, expectedLocationId);
 
         // Act
-        var actual = command.Execute(new SaveData());
+        var actual = command.Execute(Substitute.For<IConsole>(), new SaveData());
 
         // Assert
         Assert.That(game.Location.LocationId, Is.EqualTo(expectedLocationId));

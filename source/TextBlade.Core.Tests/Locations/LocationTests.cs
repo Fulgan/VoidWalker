@@ -16,7 +16,7 @@ public class LocationTests
         var location = new Location("A", "B");
 
         // Act
-        var actual = location.GetCommandFor(Substitute.For<IConsole>(), "q");
+        var actual = location.GetCommandFor("q");
 
         // Assert
         Assert.That(actual, Is.InstanceOf<DoNothingCommand>());

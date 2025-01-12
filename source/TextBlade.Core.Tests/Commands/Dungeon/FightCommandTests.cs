@@ -11,19 +11,11 @@ namespace TextBlade.Core.Tests.Commands;
 public class FightCommandTests
 {
     [Test]
-    public void Constructor_Throws_IfAnyArgumentsAreNull()
-    {
-        // Act/Assert
-        Assert.Throws<ArgumentException>(() => new FightCommand(null, Substitute.For<TurnBasedBattleSystem>()));
-        Assert.Throws<ArgumentNullException>(() => new FightCommand(Substitute.For<IConsole>(), null));
-    }
-
-    [Test]
     public void Execute_GivesNoSpoilsOrXp_IfDefeat()
     {
         // Arrange
         var system = Substitute.For<IBattleSystem>();
-        var command = new FightCommand(Substitute.For<IConsole>(), system);
+        var command = new FightCommand() { System = system };
         var saveData = CreateSaveData();
 
         system.Execute(saveData).Returns(new Spoils
@@ -35,7 +27,7 @@ public class FightCommandTests
         });
 
         // Act
-        command.Execute(saveData);
+        command.Execute(Substitute.For<IConsole>(), saveData);
 
         // Assert. No gold, no loot in inventory, no XP.
         Assert.That(saveData.Gold, Is.EqualTo(0));
@@ -48,7 +40,7 @@ public class FightCommandTests
     {
         // Arrange
         var system = Substitute.For<IBattleSystem>();
-        var command = new FightCommand(Substitute.For<IConsole>(), system);
+        var command = new FightCommand() { System = system };
         var saveData = CreateSaveData();
 
         system.Execute(saveData).Returns(new Spoils
@@ -60,7 +52,7 @@ public class FightCommandTests
         });
 
         // Act
-        command.Execute(saveData);
+        command.Execute(Substitute.For<IConsole>(), saveData);
 
         Assert.That(saveData.Gold, Is.GreaterThan(0));
         Assert.That(saveData.Inventory.ItemQuantities.Count, Is.GreaterThan(0));

@@ -84,17 +84,17 @@ public class InputProcessor
         {
             case "quit":
             case "q":
-                return new QuitGameCommand(_console);
+                return new QuitGameCommand();
             case "i":
             case "inv":
             case "inventory":
-                return new ShowInventoryCommand(_console, _soundPlayer);
+                return new ShowInventoryCommand(_soundPlayer);
             case "p":
             case "party":
             case "status":
-                return new ShowPartyStatusCommand(_console);
+                return new ShowPartyStatusCommand();
             case "credits":
-                return new ShowCreditsCommand(_console);
+                return new ShowCreditsCommand();
             case "s":
             case "save":
                 return new ManuallySaveCommand();
@@ -104,7 +104,7 @@ public class InputProcessor
             case "help":
             case "h":
             case "?":
-                return new ShowHelpCommand(_console);
+                return new ShowHelpCommand();
         }
 
         return new DoNothingCommand();

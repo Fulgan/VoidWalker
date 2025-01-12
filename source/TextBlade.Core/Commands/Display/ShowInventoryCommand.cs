@@ -10,27 +10,23 @@ public class ShowInventoryCommand : ICommand
     private readonly IConsole _console;
     private readonly ISoundPlayer _soundPlayer;
 
-    private readonly EquipmentEquipper _equipper;
-    private readonly ItemUser _itemUser;
+    private EquipmentEquipper _equipper;
+    private ItemUser _itemUser;
 
     private bool _isInBattle = false;
 
-    public ShowInventoryCommand(IConsole console, ISoundPlayer soundPlayer, bool isInBattle = false)
+    public ShowInventoryCommand(ISoundPlayer soundPlayer, bool isInBattle = false)
     {
-        ArgumentNullException.ThrowIfNull(console);
         ArgumentNullException.ThrowIfNull(soundPlayer);
-
-        _console = console;
         _soundPlayer = soundPlayer;
-
-        _equipper = new(console);
-        _itemUser = new(console, soundPlayer);
-
         _isInBattle = isInBattle;
     }
 
     public bool Execute(IConsole console, SaveData saveData)
     {
+        _equipper = new(console);
+        _itemUser = new(console, _soundPlayer);
+
         _console.WriteLine("Inventory:");
 
         var inventory = saveData.Inventory;

@@ -26,7 +26,7 @@ public class InnTests
         var inn = new Inn("The Inn of Fluffy Pillows", "An odd pillow-shaped white building", string.Empty);
         
         // Act
-        var actual = inn.GetCommandFor(Substitute.For<IConsole>(), input);
+        var actual = inn.GetCommandFor(input);
 
         // Assert
         Assert.That(actual, Is.InstanceOf<DoNothingCommand>());
@@ -41,7 +41,7 @@ public class InnTests
         var inn = new Inn("The Inn of Fluffy Minnows", "An odd fish-shaped white building", string.Empty);
         
         // Act
-        var actual = inn.GetCommandFor(Substitute.For<IConsole>(), s);
+        var actual = inn.GetCommandFor(s);
 
         // Assert
         Assert.That(actual, Is.InstanceOf<SleepAtInnCommand>());

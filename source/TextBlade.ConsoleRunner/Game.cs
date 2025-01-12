@@ -145,7 +145,7 @@ public class Game : IGame
         }
     }
 
-    private void SaveGame()
+    protected void SaveGame()
     {
         if (_currentLocation == null)
             throw new InvalidOperationException("Game has not been started yet"); 

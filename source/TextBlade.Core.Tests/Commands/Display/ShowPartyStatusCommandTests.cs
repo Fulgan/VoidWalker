@@ -20,10 +20,10 @@ public class ShowPartyStatusCommandTests
         };
 
         var console = new ConsoleStub();
-        var command = new ShowPartyStatusCommand(console);
+        var command = new ShowPartyStatusCommand();
 
         // Act
-        command.Execute(new SaveData() { Party = party});
+        command.Execute(console, new SaveData() { Party = party});
 
         // Assert
         Assert.That(console.Messages.Any(a => a.StartsWith("Party status")));

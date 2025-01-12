@@ -1,5 +1,6 @@
 using NSubstitute;
 using NUnit.Framework;
+using TextBlade.Core.Audio;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters;
 using TextBlade.Core.IO;
@@ -20,7 +21,7 @@ public class BasicMonsterAiTests
             new Character("Target B", 0, 100, 7, 0, 0, 0, 0),
         };
 
-        var ai = new BasicMonsterAi(Substitute.For<IConsole>(), party);
+        var ai = new BasicMonsterAi(Substitute.For<IConsole>(), Substitute.For<ISerialSoundPlayer>(), party);
 
         // Act.
         for (int i = 0; i < 10; i++)
@@ -47,7 +48,7 @@ public class BasicMonsterAiTests
         };
 
         var console = new ConsoleStub();
-        var ai = new BasicMonsterAi(console, party);
+        var ai = new BasicMonsterAi(console, Substitute.For<ISerialSoundPlayer>(), party);
         var attacker = new Monster("Attacker-Sama", 100, 15, 0, 0, 0, 0, 0);
 
         // Act. Do it a few times. Because random is random.
@@ -74,7 +75,7 @@ public class BasicMonsterAiTests
         };
 
         var console = new ConsoleStub();
-        var ai = new BasicMonsterAi(console, party);
+        var ai = new BasicMonsterAi(console, Substitute.For<ISerialSoundPlayer>(), party);
         var attacker = new Monster("Stone Monster", 100, 999, 999, 0, 0, 0, 0);
 
         // Act
@@ -108,7 +109,7 @@ public class BasicMonsterAiTests
         // Act
         for (int i = 0; i < 20; i++)
         {
-            new BasicMonsterAi(console, [target]).ProcessTurnFor(attacker);
+            new BasicMonsterAi(console, Substitute.For<ISerialSoundPlayer>(), [target]).ProcessTurnFor(attacker);
         }
 
         // Assert

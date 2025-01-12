@@ -243,7 +243,7 @@ public class DungeonTests
         var dungeon = CreateDungeon();
 
         // Act
-        var actual = dungeon.GetCommandFor(Substitute.For<IConsole>(), command);
+        var actual = dungeon.GetCommandFor(command);
 
         // Assert
         Assert.That(actual, Is.InstanceOf<FightCommand>());
@@ -260,7 +260,7 @@ public class DungeonTests
         dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(0, true));
 
         // Act
-        dungeon.GetCommandFor(Substitute.For<IConsole>(), command);
+        dungeon.GetCommandFor(command);
 
         // Assert
         Assert.That(dungeon.GetCustomSaveData()["CurrentFloor"], Is.EqualTo(1)); // base 0
@@ -276,7 +276,7 @@ public class DungeonTests
         var dungeon = CreateDungeon();
 
         // Act
-        var actual = dungeon.GetCommandFor(Substitute.For<IConsole>(), command);
+        var actual = dungeon.GetCommandFor(command);
 
         // Assert
         Assert.That(dungeon.GetCustomSaveData()["CurrentFloor"], Is.EqualTo(0));
@@ -294,7 +294,7 @@ public class DungeonTests
         dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(0, true));
 
         // Act
-        var actual = dungeon.GetCommandFor(Substitute.For<IConsole>(), command);
+        var actual = dungeon.GetCommandFor(command);
 
         // Assert
         Assert.That(dungeon.GetCustomSaveData()["CurrentFloor"], Is.EqualTo(0));

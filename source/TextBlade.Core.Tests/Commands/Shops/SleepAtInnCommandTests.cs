@@ -16,7 +16,7 @@ public class SleepAtInnCommandTests
         var protagonist = new Character("Cecil", 100, 50, 30, 0, 0, 0);
         protagonist.CurrentHealth = 1;
         var cost = 100;
-        var command = new SleepAtInnCommand(Substitute.For<IConsole>(), cost);
+        var command = new SleepAtInnCommand(cost);
 
         var saveData = new SaveData()
         {
@@ -25,7 +25,7 @@ public class SleepAtInnCommandTests
         };
 
         // Act
-        var actual = command.Execute(saveData);
+        var actual = command.Execute(Substitute.For<IConsole>(), saveData);
 
         // Assert
         Assert.That(actual, Is.False);
@@ -42,7 +42,7 @@ public class SleepAtInnCommandTests
         duotagonist.CurrentHealth = 0;
 
         var cost = 100;
-        var command = new SleepAtInnCommand(Substitute.For<IConsole>(), cost);
+        var command = new SleepAtInnCommand(cost);
 
         var saveData = new SaveData()
         {
@@ -51,7 +51,7 @@ public class SleepAtInnCommandTests
         };
 
         // Act
-        var actual = command.Execute(saveData);
+        var actual = command.Execute(Substitute.For<IConsole>(), saveData);
 
         // Assert
         Assert.That(actual, Is.True);
