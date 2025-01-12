@@ -1,4 +1,5 @@
 using LibVLCSharp.Shared;
+using TextBlade.ConsoleRunner.Audio;
 using TextBlade.Core.Audio;
 
 namespace TestBlade.ConsoleRunner.Audio;
@@ -35,9 +36,14 @@ public class AudioPlayer : ISoundPlayer, IDisposable
     /// <summary>
     /// Create a new audio player, and preload the audio file specified.
     /// </summary>
-    public void Play(string fileName)
+    public void Play(string fileName, string channel = "stereo")
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(fileName);
+
+        if (_player != null)
+        {
+            _player.Dispose();
+        }
 
         _player = new MediaPlayer(_libVlc) { EnableHardwareDecoding = true };
         _media = new Media(_libVlc, fileName, FromType.FromPath);
@@ -54,6 +60,7 @@ public class AudioPlayer : ISoundPlayer, IDisposable
             }
         };
 
+        _player.SetChannel(channel.ToAudioOutputChannel());
         _player.Play(_media);
     }
 

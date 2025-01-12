@@ -6,11 +6,13 @@ namespace TextBlade.ConsoleRunner.Audio;
 public class SerialSoundPlayer : ISerialSoundPlayer, IDisposable
 {
     private readonly AudioPlayer _audioPlayer = new();
+    private readonly string _audioChannel;
     private int _currentAudioId = 0;
     private List<string> _audiosToPlay = new();
 
-    public SerialSoundPlayer()
+    public SerialSoundPlayer(string channel = "left")
     {
+        _audioChannel = channel;
         _audioPlayer.OnPlaybackComplete += PlayNext;
     }
 
@@ -57,7 +59,7 @@ public class SerialSoundPlayer : ISerialSoundPlayer, IDisposable
         {
             _audioPlayer.Stop();
         }
-        _audioPlayer.Play(_audiosToPlay[_currentAudioId]);
+        _audioPlayer.Play(_audiosToPlay[_currentAudioId], _audioChannel);
     }
 
     public void Dispose()
