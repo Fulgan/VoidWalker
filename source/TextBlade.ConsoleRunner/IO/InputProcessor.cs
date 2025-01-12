@@ -34,11 +34,24 @@ public class InputProcessor
         
         // It's some special command that the location handles. That doesn't change location.
         var command = currentLocation.GetCommandFor(rawResponse);
+        
+        // This is necessary ONLY for Dungeon, again, because there's no way to tell the player that they can't descend etc.
+        var extraOutput = currentLocation.GetExtraOutputFor(rawResponse);
+        if (!string.IsNullOrWhiteSpace(extraOutput))
+        {
+            _console.WriteLine(extraOutput);
+        }
 
+        // TODO: this probably shouldn't go here. I don't know how else to do this.
         // Weird corner case for FightCommand, which requires a TurnBasedCombatSystem, which requires lots of dependencies
         if (command is FightCommand fight)
         {
             var dungeon = currentLocation as Dungeon;
+            if (dungeon is null)
+            {
+                throw new InvalidOperationException("Can't set up a fight system without a dungeon thus far");
+            }
+
             var currentFloorData = dungeon.GetCurrentFloorData();
             var loot = dungeon.GetCurrentFloorLoot();
             var system = new TurnBasedBattleSystem(_console, _serialSoundPlayer, _soundPlayer, dungeon, currentFloorData, loot);

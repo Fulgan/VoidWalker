@@ -48,6 +48,12 @@ public class Location
         // Override for stuff like "type f/fight to fight"
         return string.Empty;
     }
+
+    public virtual string GetExtraOutputFor(string rawResponse)
+    {
+        // Override for Dungeon only. Stuff like "Can't descend, monsters around."
+        return string.Empty;
+    }
     
     public virtual Dictionary<string, object>? GetCustomSaveData()
     {

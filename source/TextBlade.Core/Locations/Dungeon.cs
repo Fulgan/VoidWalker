@@ -1,6 +1,7 @@
 using System.Text;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
+using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Locations;
 
@@ -142,6 +143,28 @@ public class Dungeon : Location
         }
 
         return new DoNothingCommand();
+    }
+
+    public override string GetExtraOutputFor(string rawResponse)
+    {
+        var currentFloorData = _floorMonsters[_currentFloorNumber];
+        if ((rawResponse == "f" || rawResponse == "fight") && !currentFloorData.Any())
+        {
+                return "There are no monsters to fight here!";
+        }
+        else if (rawResponse == "d" || rawResponse == "down" || rawResponse == "descend" || rawResponse == ">")
+        {
+            if (currentFloorData.Any())
+            {
+                return $"You can't descend while monsters are around! You can [#{Colours.Command}]fight[/] them, though.";
+            }
+            else if (_currentFloorNumber == _floorMonsters.Count - 1)
+            {
+                return "You're already at the bottom of the dungeon!";
+            }
+        }
+
+        return string.Empty;
     }
 
     public bool IsCurrentFloorClear()
