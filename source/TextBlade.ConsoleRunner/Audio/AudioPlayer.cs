@@ -1,5 +1,4 @@
-using NAudio.Vorbis;
-using NAudio.Wave;
+using LibVLCSharp.Shared;
 using TextBlade.Core.Audio;
 
 namespace TestBlade.ConsoleRunner.Audio;
@@ -10,6 +9,11 @@ namespace TestBlade.ConsoleRunner.Audio;
 /// </summary>
 public class AudioPlayer : ISoundPlayer, IDisposable
 {
+    private LibVLC _libVlc;
+
+    private MediaPlayer? _player;
+    private Media? _media;
+
     /// <summary>
     /// An event that fires when playback automatically completes.
     /// Does not fire if you call Stop or Pause.
@@ -22,88 +26,70 @@ public class AudioPlayer : ISoundPlayer, IDisposable
     /// </summary>
     public bool LoopPlayback { get; set; }
     
-    private WaveOutEvent? _waveOut;
-    private WaveStream? _reader;
-
     public AudioPlayer(bool loopPlayback = false)
     {
         LoopPlayback = loopPlayback;
+        _libVlc = new();
     }
 
     /// <summary>
-    /// Create a new audio player, and load the audio file specified.
+    /// Create a new audio player, and preload the audio file specified.
     /// </summary>
     public void Load(string fileName)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(fileName);
 
-        if (_waveOut != null)
-        {
-            _waveOut.Dispose();
-        }
-
-        if (_reader != null)
-        {
-            _reader.Dispose();
-        }
-        
-        var fileExtension = fileName.Substring(fileName.LastIndexOf('.') + 1).ToLower();
-        switch (fileExtension)
-        {
-            case "ogg":
-                _reader = new VorbisWaveReader(fileName);
-                break;
-            case "wav":
-                _reader = new WaveFileReader(fileName);
-                break;
-            default:
-                throw new ArgumentException($"Not sure how to play {fileExtension} files");
-        }
-
-        _waveOut = new WaveOutEvent();
-        _waveOut.Init(_reader);
-        _waveOut.PlaybackStopped += (sender, stoppedArgs) => 
+        _player = new MediaPlayer(_libVlc) { EnableHardwareDecoding = true };
+        _media = new Media(_libVlc, fileName, FromType.FromPath);
+        _player.EndReached += (sender, args) => 
         {
             OnPlaybackComplete?.Invoke();
-            if (!LoopPlayback)
+            if (this.LoopPlayback)
             {
-                return;
+                ThreadPool.QueueUserWorkItem((x) => 
+                {
+                    _player.Stop();
+                    _player.Play();
+                });
             }
-
-            Play();
         };
     }
 
     /// <summary>
-    /// Volume to play back at; 0.0 is silent and 1.0 is maximum volume.
+    /// Volume to play back at; 0 is silent and 100 is maximum volume.
     /// </summary>
-    public float Volume
+    public int Volume
     {
-        get { return _waveOut.Volume; }
-        set { _waveOut.Volume = value; }
+        get { return _player.Volume; }
+        set { _player.Volume = value; }
     }
 
     /// <summary>
     /// Plays the audio file.
     /// </summary>
-    public void Play()
-    {
-        _reader.Seek(0, SeekOrigin.Begin);
-        _waveOut.Play();
-    }
+    public void Play() =>  _player.Play(_media);
 
     /// <summary>
     /// Stops audio playback.
     /// </summary>
-    public void Stop()
+    public void Stop() => _player?.Stop();
+
+    public bool IsPlaying
     {
-        LoopPlayback = false;
-        _waveOut?.Stop();
+        get
+        {
+            if (_player != null)
+            {
+                return _player.IsPlaying;
+            }
+            
+            return false;
+        }
     }
 
     public void Dispose()
     {
-        _waveOut?.Dispose();
-        _reader?.Dispose();
+        _player?.Dispose();
+        _media?.Dispose();
     }
 }

@@ -27,7 +27,12 @@ public class SerialSoundPlayer : ISerialSoundPlayer, IDisposable
 
     public void Stop()
     {
-        _audioPlayer.Stop();
+        // A curious quirk of VLC Player: .Stop freezes if nothing's playing.
+        if (_audioPlayer.IsPlaying)
+        {
+            _audioPlayer.Stop();
+        }
+
         _currentAudioId = -1;
         _audiosToPlay.Clear();
     }
@@ -47,7 +52,11 @@ public class SerialSoundPlayer : ISerialSoundPlayer, IDisposable
             return;
         }
 
-        _audioPlayer.Stop();
+        // A curious quirk of VLC Player: .Stop freezes if nothing's playing.
+        if (_audioPlayer.IsPlaying)
+        {
+            _audioPlayer.Stop();
+        }
         _audioPlayer.Load(_audiosToPlay[_currentAudioId]);
         _audioPlayer.Play();
     }
