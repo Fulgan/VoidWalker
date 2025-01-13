@@ -1,8 +1,17 @@
 {
     "Name": "King's Throne Room",
-    "Description": "King Sulayman greets you with peace, and implores you to kill the demon in the north seaside cave.",
+    "Description": "King Sulayman sits at a small dais in an otherwise unfurnished throne room.",
     "LinkedLocations": [
         {"Id": "Locations/KingsVale/KingsVale", "Description": "Back to King's Vale"}
     ],
-    "LocationClass": "ThroneRoom"
+    "LocationClass": "ThroneRoom",
+    "NPCs": [
+        {
+            "$type": "TextBlade.Core.Characters.QuestGiver, TextBlade.Core",
+            "Name": "King Sulayman",
+            "Texts": [ "Peae! Are you an adventurer? Please, you must kill the monsters in the Seaside cave, before they attack again!" ],
+            "PostQuestTexts": [ "Thank you for clearing the cave of monsters! We are ever in your debt." ],
+            "QuestCompleteSwitchName": "DungeonComplete_NorthSeasideCave"
+        }
+    ]
 }
