@@ -13,6 +13,7 @@ public class ShowHelpCommandTests
     [TestCase("help")]
     [TestCase("inv")]
     [TestCase("look")]
+    [TestCase("talk")]
     [TestCase("party/status")]
     [TestCase("save")]
     [TestCase("quit")]
