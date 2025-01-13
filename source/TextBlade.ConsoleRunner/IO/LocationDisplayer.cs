@@ -1,3 +1,4 @@
+using System.Globalization;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
@@ -19,6 +20,7 @@ public class LocationDisplayer
     {
         ShowLocationAndLinkedLocations(currentLocation);
         ShowLocationSpecificCommands(currentLocation);
+        ShowNpcsIfAny(currentLocation);
     }
 
     private void ShowLocationAndLinkedLocations(Location currentLocation)
@@ -58,6 +60,15 @@ public class LocationDisplayer
         {
             var innCost = inn.InnCost;
             _console.WriteLine($"It costs [{Colours.Highlight}]{innCost} gold[/] to stay at this inn for the night. Type [{Colours.Command}]S[/] to sleep.");
+        }
+    }
+
+    private void ShowNpcsIfAny(Location currentLocation)
+    {
+        _console.WriteLine($"You see the following {currentLocation.Npcs.Length} people:");
+        foreach (var npc in currentLocation.Npcs)
+        {
+            _console.WriteLine($"    {npc.Name}");
         }
     }
 }

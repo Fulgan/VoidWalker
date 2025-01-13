@@ -1,4 +1,5 @@
 using TextBlade.Core.Audio;
+using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
 using TextBlade.Core.IO;
 
@@ -15,6 +16,8 @@ public class Location
     // Polymorphic? for simplicity. One audio for convencience, or an array if you like.
     public string BackgroundAudio { get; set; } = string.Empty;
     public string[] BackgroundAudios { get; set; } = [];
+    
+    public Npc[] Npcs { get; set; } = [];
 
     /// <summary>
     /// For custom code, this is the class name of the code-behind class for this location.

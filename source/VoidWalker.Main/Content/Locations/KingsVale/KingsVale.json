@@ -8,5 +8,25 @@
         {"Id": "Locations/KingsVale/ItemShop", "Description": "Potions R Us"},
         {"Id": "Locations/KingsVale/ThroneRoom", "Description": "To the Castle"}
     ],
-    "LocationClass": "KingsVale"
+    "LocationClass": "KingsVale",
+    "NPCs": [
+        {
+            "Name": "Spekkio",
+            "Texts": [
+                "Mountains are nice.",
+                "This is the life."
+            ]
+        },
+        {
+            "Name": "Tutorial Man",
+            "Texts": [
+                "Some NPCs say multiple things! Try talking to me multiple times!",
+                "Cool, huh?",
+                "OK, that's enough now.",
+                "Quit it, yer botherin' me.",
+                "Guard! GUARD! This man is bothering me!",
+                "..."
+            ]
+        }
+    ]
 }
