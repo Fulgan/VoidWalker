@@ -1,4 +1,5 @@
 using TextBlade.Core.IO;
+using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Commands.Display;
 
@@ -8,6 +9,7 @@ public class ShowHelpCommand : ICommand
     {
         { "help", "Shows this detailed help text"},
         { "look", "Check where you are"},
+        { "talk", "Talk to any people present (some may have multiple things to say!)"},
         { "inv", "Open your inventory to equip or use items"},
         { "party/status", "See your party's status"},
         { "save", "Save the game"},
@@ -15,7 +17,7 @@ public class ShowHelpCommand : ICommand
         { "credits", "Shows the credits" },
     };
 
-    public bool Execute(IConsole console, SaveData saveData)
+    public bool Execute(IConsole console, Location currentLocation, SaveData saveData)
     {
         var helpText = new List<string>
         {

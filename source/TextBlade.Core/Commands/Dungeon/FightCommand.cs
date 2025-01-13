@@ -1,5 +1,6 @@
 using TextBlade.Core.Battle;
 using TextBlade.Core.IO;
+using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Commands;
 
@@ -7,13 +8,13 @@ public class FightCommand : ICommand
 {
     public IBattleSystem System { get; set; }
 
-    public bool Execute(IConsole console, SaveData saveData)
+    public bool Execute(IConsole console, Location currentLocation, SaveData saveData)
     {
         ArgumentNullException.ThrowIfNull(console);
         ArgumentNullException.ThrowIfNull(System);
 
         // Signal to game to begin the fight. Fight! Fight! Fight!
-        var spoils = System.Execute(saveData);
+        var spoils = System.Execute(saveData, currentLocation);
 
         // Process results: victory, or defeat?
         if (spoils.IsVictory)

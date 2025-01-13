@@ -105,7 +105,7 @@ public class Game : IGame
                     _battleThemeSoundPlayer.Play(Path.Combine("Content", "Audio", "bgm", "battle.ogg"));
                 }
 
-                var isExecuted = command.Execute(_console, _saveData);
+                var isExecuted = command.Execute(_console, _currentLocation, _saveData);
                 if (!isExecuted)
                 {
                     continue;
@@ -216,7 +216,7 @@ public class Game : IGame
         _saveData.Inventory = new();
 
         var startLocationId = runner.GetStartingLocationId();
-        new ChangeLocationCommand(this, startLocationId).Execute(_console, _saveData);
+        new ChangeLocationCommand(this, startLocationId).Execute(_console, _currentLocation, _saveData);
         _console.WriteLine("New game started. For help, type \"help\"");
     }
 
@@ -226,7 +226,7 @@ public class Game : IGame
         _saveData = SaveGameManager.LoadGame(SaveGameManager.CurrentGameSlot);
 
         GameSwitches.Switches = _saveData.Switches;
-        new ChangeLocationCommand(this, _saveData.CurrentLocationId).Execute(_console, _saveData);
+        new ChangeLocationCommand(this, _saveData.CurrentLocationId).Execute(_console, _currentLocation, _saveData);
 
         if (_saveData.LocationSpecificDataLocationId == _currentLocation?.LocationId)
         {

@@ -101,6 +101,9 @@ public class InputProcessor
             case "l":
             case "look":
                 return new LookCommand();
+            case "t":
+            case "talk":
+                return new TalkCommand();
             case "help":
             case "h":
             case "?":

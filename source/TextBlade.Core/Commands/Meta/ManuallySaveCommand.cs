@@ -1,4 +1,5 @@
 using TextBlade.Core.IO;
+using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Commands;
 
@@ -8,7 +9,7 @@ namespace TextBlade.Core.Commands;
 /// </summary>
 public class ManuallySaveCommand : ICommand
 {
-    public bool Execute(IConsole console, SaveData saveData)
+    public bool Execute(IConsole console, Location currentLocation, SaveData saveData)
     {
         // This stinks.
         return true;

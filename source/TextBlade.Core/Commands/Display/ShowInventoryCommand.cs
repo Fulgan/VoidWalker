@@ -2,12 +2,12 @@ using TextBlade.Core.Audio;
 using TextBlade.Core.Battle;
 using TextBlade.Core.Characters.PartyManagement;
 using TextBlade.Core.IO;
+using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Commands.Display;
 
 public class ShowInventoryCommand : ICommand
 {
-    private readonly IConsole _console;
     private readonly ISoundPlayer _soundPlayer;
 
     private EquipmentEquipper _equipper;
@@ -22,12 +22,12 @@ public class ShowInventoryCommand : ICommand
         _isInBattle = isInBattle;
     }
 
-    public bool Execute(IConsole console, SaveData saveData)
+    public bool Execute(IConsole console, Location currentLocation, SaveData saveData)
     {
         _equipper = new(console);
         _itemUser = new(console, _soundPlayer);
 
-        _console.WriteLine("Inventory:");
+        console.WriteLine("Inventory:");
 
         var inventory = saveData.Inventory;
         var items = inventory.ItemsInOrder;
@@ -40,30 +40,30 @@ public class ShowInventoryCommand : ICommand
 
         foreach (var item in items)
         {
-            _console.WriteLine($"  {i}: {item.Name} x{inventory.ItemQuantities[item.Name]}");
+            console.WriteLine($"  {i}: {item.Name} x{inventory.ItemQuantities[item.Name]}");
             i++;
         }
 
-        _console.WriteLine($"Use{(_isInBattle ? "" : "/equip")} which item? Type 0 or b or back to go back.");
+        console.WriteLine($"Use{(_isInBattle ? "" : "/equip")} which item? Type 0 or b or back to go back.");
         
         var index = 0;
         while (index == 0)
         {        
-            var rawInput = _console.ReadKey();
+            var rawInput = console.ReadKey();
             if (rawInput == '0' || rawInput == 'b')
             {
-                _console.WriteLine($"[{Colours.Cancel}]Cancelling.[/]");
+                console.WriteLine($"[{Colours.Cancel}]Cancelling.[/]");
                 return false;
             }
 
             if (!int.TryParse(rawInput.ToString(), out index))
             {
-                _console.WriteLine("That's not a valid number.");
+                console.WriteLine("That's not a valid number.");
             }
 
             if (index < 1 || index > items.Count())
             {
-                _console.WriteLine($"Please enter a number between {1} and {items.Count()}.");
+                console.WriteLine($"Please enter a number between {1} and {items.Count()}.");
                 index = 0;
              }
         }

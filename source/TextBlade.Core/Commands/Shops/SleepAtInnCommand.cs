@@ -1,4 +1,5 @@
 using TextBlade.Core.IO;
+using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Commands;
 
@@ -11,7 +12,7 @@ public class SleepAtInnCommand : ICommand
         _innCost = innCost;
     }
 
-    public bool Execute(IConsole console, SaveData saveData)
+    public bool Execute(IConsole console, Location currentLocation, SaveData saveData)
     {
         if (saveData.Gold < _innCost)
         {

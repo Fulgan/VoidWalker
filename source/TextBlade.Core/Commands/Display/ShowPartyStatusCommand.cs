@@ -1,10 +1,11 @@
 using TextBlade.Core.IO;
+using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Commands.Display;
 
 public class ShowPartyStatusCommand : ICommand
 {
-    public bool Execute(IConsole console, SaveData saveData)
+    public bool Execute(IConsole console, Location currentLocation, SaveData saveData)
     {
         console.WriteLine("Party status:");
 

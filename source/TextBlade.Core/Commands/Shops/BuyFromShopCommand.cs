@@ -1,5 +1,6 @@
 using System;
 using TextBlade.Core.IO;
+using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Commands.Shops;
 
@@ -14,7 +15,7 @@ public class BuyFromShopCommand : ICommand
         _itemCosts = itemCosts;
     }
 
-    public bool Execute(IConsole console, SaveData saveData)
+    public bool Execute(IConsole console, Location currentLocation, SaveData saveData)
     {
         bool isDone = false;
 

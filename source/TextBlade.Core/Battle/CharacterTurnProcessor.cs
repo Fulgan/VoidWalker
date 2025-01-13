@@ -2,6 +2,7 @@ using TextBlade.Core.Audio;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands.Display;
 using TextBlade.Core.IO;
+using TextBlade.Core.Locations;
 
 namespace TextBlade.Core.Battle;
 
@@ -11,20 +12,23 @@ public class CharacterTurnProcessor
     private readonly SaveData _saveData;
     private readonly IConsole _console;
     private readonly ISoundPlayer _soundPlayer;
+    private readonly Location _currentLocation;
 
     private readonly char[] validInputs = ['a', 'i', 's', 'd'];
 
-    public CharacterTurnProcessor(IConsole console, ISoundPlayer soundPlayer, SaveData saveData, List<Monster> monsters)
+    public CharacterTurnProcessor(IConsole console, ISoundPlayer soundPlayer, SaveData saveData, List<Monster> monsters, Location currentLocation)
     {
         ArgumentNullException.ThrowIfNull(console);
         ArgumentNullException.ThrowIfNull(soundPlayer);
         ArgumentNullException.ThrowIfNull(saveData);
         ArgumentNullException.ThrowIfNull(monsters);
+        ArgumentNullException.ThrowIfNull(currentLocation);
         
         _console = console;
         _soundPlayer = soundPlayer;
         _saveData = saveData;
         _monsters = monsters;
+        _currentLocation = currentLocation;
     }
 
     internal bool ProcessTurnFor(Character character)
@@ -81,7 +85,7 @@ public class CharacterTurnProcessor
                 break;
             case 'i':
                 var command = new ShowInventoryCommand(_soundPlayer, true);
-                return command.Execute(_console, _saveData);
+                return command.Execute(_console, _currentLocation, _saveData);
             default:
                 _console.WriteLine("Invalid input!");
                 break;

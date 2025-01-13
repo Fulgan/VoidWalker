@@ -27,7 +27,7 @@ public class ChangeLocationCommand : ICommand
         _locationPath = locationPath;
     }
 
-    public bool Execute(IConsole console, SaveData saveData)
+    public bool Execute(IConsole console, Location currentLocation, SaveData saveData)
     {
         var locationData = Serializer.Deserialize<Location>(File.ReadAllText(_locationPath));
         locationData.LocationId = _locationId;

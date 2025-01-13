@@ -121,7 +121,7 @@ public class TurnBasedBattleSystem : IBattleSystem
         }
     }
 
-    public Spoils Execute(SaveData saveData)
+    public Spoils Execute(SaveData saveData, Location currentLocation)
     {
         ArgumentNullException.ThrowIfNull(saveData);
         _saveData = saveData;
@@ -129,7 +129,7 @@ public class TurnBasedBattleSystem : IBattleSystem
         var isPartyWipedOut = () => _saveData.Party.TrueForAll(p => p.CurrentHealth <= 0);
         var areMonstersDefeated = () => _monsters.TrueForAll(m => m.CurrentHealth <= 0);
         var isBattleOver = () => isPartyWipedOut() || areMonstersDefeated();
-        var characterTurnProcessor = new CharacterTurnProcessor(_console, _soundPlayer, _saveData, _monsters);
+        var characterTurnProcessor = new CharacterTurnProcessor(_console, _soundPlayer, _saveData, _monsters, currentLocation);
 
         while (!isBattleOver())
         {
