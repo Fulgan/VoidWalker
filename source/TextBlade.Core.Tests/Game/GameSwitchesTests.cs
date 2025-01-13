@@ -62,4 +62,18 @@ public class GameSwitchesTests
         Assert.That(switches.Get("Town 1 complete"), Is.True);
         Assert.That(switches.Get("Boss 1 complete"), Is.False);
     }
+
+    [Test]
+    public void GetCompletionSwitchForDungeon_ReturnsCleanDungeonName()
+    {
+        // Arrange/Act/Assert
+        Assert.That(GameSwitches.GetCompletionSwitchForDungeon("North DUNGEON-number_2"), Is.EqualTo("CompletedDungeon_NorthDUNGEONnumber2"));
+    }
+
+    [Test]
+    public void GetTalkedToSwitchForQuestGiver_ReturnsCleanQuestGiverName()
+    {
+        // Arrange/Act/Assert
+        Assert.That(GameSwitches.GetTalkedToSwitchForQuestGiver("q-number_3"), Is.EqualTo("TalkedTo_qnumber3"));
+    }
 }
