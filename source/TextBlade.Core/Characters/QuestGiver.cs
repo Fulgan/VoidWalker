@@ -1,3 +1,5 @@
+using TextBlade.Core.Game;
+
 namespace TextBlade.Core.Characters;
 
 public class QuestGiver : Npc
@@ -17,5 +19,17 @@ public class QuestGiver : Npc
     {
         PostQuestTexts = postQuestTexts;
         QuestCompleteSwitchName = questCompleteSwitchName;
+    }
+
+    public override string Speak()
+    {
+        if (GameSwitches.Switches.Has(QuestCompleteSwitchName) && GameSwitches.Switches.Get(QuestCompleteSwitchName) == true)
+        {
+            var toReturn = PostQuestTexts[_readNextIndex];
+            _readNextIndex = (_readNextIndex + 1) % PostQuestTexts.Length;
+            return toReturn;
+        }
+
+        return base.Speak();
     }
 }

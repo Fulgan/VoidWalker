@@ -11,6 +11,12 @@ public class GameSwitches
     // The actual data. Public for serialization purposes... This smells...
     public Dictionary<string, bool> Data { get; } = new();
 
+    public static string GetCompletionSwitchForDungeon(string dungeonName)
+    {
+        dungeonName = dungeonName.Replace(" ", "").Replace("-", "").Replace("_", "");
+        return $"DungeonComplete_{dungeonName}";
+    }
+
     public bool Has(string switchName)
     {
         return Data.ContainsKey(switchName);

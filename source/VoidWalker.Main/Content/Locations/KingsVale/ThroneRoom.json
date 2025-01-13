@@ -9,7 +9,7 @@
         {
             "$type": "TextBlade.Core.Characters.QuestGiver, TextBlade.Core",
             "Name": "King Sulayman",
-            "Texts": [ "Peae! Are you an adventurer? Please, you must kill the monsters in the Seaside cave, before they attack again!" ],
+            "Texts": [ "Peace! Are you an adventurer? Please, you must kill the monsters in the Seaside cave, before they attack again!" ],
             "PostQuestTexts": [ "Thank you for clearing the cave of monsters! We are ever in your debt." ],
             "QuestCompleteSwitchName": "DungeonComplete_NorthSeasideCave"
         }

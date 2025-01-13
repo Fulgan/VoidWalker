@@ -2,7 +2,7 @@ namespace TextBlade.Core.Characters;
 
 public class Npc
 {
-    private int _readNextIndex = 0;
+    protected int _readNextIndex = 0;
     private string[] _texts = [];
     
     public string Name { get; }
@@ -21,7 +21,7 @@ public class Npc
         this.Texts = texts;
     }
 
-    public string Speak()
+    public virtual string Speak()
     {
         var toReturn = _texts[_readNextIndex];
         _readNextIndex = (_readNextIndex + 1) % Texts.Length;

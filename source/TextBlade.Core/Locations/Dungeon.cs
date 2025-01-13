@@ -1,6 +1,7 @@
 using System.Text;
 using TextBlade.Core.Commands;
 using TextBlade.Core.Commands.Display;
+using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Locations;
@@ -209,12 +210,17 @@ public class Dungeon : Location
         }
 
         // Obvious, innit? If the current floor is clear, you auto-grabbed the loot already.
-        FloorLoot[_currentFloorLootKey].Clear();
+        OnVictory();
     }
 
     public void OnVictory()
     {
         _floorMonsters[_currentFloorNumber].Clear();
+        if (_currentFloorNumber >= _floorMonsters.Count - 1)
+        {
+            // You just wiped out the last floor of monsters. Set an automatic switch.
+            GameSwitches.Switches.Set(GameSwitches.GetCompletionSwitchForDungeon(this.Name), true);
+        }
     }
 
     public List<string> GetCurrentFloorData()
