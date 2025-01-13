@@ -5,7 +5,7 @@
         "ItemType": "Weapon",
         "StatsModifiers": { "Strength": 7 },
         "Value": 200,
-        "DamageType": "Fire"
+        "DamageType": "Sword"
     },
     "Iron Helmet":
     {

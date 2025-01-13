@@ -11,21 +11,20 @@
     "LocationClass": "KingsVale",
     "NPCs": [
         {
-            "Name": "Spekkio",
-            "Texts": [
-                "Mountains are nice.",
-                "This is the life."
-            ]
-        },
-        {
-            "Name": "Tutorial Man",
+            "Name": "Helpful Man",
             "Texts": [
                 "Some NPCs say multiple things! Try talking to me multiple times!",
                 "Cool, huh?",
                 "OK, that's enough now.",
                 "Quit it, yer botherin' me.",
-                "Guard! GUARD! This man is bothering me!",
-                "..."
+                "...",
+                "Guard! GUARD! This man is bothering me!"
+            ]
+        },
+        {
+            "Name": "Retired Hero",
+            "Texts": [
+                "Setting forth for adventure? Remember this well: monsters have different weaknesses. Some are weak against fire. Others, like the common goblin, are weak against swords."
             ]
         }
     ]
