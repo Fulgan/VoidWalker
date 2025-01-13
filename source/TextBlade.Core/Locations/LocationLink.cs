@@ -14,7 +14,7 @@ public class LocationLink
     /// </summary>
     public string? SwitchRequired { get; set; }
 
-    public LocationLink(string id, string description, string? switchRequired)
+    public LocationLink(string id, string description, string? switchRequired = null)
     {
         this.Id = id;
         this.Description = description;
