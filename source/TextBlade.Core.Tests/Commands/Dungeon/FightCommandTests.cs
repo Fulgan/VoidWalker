@@ -18,7 +18,7 @@ public class FightCommandTests
         var command = new FightCommand() { System = system };
         var saveData = CreateSaveData();
 
-        system.Execute(saveData).Returns(new Spoils
+        system.Execute(saveData, null).Returns(new Spoils
         {
             IsVictory = false,
             ExperiencePointsGained = 9999,
@@ -27,7 +27,7 @@ public class FightCommandTests
         });
 
         // Act
-        command.Execute(Substitute.For<IConsole>(), saveData);
+        command.Execute(Substitute.For<IConsole>(), null, saveData);
 
         // Assert. No gold, no loot in inventory, no XP.
         Assert.That(saveData.Gold, Is.EqualTo(0));
@@ -43,7 +43,7 @@ public class FightCommandTests
         var command = new FightCommand() { System = system };
         var saveData = CreateSaveData();
 
-        system.Execute(saveData).Returns(new Spoils
+        system.Execute(saveData, null).Returns(new Spoils
         {
             IsVictory = true,
             ExperiencePointsGained = 9999,
@@ -52,7 +52,7 @@ public class FightCommandTests
         });
 
         // Act
-        command.Execute(Substitute.For<IConsole>(), saveData);
+        command.Execute(Substitute.For<IConsole>(), null, saveData);
 
         Assert.That(saveData.Gold, Is.GreaterThan(0));
         Assert.That(saveData.Inventory.ItemQuantities.Count, Is.GreaterThan(0));

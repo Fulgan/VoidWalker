@@ -18,7 +18,7 @@ public class ChangeLocationCommandTests
         var command = new ChangeLocationCommand(game, expectedLocationId);
 
         // Act
-        var actual = command.Execute(Substitute.For<IConsole>(), new SaveData());
+        var actual = command.Execute(Substitute.For<IConsole>(), null, new SaveData());
 
         // Assert
         Assert.That(game.Location.LocationId, Is.EqualTo(expectedLocationId));

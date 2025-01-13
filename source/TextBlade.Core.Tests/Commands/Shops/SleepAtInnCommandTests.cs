@@ -25,7 +25,7 @@ public class SleepAtInnCommandTests
         };
 
         // Act
-        var actual = command.Execute(Substitute.For<IConsole>(), saveData);
+        var actual = command.Execute(Substitute.For<IConsole>(), null, saveData);
 
         // Assert
         Assert.That(actual, Is.False);
@@ -51,7 +51,7 @@ public class SleepAtInnCommandTests
         };
 
         // Act
-        var actual = command.Execute(Substitute.For<IConsole>(), saveData);
+        var actual = command.Execute(Substitute.For<IConsole>(), null, saveData);
 
         // Assert
         Assert.That(actual, Is.True);

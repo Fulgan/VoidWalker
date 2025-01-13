@@ -15,7 +15,7 @@ public class ShowCreditsCommandTests
         var command = new ShowCreditsCommand();
         
         // Act
-        command.Execute(console, null);
+        command.Execute(console, null, null);
         var actual = console.LastMessage;
 
         // Assert
