@@ -129,9 +129,11 @@ public class DungeonTests
         dungeon.SetStateBasedOnCustomSaveData(MakeCustomData(floorNumber, true));
 
         // Assert
-        Assert.That(dungeon.FloorLoot[$"B{floorNumber + 1}"], Is.Empty);
-        Assert.That(dungeon.GetExtraDescription(), Does.Not.Contain("Mole"));
+        Assert.That(dungeon.FloorLoot.ContainsKey($"B{floorNumber}"), Is.False);
+
         // Didn't clear other floors
+        Assert.That(dungeon.FloorLoot[$"B{floorNumber + 1}"], Is.Not.Empty);
+        Assert.That(dungeon.GetExtraDescription(), Does.Not.Contain("Mole"));
         Assert.That(dungeon.FloorLoot[$"B{floorNumber + 2}"], Is.Not.Empty);
     }
 
