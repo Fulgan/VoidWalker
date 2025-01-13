@@ -65,6 +65,11 @@ public class LocationDisplayer
 
     private void ShowNpcsIfAny(Location currentLocation)
     {
+        if (!currentLocation.Npcs.Any())
+        {
+            return;
+        }
+        
         _console.WriteLine($"You can talk to the following {currentLocation.Npcs.Length} entities:");
         foreach (var npc in currentLocation.Npcs)
         {
