@@ -1,6 +1,7 @@
 using TextBlade.Core.Audio;
 using TextBlade.Core.Characters;
 using TextBlade.Core.Commands;
+using TextBlade.Core.Game;
 using TextBlade.Core.IO;
 
 namespace TextBlade.Core.Locations;
@@ -33,6 +34,8 @@ public class Location
         this.Description = description;
         this.LocationClass = locationClass;
     }
+
+    public IEnumerable<LocationLink> VisibleLocations => LinkedLocations.Where(l => l.SwitchRequired is null || (GameSwitches.Switches.Has(l.SwitchRequired) && GameSwitches.Switches.Get(l.SwitchRequired) == true));
 
     public virtual ICommand GetCommandFor(string input)
     {

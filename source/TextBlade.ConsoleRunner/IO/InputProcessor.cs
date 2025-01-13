@@ -68,13 +68,13 @@ public class InputProcessor
         if (int.TryParse(rawResponse, out destinationOption))
         {
             // Check if it's valid
-            if (destinationOption <= 0 || destinationOption > currentLocation.LinkedLocations.Count)
+            if (destinationOption <= 0 || destinationOption > currentLocation.VisibleLocations.Count())
             {
                 _console.WriteLine("That's not a valid destination!");
                 return new DoNothingCommand();
             }
 
-            var destination = currentLocation.LinkedLocations[destinationOption - 1];
+            var destination = currentLocation.VisibleLocations.ElementAt(destinationOption - 1);
             return new ChangeLocationCommand(_game, destination.Id);
         }
 

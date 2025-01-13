@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <File Include="version.txt" />
+    <Folder Include="Code\Locations\" />
     <Folder Include="Content\" />
   </ItemGroup>
 

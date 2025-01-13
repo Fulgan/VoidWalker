@@ -13,8 +13,17 @@ public class GameSwitches
 
     public static string GetCompletionSwitchForDungeon(string dungeonName)
     {
-        dungeonName = dungeonName.Replace(" ", "").Replace("-", "").Replace("_", "");
-        return $"DungeonComplete_{dungeonName}";
+        return $"CompletedDungeon_{Normalize(dungeonName)}";
+    }
+
+    public static string GetTalkedToSwitchForQuestGiver(string questGiver)
+    {
+        return $"TalkedTo_{Normalize(questGiver)}";
+    }
+
+    private static string Normalize(string thingName)
+    {
+        return thingName.Replace(" ", "").Replace("-", "").Replace("_", "");
     }
 
     public bool Has(string switchName)

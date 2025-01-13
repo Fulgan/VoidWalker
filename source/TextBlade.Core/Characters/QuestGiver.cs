@@ -25,11 +25,16 @@ public class QuestGiver : Npc
     {
         if (GameSwitches.Switches.Has(QuestCompleteSwitchName) && GameSwitches.Switches.Get(QuestCompleteSwitchName) == true)
         {
-            var toReturn = PostQuestTexts[_readNextIndex];
+            var message = PostQuestTexts[_readNextIndex];
             _readNextIndex = (_readNextIndex + 1) % PostQuestTexts.Length;
-            return toReturn;
+            return message;
         }
 
-        return base.Speak();
+        var toReturn = base.Speak();
+        if (!GameSwitches.Switches.Has(GameSwitches.GetTalkedToSwitchForQuestGiver(this.Name)))
+        {
+            GameSwitches.Switches.Set(GameSwitches.GetTalkedToSwitchForQuestGiver(this.Name), true);
+        }
+        return toReturn;
     }
 }

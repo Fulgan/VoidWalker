@@ -6,9 +6,9 @@
         {"Id": "Locations/KingsVale/Inn", "Description": "The King's Inn"},
         {"Id": "Locations/KingsVale/EquipmentShop", "Description": "Bronzebeard's Wares"},
         {"Id": "Locations/KingsVale/ItemShop", "Description": "Potions R Us"},
-        {"Id": "Locations/KingsVale/ThroneRoom", "Description": "To the Castle"}
+        {"Id": "Locations/KingsVale/ThroneRoom", "Description": "To the Castle"},
+        {"Id": "Dungeons/NorthSeasideCave", "Description": "Explore the North Seaside Cave", "SwitchRequired": "TalkedTo_KingSulayman"}
     ],
-    "LocationClass": "KingsVale",
     "NPCs": [
         {
             "Name": "Helpful Man",

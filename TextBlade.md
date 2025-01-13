@@ -9,21 +9,7 @@ Note that you still need to write code to use TextBlade; you can leverage a lot 
 
 # Creating a Game
 
-- Run `dotnet new console --name <projectName>` to create your new project
-- Clone the lastest `TextBlade` repo, add it as a submodule, or copy the projects under your source directory
-- Add a reference to `TextBlade.ConsoleRunner` in your project
-- In your `Program.cs`, call `new Game().Run()`
-- Create a `Content` directory with a `game.json` file inside; it should have a `GameName` property set
-- Set `game.json` to copy all files from `Content`, by adding this to your `.csproj` file:
-```xml
-  <ItemGroup>
-    <Content Include="Content/**/*">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-``` 
-
-Run your game. It should crash! Yes! Because games need a location!
+Just copy VoidWalkers. It's a very minimal tech demo.
 
 # Creating a Location
 
@@ -43,6 +29,22 @@ Run the game again. You should get a print statement indicating you're in King's
 - Add whatever custom code you like to the constructor
 
 Note that TextBlade manages and serializes/deserializes global game-wide switches; access them via the `TextBlade.Core.Game.GameSwitches.Switches` class.
+
+
+## Game Switches
+
+The game code allows you to set boolean switches for things, like global conditions (e.g. is quest XYZ done?). 
+
+By default, whenever you complete a dungeon, TextBlade also sets a switch for you; the switch name is `CompletedDungeon_{dungeonName}`, where `dungeonName` is the dungeon's name, without spaces or other special characters (e.g. `North Seaside Town` becomes `NorthSeasideTown`).
+
+
+## NPCs
+
+NPCs need a name, like `Dock Worker`, and can say multiple things. If they say multiple things, the NPC rotates through them in order as you talk to him again and again.
+
+## Quest Givers
+
+A special type of NPCs, quest givers say one thing when a quest is pending, and another once the quest is completed. Since they're so special, talking to a quest giver automatically sets the switch `TalkedTo_{questGiverName}` where `questGiverName` is the quest giver's name, without spaces or special characters.
 
 # Credits
 

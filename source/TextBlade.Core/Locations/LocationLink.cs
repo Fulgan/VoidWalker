@@ -9,9 +9,15 @@ public class LocationLink
     public string Id { get; set; }
     public string Description { get; set; }
 
-    public LocationLink(string id, string description)
+    /// <summary>
+    /// If set, this location link requires this particular named switch to be true before it appears in the location list and is travelable
+    /// </summary>
+    public string? SwitchRequired { get; set; }
+
+    public LocationLink(string id, string description, string? switchRequired)
     {
         this.Id = id;
         this.Description = description;
+        this.SwitchRequired = switchRequired;
     }
 }

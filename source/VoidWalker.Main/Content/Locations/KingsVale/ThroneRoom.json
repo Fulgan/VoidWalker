@@ -4,14 +4,13 @@
     "LinkedLocations": [
         {"Id": "Locations/KingsVale/KingsVale", "Description": "Back to King's Vale"}
     ],
-    "LocationClass": "ThroneRoom",
     "NPCs": [
         {
             "$type": "TextBlade.Core.Characters.QuestGiver, TextBlade.Core",
             "Name": "King Sulayman",
-            "Texts": [ "Peace! Are you an adventurer? Please, you must kill the monsters in the Seaside cave, before they attack again!" ],
+            "Texts": [ "Peace! Are you an adventurer? Please, you must kill the monsters in the Seaside cave, before they attack again! You can find it due north of here." ],
             "PostQuestTexts": [ "Thank you for clearing the cave of monsters! We are ever in your debt." ],
-            "QuestCompleteSwitchName": "DungeonComplete_NorthSeasideCave"
+            "QuestCompleteSwitchName": "CompletedDungeon_NorthSeasideCave"
         }
     ]
 }

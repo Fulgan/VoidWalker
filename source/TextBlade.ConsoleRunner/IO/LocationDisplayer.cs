@@ -1,4 +1,3 @@
-using System.Globalization;
 using TextBlade.Core.IO;
 using TextBlade.Core.Locations;
 
@@ -37,10 +36,10 @@ public class LocationDisplayer
             _console.WriteLine($"[#aae]{extaDescription}[/]");
         }
 
-        _console.WriteLine($"You can go to [{Colours.Highlight}]{currentLocation.LinkedLocations.Count}[/] places:");
+        _console.WriteLine($"You can go to [{Colours.Highlight}]{currentLocation.VisibleLocations.Count()}[/] places:");
         
         int i = 0;
-        foreach (var location in currentLocation.LinkedLocations)
+        foreach (var location in currentLocation.VisibleLocations)
         {
             i++;
             _console.WriteLine($"    {i}) {location.Description}");
